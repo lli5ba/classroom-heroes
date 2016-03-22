@@ -39,8 +39,8 @@ import edu.virginia.engine.util.Position;
  * */
 public class LabOneGame extends Game {
 	
-	public static int gameHeight = 300;
-	public static int gameWidth = 500;
+	public static int gameHeight = 500;
+	public static int gameWidth = 800;
 	public static final String[] CARDINAL_DIRS = new String[] {"up", "down","left", "right"};
 	/* Create a sprite object for our game. We'll use mario */
 	//Sprite mario = new Sprite("Mario", "Mario.png");
@@ -75,7 +75,7 @@ public class LabOneGame extends Game {
 		mySoundManager.LoadMusic("thebestsong", "whatisthis.wav");
 		//mySoundManager.PlayMusic("thebestsong");
 		//lily.setPosition(100, 100);
-		player1.setPosition(0, 0);
+		player1.setPosition(100, 100);
 		//lily.animate("down");
 		key.setPosition(275, 50);
 		
@@ -87,6 +87,7 @@ public class LabOneGame extends Game {
 		key.addEventListener(myQuestManager, TweenEvent.TWEEN_COMPLETE_EVENT);
 		player1.setPivotPoint(new Position(player1.getUnscaledWidth()/2,player1.getUnscaledHeight()/2));
 		Tween tween0 = new Tween(player1, TweenTransitions.EASE_IN_OUT);
+		Tween tween1 = new Tween(key, TweenTransitions.EASE_IN_OUT);
 		myTweenJuggler.add(tween0);
 		tween0.animate(TweenableParam.SCALE_X, 0, 1.5, 1000);
 		tween0.animate(TweenableParam.SCALE_Y, 0, 1.5, 1000);
@@ -94,6 +95,9 @@ public class LabOneGame extends Game {
 		tween0.animate(TweenableParam.POS_X, 0, 100, 1000);
 		tween0.animate(TweenableParam.POS_Y, 0, 100, 1000);
 		
+		myTweenJuggler.add(tween1);
+		tween1.animate(TweenableParam.POS_X, 0, 200, 8000);
+		tween1.animate(TweenableParam.POS_Y, 0, 200, 8000);
 		
 	}
 	
