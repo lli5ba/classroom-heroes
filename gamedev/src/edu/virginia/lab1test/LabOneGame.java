@@ -187,7 +187,7 @@ public class LabOneGame extends Game {
 				if (currentDir == null) {
 					currentDir = "down";
 				}
-				sprite.animateOnce("net" + currentDir, 1);
+				sprite.animateOnce("net" + currentDir, 2);
 				if (net.collidesWithGlobal(key) && !key.isPickedUp()) {
 					key.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, key));
 					key.setPickedUp(true);
