@@ -87,6 +87,7 @@ public class AnimatedSprite extends Sprite {
 		currentFrame = 0;
 		loop = true;
 		timesLooped = 0;
+		animationSpeed = 1;
 	}
 	
 	public void animate(String animationName, int speed) {

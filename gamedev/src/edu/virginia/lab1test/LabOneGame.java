@@ -47,6 +47,7 @@ public class LabOneGame extends Game {
 	PickedUpItem key = new PickedUpItem("Key", "Small_Key.png");
 	//AnimatedSprite lily = new AnimatedSprite("Lily", "Lily.png", "LilySheet.png", "LilySpecs.txt");
 	AnimatedSprite lily2 = new AnimatedSprite("Lily2", "Lily.png", "LilySheet.png", "LilySpecs.txt");
+	AnimatedSprite player1 = new AnimatedSprite("Player1", "player1.png", "player1sheet.png", "player1sheetspecs.txt");
 	QuestManager myQuestManager = new QuestManager();
 	Sprite floor = new Sprite("Floor", "floor.png");
 	Sprite platform = new Sprite("Platform", "floor.png");
@@ -66,7 +67,7 @@ public class LabOneGame extends Game {
 		
 		net.setScaleX(1.5);
 		net.setScaleY(1.5);
-		lily2.addChild(net);
+		player1.addChild(net);
 		
 		
 		
@@ -74,7 +75,7 @@ public class LabOneGame extends Game {
 		mySoundManager.LoadMusic("thebestsong", "whatisthis.wav");
 		//mySoundManager.PlayMusic("thebestsong");
 		//lily.setPosition(100, 100);
-		lily2.setPosition(0, 0);
+		player1.setPosition(0, 0);
 		//lily.animate("down");
 		key.setPosition(275, 50);
 		
@@ -84,8 +85,8 @@ public class LabOneGame extends Game {
 		key.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 		key.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 		key.addEventListener(myQuestManager, TweenEvent.TWEEN_COMPLETE_EVENT);
-		lily2.setPivotPoint(new Position(lily2.getUnscaledWidth()/2,lily2.getUnscaledHeight()/2));
-		Tween tween0 = new Tween(lily2, TweenTransitions.EASE_IN_OUT);
+		player1.setPivotPoint(new Position(player1.getUnscaledWidth()/2,player1.getUnscaledHeight()/2));
+		Tween tween0 = new Tween(player1, TweenTransitions.EASE_IN_OUT);
 		myTweenJuggler.add(tween0);
 		tween0.animate(TweenableParam.SCALE_X, 0, 1.5, 1000);
 		tween0.animate(TweenableParam.SCALE_Y, 0, 1.5, 1000);
@@ -186,7 +187,7 @@ public class LabOneGame extends Game {
 				if (currentDir == null) {
 					currentDir = "down";
 				}
-				sprite.animateOnce("right");
+				sprite.animateOnce("net" + currentDir, 1);
 				if (net.collidesWithGlobal(key) && !key.isPickedUp()) {
 					key.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, key));
 					key.setPickedUp(true);
@@ -207,11 +208,11 @@ public class LabOneGame extends Game {
 		if(this.lily2 != null) {
 			this.lily2.update(pressedKeys);
 		}*/
-		if (this.lily2 != null && this.net != null) {
-			moveSpriteCartesianAnimate(net, lily2, pressedKeys);
+		if (this.player1 != null && this.net != null) {
+			moveSpriteCartesianAnimate(net, player1, pressedKeys);
 			//if there are no keys being pressed, and Lily is walking, then stop the animation
-			if (pressedKeys.isEmpty() && Arrays.asList(CARDINAL_DIRS).contains(lily2.getCurrentAnimation())){
-				lily2.stopAnimation();
+			if (pressedKeys.isEmpty() && Arrays.asList(CARDINAL_DIRS).contains(player1.getCurrentAnimation())){
+				player1.stopAnimation();
 			} 
 			
 			/* Example of collision checking
@@ -250,8 +251,11 @@ public class LabOneGame extends Game {
 	public void draw(Graphics g){
 		super.draw(g);
 		
-		if(lily2 != null) {
-			lily2.draw(g);
+		if(player1 != null) {
+			player1.draw(g);
+			
+		}
+		if(net != null) {
 			net.drawHitboxGlobal(g);
 		}
 		/*
