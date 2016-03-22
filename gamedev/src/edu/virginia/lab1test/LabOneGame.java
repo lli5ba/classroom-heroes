@@ -254,13 +254,15 @@ public class LabOneGame extends Game {
 	@Override
 	public void draw(Graphics g){
 		super.draw(g);
-		
+		if(key != null) {
+			key.draw(g);	
+		}
 		if(player1 != null) {
 			player1.draw(g);
 			
 		}
 		if(net != null) {
-			//net.drawHitboxGlobal(g);
+			net.drawHitboxGlobal(g);
 		}
 		/*
 		if(floor != null) {
@@ -269,9 +271,7 @@ public class LabOneGame extends Game {
 		if(platform != null) {
 			platform.draw(g);
 		} */
-		if(key != null) {
-			key.draw(g);	
-		}
+		
 	}
 
 	/**
