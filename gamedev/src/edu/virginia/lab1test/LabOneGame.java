@@ -256,7 +256,7 @@ public class LabOneGame extends Game {
 			
 		}
 		if(net != null) {
-			net.drawHitboxGlobal(g);
+			//net.drawHitboxGlobal(g);
 		}
 		/*
 		if(floor != null) {
