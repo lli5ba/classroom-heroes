@@ -72,7 +72,7 @@ public class AnimatedSprite extends Sprite {
 	}
 	
 	public void animate(String animationName) {
-		System.out.println("called animate");
+		//System.out.println("called animate");
 		if(spriteMap.containsKey(animationName)) {
 			currentAnimation = animationName;
 			isPlaying = true;
@@ -152,8 +152,8 @@ public class AnimatedSprite extends Sprite {
 		super.update(pressedKeys);
 		if (this.isPlaying) {
 			//Stop if done looping
-			System.out.println("looped " + this.timesLooped);
-			System.out.println("curr frame " + this.currentFrame);
+			//System.out.println("looped " + this.timesLooped);
+			//System.out.println("curr frame " + this.currentFrame);
 			if(!this.isLooping() && this.timesLooped == 1) {
 				this.stopAnimation();
 			}
