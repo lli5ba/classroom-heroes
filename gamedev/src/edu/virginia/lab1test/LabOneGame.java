@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -30,6 +32,7 @@ import edu.virginia.engine.tween.TweenEvent;
 import edu.virginia.engine.tween.TweenJuggler;
 import edu.virginia.engine.tween.TweenTransitions;
 import edu.virginia.engine.tween.TweenableParam;
+import edu.virginia.engine.util.GameClock;
 import edu.virginia.engine.util.Position;
 
 /**
@@ -39,8 +42,8 @@ import edu.virginia.engine.util.Position;
  * */
 public class LabOneGame extends Game {
 	
-	public static int gameHeight = 300;
-	public static int gameWidth = 500;
+	public static int gameHeight = 500;
+	public static int gameWidth = 800;
 	public static final String[] CARDINAL_DIRS = new String[] {"up", "down","left", "right"};
 	/* Create a sprite object for our game. We'll use mario */
 	//Sprite mario = new Sprite("Mario", "Mario.png");
@@ -54,7 +57,16 @@ public class LabOneGame extends Game {
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
+	Sprite vpred = new Sprite("VP_Red", "vp0.png");
+	private GameClock gameClock;
+	public static final double SPAWN_INTERVAL = 2000;
+	public static int p1speed = 5;
 	
+	//Change this boss sprite later!!
+	Sprite boss = new Sprite("boss", "Mario.png");
+	
+	
+	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
 	 * @throws UnsupportedAudioFileException 
@@ -63,21 +75,21 @@ public class LabOneGame extends Game {
 	public LabOneGame() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
 		super("Lab One Test Game", gameWidth, gameHeight);
 		net.setAlpha(0);
-		
+		gameClock = new GameClock();
 		
 		net.setScaleX(1.5);
 		net.setScaleY(1.5);
 		player1.addChild(net);
 		
-		
-		
 		mySoundManager = new SoundManager();
 		mySoundManager.LoadMusic("thebestsong", "whatisthis.wav");
 		//mySoundManager.PlayMusic("thebestsong");
 		//lily.setPosition(100, 100);
-		player1.setPosition(0, 0);
+		player1.setPosition(100, 100);
+		boss.setPosition(400 - (boss.getWidth()/2),0);
 		//lily.animate("down");
-		key.setPosition(275, 50);
+		key.setPosition(300, 50);
+		vpred.setPosition(400,10);
 		
 		floor.setPosition(0, 300 - floor.getUnscaledHeight() - 10);
 		floor.setScaleX(20);
@@ -87,6 +99,8 @@ public class LabOneGame extends Game {
 		key.addEventListener(myQuestManager, TweenEvent.TWEEN_COMPLETE_EVENT);
 		player1.setPivotPoint(new Position(player1.getUnscaledWidth()/2,player1.getUnscaledHeight()/2));
 		Tween tween0 = new Tween(player1, TweenTransitions.EASE_IN_OUT);
+		Tween tween1 = new Tween(key, TweenTransitions.LINEAR);
+		Tween tween2 = new Tween(vpred, TweenTransitions.LINEAR);
 		myTweenJuggler.add(tween0);
 		tween0.animate(TweenableParam.SCALE_X, 0, 1.5, 1000);
 		tween0.animate(TweenableParam.SCALE_Y, 0, 1.5, 1000);
@@ -94,7 +108,55 @@ public class LabOneGame extends Game {
 		tween0.animate(TweenableParam.POS_X, 0, 100, 1000);
 		tween0.animate(TweenableParam.POS_Y, 0, 100, 1000);
 		
+		myTweenJuggler.add(tween1);
+		tween1.animate(TweenableParam.POS_X, 0, 200, 6000);
+		tween1.animate(TweenableParam.POS_Y, 0, 200, 6000);
 		
+		myTweenJuggler.add(tween2);
+		tween2.animate(TweenableParam.POS_X, 400, generateX(250), 10000);
+		tween2.animate(TweenableParam.POS_Y, 20, generateY(400), 10000);
+	}
+	
+	public double generateX(double centerx) {
+		//Creates semi-circle range
+		int ang_min = 180;
+		int ang_max = 360;
+		int rad_min = 1000;
+		int rad_max = 1500;
+		Random rand1 = new Random();
+		double d = ThreadLocalRandom.current().nextInt(ang_min,ang_max+1);
+		
+		Random rand2 = new Random();
+		double r = ThreadLocalRandom.current().nextInt(rad_min, rad_max+1);
+		
+		double x = centerx + r*Math.cos(d);
+		
+		if(x < 0) {
+			x = x*-1;
+		}
+		
+		return x;
+	}
+	
+	public double generateY(double centery) {
+		//Creates semi-circle range
+		int ang_min = 180;
+		int ang_max = 360;
+		int rad_min = 1000;
+		int rad_max = 1500;
+		Random rand1 = new Random();
+		double d = ThreadLocalRandom.current().nextInt(ang_min,ang_max+1);
+		
+		Random rand2 = new Random();
+		double r = ThreadLocalRandom.current().nextInt(rad_min, rad_max+1);
+		
+		double y = centery + r*Math.sin(d);
+		
+		if(y < 0) {
+			y = y*-1;
+		}
+		
+		return y;
 	}
 	
 	public void moveNet(Sprite character, Sprite net, String position) {
@@ -146,7 +208,7 @@ public class LabOneGame extends Game {
 			/* update mario's position if a key is pressed, check bounds of canvas */
 			if(pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_UP))) {
 				if(sprite.getyPos() > 0) {
-					sprite.setyPos(sprite.getyPos() - 1);
+					sprite.setyPos(sprite.getyPos() - p1speed);
 				}
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "up") {
 					sprite.animate("up");
@@ -157,7 +219,7 @@ public class LabOneGame extends Game {
 			}
 			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_DOWN))) {
 				if(sprite.getyPos() < gameHeight - sprite.getUnscaledHeight()*sprite.getScaleY()){
-					sprite.setyPos(sprite.getyPos() + 1);
+					sprite.setyPos(sprite.getyPos() + p1speed);
 				}
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "down") {
 					sprite.animate("down");
@@ -167,7 +229,7 @@ public class LabOneGame extends Game {
 			}
 			if(pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_LEFT))) {
 				if(sprite.getxPos() > 0) {
-					sprite.setxPos(sprite.getxPos() - 1);
+					sprite.setxPos(sprite.getxPos() - p1speed);
 				}
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "left") {
 					sprite.animate("left");
@@ -178,7 +240,7 @@ public class LabOneGame extends Game {
 			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_RIGHT))) {
 				
 				if(sprite.getxPos() < gameWidth - sprite.getUnscaledWidth()*sprite.getScaleX()){
-					sprite.setxPos(sprite.getxPos() + 1);
+					sprite.setxPos(sprite.getxPos() + p1speed);
 				}
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "right") {
 					sprite.animate("right");
@@ -193,10 +255,13 @@ public class LabOneGame extends Game {
 				if (sprite.isPlaying()) {
 					sprite.stopAnimation();
 				}
+
 				sprite.animateOnce("net" + currentDir, 15);
-				if (net.collidesWithGlobal(key) && !key.isPickedUp()) {
-					key.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, key));
-					key.setPickedUp(true);
+				for(PickedUpItem vp : vpList) {
+					if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {
+						vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
+						vp.setPickedUp(true);
+					}
 				}
 			}
 		}
@@ -214,6 +279,15 @@ public class LabOneGame extends Game {
 		if(this.lily2 != null) {
 			this.lily2.update(pressedKeys);
 		}*/
+		
+		if(this.gameClock != null) {
+			
+		if(this.gameClock.getElapsedTime() > (SPAWN_INTERVAL)) {
+			spawnVP();
+			this.gameClock.resetGameClock();
+		}
+		}
+		
 		if (this.player1 != null && this.net != null) {
 			moveSpriteCartesianAnimate(net, player1, pressedKeys);
 			//if there are no keys being pressed, and Lily is walking, then stop the animation
@@ -250,6 +324,20 @@ public class LabOneGame extends Game {
 		
 	}
 	
+	public void spawnVP() {
+		if(myTweenJuggler != null) {
+			PickedUpItem vp = new PickedUpItem("VP", "vp0.png");
+			vp.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
+			vp.addEventListener(myQuestManager, CollisionEvent.COLLISION);
+			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
+			myTweenJuggler.add(tween2);
+			
+			tween2.animate(TweenableParam.POS_X, 400, generateX(250), 10000);
+			tween2.animate(TweenableParam.POS_Y, 20, generateY(400), 10000);
+			this.vpList.add(vp);
+		}
+	}
+	
 	/**
 	 * Engine automatically invokes draw() every frame as well. If we want to make sure mario gets drawn to
 	 * the screen, we need to make sure to override this method and call mario's draw method.
@@ -257,15 +345,31 @@ public class LabOneGame extends Game {
 	@Override
 	public void draw(Graphics g){
 		super.draw(g);
-		if(key != null) {
-			key.draw(g);	
+		
+		if(boss != null) {
+			boss.draw(g);
 		}
+		
+//		if(key != null) {
+//			key.draw(g);	
+//		}
 		if(player1 != null) {
 			player1.draw(g);
 			
+		if(vpred != null) {
+			vpred.draw(g);	
+		}
+		
+		for(PickedUpItem vp : vpList) {
+			if(vp != null) {
+				vp.draw(g);
+				//vp.drawHitboxGlobal(g);
+			}
+		}
+			
 		}
 		if(net != null) {
-			net.drawHitboxGlobal(g);
+			//net.drawHitboxGlobal(g);
 		}
 		/*
 		if(floor != null) {

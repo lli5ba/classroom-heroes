@@ -88,6 +88,7 @@ public class AnimatedSprite extends Sprite {
 	}
 
 	public void animate(String animationName) {
+
 		if(spriteMap.containsKey(animationName)) {
 			if (loop != false) { //Like a lock... animateOnce sequence takes priority
 				currentAnimation = animationName;
@@ -105,7 +106,6 @@ public class AnimatedSprite extends Sprite {
 		 * Otherwise, set it to current default frame */
 		if (loop == false) {
 			if (prevAnimation != null) {
-				System.out.println("RAWR previous animation is " + prevAnimation);
 				this.setDefaultImage(prevAnimation);
 				loop = true;
 			}
@@ -187,10 +187,9 @@ public class AnimatedSprite extends Sprite {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
-		System.out.println("prev animation: " + prevAnimation);
-		System.out.println("current animation: " + currentAnimation);
 		if (this.isPlaying) {
 			//Stop if done looping
+
 			if(!this.isLooping() && this.timesLooped == 1) {
 				this.stopAnimation();
 			}
@@ -210,7 +209,6 @@ public class AnimatedSprite extends Sprite {
 
 	private void setDefaultImage (String animationName) {
 		if (spriteMap.containsKey(animationName)) {
-			System.out.println("setting image to " + animationName);
 			BufferedImage current = spriteMap.get(animationName).get(0);
 			this.setImage(current);
 		}
