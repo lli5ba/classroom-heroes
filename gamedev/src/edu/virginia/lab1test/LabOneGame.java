@@ -151,6 +151,7 @@ public class LabOneGame extends Game {
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "up") {
 					sprite.animate("up");
 				}
+				sprite.setDirection("up");
 				moveNet(sprite, net, "up");
 				
 			}
@@ -161,6 +162,7 @@ public class LabOneGame extends Game {
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "down") {
 					sprite.animate("down");
 				}
+				sprite.setDirection("down");
 				moveNet(sprite, net, "down");
 			}
 			if(pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_LEFT))) {
@@ -170,6 +172,7 @@ public class LabOneGame extends Game {
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "left") {
 					sprite.animate("left");
 				}
+				sprite.setDirection("left");
 				moveNet(sprite, net, "left");
 			}
 			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_RIGHT))) {
@@ -180,14 +183,17 @@ public class LabOneGame extends Game {
 				if(!sprite.isPlaying() || sprite.getCurrentAnimation() != "right") {
 					sprite.animate("right");
 				}
+				sprite.setDirection("right");
 				moveNet(sprite, net, "right");
 			}
 			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))) {
-				String currentDir = sprite.getCurrentAnimation();
-				if (currentDir == null) {
-					currentDir = "down";
+				String currentDir = sprite.getDirection();
+				//Until we have combined net and walking animation, net animation overrides walking animation
+				
+				if (sprite.isPlaying()) {
+					sprite.stopAnimation();
 				}
-				sprite.animateOnce("net" + currentDir, 2);
+				sprite.animateOnce("net" + currentDir, 15);
 				if (net.collidesWithGlobal(key) && !key.isPickedUp()) {
 					key.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, key));
 					key.setPickedUp(true);
@@ -211,7 +217,8 @@ public class LabOneGame extends Game {
 		if (this.player1 != null && this.net != null) {
 			moveSpriteCartesianAnimate(net, player1, pressedKeys);
 			//if there are no keys being pressed, and Lily is walking, then stop the animation
-			if (pressedKeys.isEmpty() && Arrays.asList(CARDINAL_DIRS).contains(player1.getCurrentAnimation())){
+			if (pressedKeys.isEmpty() && player1.isPlaying() 
+					&& Arrays.asList(CARDINAL_DIRS).contains(player1.getCurrentAnimation())){
 				player1.stopAnimation();
 			} 
 			
