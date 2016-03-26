@@ -18,5 +18,7 @@ public class TweenTransition {
 		return Math.pow(percentDone, percentDone);
 	}
 	
+
+	
 	
 }

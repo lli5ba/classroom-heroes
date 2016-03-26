@@ -88,7 +88,6 @@ public class AnimatedSprite extends Sprite {
 	}
 
 	public void animate(String animationName) {
-
 		if(spriteMap.containsKey(animationName)) {
 			if (loop != false) { //Like a lock... animateOnce sequence takes priority
 				currentAnimation = animationName;
@@ -186,10 +185,12 @@ public class AnimatedSprite extends Sprite {
 	
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
+		
 		super.update(pressedKeys);
 		if (this.isPlaying) {
 			//Stop if done looping
-
+			//System.out.println("playing animation");
+			//System.out.println("Current frame: " + currentFrame);
 			if(!this.isLooping() && this.timesLooped == 1) {
 				this.stopAnimation();
 			}

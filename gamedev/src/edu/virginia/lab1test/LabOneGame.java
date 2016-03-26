@@ -57,10 +57,9 @@ public class LabOneGame extends Game {
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
-	Sprite vpred = new Sprite("VP_Red", "vp0.png");
 	private GameClock gameClock;
-	public static final double SPAWN_INTERVAL = 2000;
-	public static int p1speed = 5;
+	public static final double SPAWN_INTERVAL = 1500;
+	public static int p1speed = 8;
 	
 	//Change this boss sprite later!!
 	Sprite boss = new Sprite("boss", "Mario.png");
@@ -89,7 +88,6 @@ public class LabOneGame extends Game {
 		boss.setPosition(400 - (boss.getWidth()/2),0);
 		//lily.animate("down");
 		key.setPosition(300, 50);
-		vpred.setPosition(400,10);
 		
 		floor.setPosition(0, 300 - floor.getUnscaledHeight() - 10);
 		floor.setScaleX(20);
@@ -100,7 +98,6 @@ public class LabOneGame extends Game {
 		player1.setPivotPoint(new Position(player1.getUnscaledWidth()/2,player1.getUnscaledHeight()/2));
 		Tween tween0 = new Tween(player1, TweenTransitions.EASE_IN_OUT);
 		Tween tween1 = new Tween(key, TweenTransitions.LINEAR);
-		Tween tween2 = new Tween(vpred, TweenTransitions.LINEAR);
 		myTweenJuggler.add(tween0);
 		tween0.animate(TweenableParam.SCALE_X, 0, 1.5, 1000);
 		tween0.animate(TweenableParam.SCALE_Y, 0, 1.5, 1000);
@@ -112,51 +109,21 @@ public class LabOneGame extends Game {
 		tween1.animate(TweenableParam.POS_X, 0, 200, 6000);
 		tween1.animate(TweenableParam.POS_Y, 0, 200, 6000);
 		
-		myTweenJuggler.add(tween2);
-		tween2.animate(TweenableParam.POS_X, 400, generateX(250), 10000);
-		tween2.animate(TweenableParam.POS_Y, 20, generateY(400), 10000);
+	
 	}
 	
-	public double generateX(double centerx) {
-		//Creates semi-circle range
-		int ang_min = 180;
-		int ang_max = 360;
-		int rad_min = 1000;
-		int rad_max = 1500;
+	public Position generatePosition(double centerx, double centery, double radius) {
+		//Creates semi-circle range, 0 to PI
+		double ang_min = (0);
+		double ang_max = (Math.PI);
 		Random rand1 = new Random();
-		double d = ThreadLocalRandom.current().nextInt(ang_min,ang_max+1);
+		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
+		//System.out.println("d: " + d);
 		
-		Random rand2 = new Random();
-		double r = ThreadLocalRandom.current().nextInt(rad_min, rad_max+1);
-		
-		double x = centerx + r*Math.cos(d);
-		
-		if(x < 0) {
-			x = x*-1;
-		}
-		
-		return x;
-	}
-	
-	public double generateY(double centery) {
-		//Creates semi-circle range
-		int ang_min = 180;
-		int ang_max = 360;
-		int rad_min = 1000;
-		int rad_max = 1500;
-		Random rand1 = new Random();
-		double d = ThreadLocalRandom.current().nextInt(ang_min,ang_max+1);
-		
-		Random rand2 = new Random();
-		double r = ThreadLocalRandom.current().nextInt(rad_min, rad_max+1);
-		
-		double y = centery + r*Math.sin(d);
-		
-		if(y < 0) {
-			y = y*-1;
-		}
-		
-		return y;
+		double x = centerx + radius*Math.cos(d);
+		double y = centery + radius*Math.sin(d);
+		//System.out.println("X:" + x);
+		return new Position(x, y);
 	}
 	
 	public void moveNet(Sprite character, Sprite net, String position) {
@@ -252,11 +219,12 @@ public class LabOneGame extends Game {
 				String currentDir = sprite.getDirection();
 				//Until we have combined net and walking animation, net animation overrides walking animation
 				
-				if (sprite.isPlaying()) {
+				if (sprite.isPlaying() && !sprite.getCurrentAnimation().contains("net")) {
+					System.out.println("STOPPING\n");
 					sprite.stopAnimation();
 				}
 
-				sprite.animateOnce("net" + currentDir, 15);
+				sprite.animateOnce("net" + currentDir, 10);
 				for(PickedUpItem vp : vpList) {
 					if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {
 						vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
@@ -286,6 +254,15 @@ public class LabOneGame extends Game {
 			spawnVP();
 			this.gameClock.resetGameClock();
 		}
+		}
+		
+		if (vpList != null) {
+			for(PickedUpItem vp : vpList) {
+				if(vp != null) {
+					vp.update(pressedKeys);
+					//vp.drawHitboxGlobal(g);
+				}
+			}
 		}
 		
 		if (this.player1 != null && this.net != null) {
@@ -326,14 +303,29 @@ public class LabOneGame extends Game {
 	
 	public void spawnVP() {
 		if(myTweenJuggler != null) {
-			PickedUpItem vp = new PickedUpItem("VP", "vp0.png");
+			PickedUpItem vp = new PickedUpItem("VP", "vp0.png", "vpsheet.png", "vpsheetspecs.txt");
+			Random rand1 = new Random();
+			int colorVar = (int)(rand1.nextDouble() * 3);
+			String color = null;
+			switch (colorVar) {
+				case 0: color = "red";
+						break;
+				case 1: color = "yellow";
+						break;
+				case 2: color = "blue";
+						break;
+				default: color = "red";
+			}
+			vp.animate(color);
+			vp.setScaleX(1);
+			vp.setScaleY(1);
 			vp.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			
-			tween2.animate(TweenableParam.POS_X, 400, generateX(250), 10000);
-			tween2.animate(TweenableParam.POS_Y, 20, generateY(400), 10000);
+			Position pos =  generatePosition(400, 20, 1000);
+			tween2.animate(TweenableParam.POS_X, 400, pos.getX(), 10000);
+			tween2.animate(TweenableParam.POS_Y, 20, pos.getY(), 10000);
 			this.vpList.add(vp);
 		}
 	}
@@ -356,9 +348,7 @@ public class LabOneGame extends Game {
 		if(player1 != null) {
 			player1.draw(g);
 			
-		if(vpred != null) {
-			vpred.draw(g);	
-		}
+		
 		
 		for(PickedUpItem vp : vpList) {
 			if(vp != null) {
