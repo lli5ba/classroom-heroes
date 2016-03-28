@@ -1,5 +1,7 @@
 package edu.virginia.lab1test;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -21,6 +23,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import edu.virginia.engine.display.AnimatedSprite;
+import edu.virginia.engine.display.DisplayObject;
+import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Game;
 import edu.virginia.engine.display.PhysicsSprite;
 import edu.virginia.engine.display.PickedUpItem;
@@ -54,12 +58,14 @@ public class LabOneGame extends Game {
 	QuestManager myQuestManager = new QuestManager();
 	Sprite floor = new Sprite("Floor", "floor.png");
 	Sprite platform = new Sprite("Platform", "floor.png");
+	Sprite vpNum = new Sprite("vp", "vpbox.png"); //Box for VP; size of 512X512
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
 	private GameClock gameClock;
 	public static final double SPAWN_INTERVAL = 1500;
 	public static int p1speed = 8;
+	public static int vpcounter = 0;
 	
 	//Change this boss sprite later!!
 	Sprite boss = new Sprite("boss", "Mario.png");
@@ -88,6 +94,10 @@ public class LabOneGame extends Game {
 		boss.setPosition(400 - (boss.getWidth()/2),0);
 		//lily.animate("down");
 		key.setPosition(300, 50);
+		
+		vpNum.setPosition(690,430);
+		vpNum.setScaleX(0.2);
+		vpNum.setScaleY(0.1);
 		
 		floor.setPosition(0, 300 - floor.getUnscaledHeight() - 10);
 		floor.setScaleX(20);
@@ -229,7 +239,9 @@ public class LabOneGame extends Game {
 					if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {
 						vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
 						vp.setPickedUp(true);
+						vpcounter++;
 					}
+					System.out.println("Current vp is: " + vpcounter);
 				}
 			}
 		}
@@ -340,6 +352,11 @@ public class LabOneGame extends Game {
 		
 		if(boss != null) {
 			boss.draw(g);
+		}
+		
+		if(vpNum != null) {
+			 g.drawString("Num of VP: " + vpcounter, (int) vpNum.getxPos()+15, (int) vpNum.getyPos()+30);
+			vpNum.draw(g);
 		}
 		
 //		if(key != null) {
