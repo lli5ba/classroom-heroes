@@ -58,8 +58,8 @@ public class LabOneGame extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
 	private GameClock gameClock;
-	public static final double SPAWN_INTERVAL = 1500;
-	public static int p1speed = 8;
+	public static final double SPAWN_INTERVAL = 2000;
+	public static int p1speed = 4;
 	
 	//Change this boss sprite later!!
 	Sprite boss = new Sprite("boss", "Mario.png");

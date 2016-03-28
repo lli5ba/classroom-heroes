@@ -52,7 +52,7 @@ NOTE: Use getGlobalHitbox() method for collisions
 
 Christine:
 	(prefer not collision)
-	Healthbar (Zelda style, hearts, half hearts) (backup: Rectangle that changes width)
+	Healthbar (implementation: Zelda style, hearts, half hearts) (backup: Rectangle that changes width)
 	VP Counter (Event)  
 	
 Nakkul:
