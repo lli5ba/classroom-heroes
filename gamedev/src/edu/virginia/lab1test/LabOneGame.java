@@ -137,6 +137,9 @@ public class LabOneGame extends Game {
 		return new Position(x, y);
 	}
 	
+	public void changeScreens() {
+		//TODO: Leandra
+	}
 	public void moveNet(Sprite character, Sprite net, String position) {
 		if(position.equals("up")) {
 			//net.setRotationDegrees(-90);

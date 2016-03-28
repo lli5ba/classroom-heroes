@@ -17,6 +17,8 @@ public class Player extends AnimatedSprite {
 	private int level;
 	private Sprite net;
 	private int swingSpeed;
+	//TODO: key-mapping fields for when we have 2 players
+	
 	
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int num)
 	{
@@ -78,7 +80,7 @@ public class Player extends AnimatedSprite {
 			}
 			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_DOWN))) {
 				if(this.getyPos() < gameHeight - this.getUnscaledHeight()*this.getScaleY()){
-					this.setyPos(this.getyPos() + p1speed);
+					this.setyPos(this.getyPos() + speed);
 				}
 				if(!this.isPlaying() || this.getCurrentAnimation() != "down") {
 					this.animate("down");
@@ -88,7 +90,7 @@ public class Player extends AnimatedSprite {
 			}
 			if(pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_LEFT))) {
 				if(this.getxPos() > 0) {
-					this.setxPos(this.getxPos() - p1speed);
+					this.setxPos(this.getxPos() - speed);
 				}
 				if(!this.isPlaying() || this.getCurrentAnimation() != "left") {
 					this.animate("left");
@@ -99,7 +101,7 @@ public class Player extends AnimatedSprite {
 			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_RIGHT))) {
 				
 				if(this.getxPos() < gameWidth - this.getUnscaledWidth()*this.getScaleX()){
-					this.setxPos(this.getxPos() + p1speed);
+					this.setxPos(this.getxPos() + speed);
 				}
 				if(!this.isPlaying() || this.getCurrentAnimation() != "right") {
 					this.animate("right");
