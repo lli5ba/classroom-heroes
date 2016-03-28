@@ -32,6 +32,8 @@ public class AnimatedSprite extends Sprite {
 	private GameClock gameClockAnimation;
 	private boolean loop;
 	private int timesLooped;
+	private String prevAnimation;
+	private String direction;
 	
 	public AnimatedSprite(String id) {
 		super(id);
@@ -43,6 +45,8 @@ public class AnimatedSprite extends Sprite {
 		gameClockAnimation = new GameClock();
 		loop = true;
 		timesLooped = 0;
+		prevAnimation = null;
+		direction = "down";
 		
 	}
 
@@ -56,6 +60,8 @@ public class AnimatedSprite extends Sprite {
 		gameClockAnimation = new GameClock();
 		loop = true;
 		timesLooped = 0;
+		prevAnimation = null;
+		direction = "down";
 	}
 	
 	public AnimatedSprite(String id, String imageFileName, String spriteSheetFileName, String specsFileName) {
@@ -69,35 +75,63 @@ public class AnimatedSprite extends Sprite {
 		gameClockAnimation = new GameClock();
 		loop = true;
 		timesLooped = 0;
+		prevAnimation = null;
+		direction = "down";
 	}
 	
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
 	public void animate(String animationName) {
-		//System.out.println("called animate");
 		if(spriteMap.containsKey(animationName)) {
-			currentAnimation = animationName;
-			isPlaying = true;
-			currentFrame = 0;
-			loop = true;
-			timesLooped = 0;
+			if (loop != false) { //Like a lock... animateOnce sequence takes priority
+				currentAnimation = animationName;
+				isPlaying = true;
+				currentFrame = 0;
+				loop = true;
+				timesLooped = 0;
+				this.gameClockAnimation.resetGameClock();
+			}
 		}
 	}
 	
 	public void stopAnimation(){
+		/* set frame to display the previous default frame if animateOnce was last called
+		 * Otherwise, set it to current default frame */
+		if (loop == false) {
+			if (prevAnimation != null) {
+				this.setDefaultImage(prevAnimation);
+				loop = true;
+			}
+		} else {
+			this.setDefaultImage(currentAnimation);
+		}
 		isPlaying = false;
 		currentFrame = 0;
-		loop = true;
 		timesLooped = 0;
 		animationSpeed = 1;
+		prevAnimation = currentAnimation;
+		/*if (prevAnimation != currentAnimation) {
+			prevAnimation = currentAnimation;
+		}*/
 	}
 	
 	public void animate(String animationName, int speed) {
 		if(spriteMap.containsKey(animationName)) {
-			currentAnimation = animationName;
-			isPlaying = true;
-			currentFrame = 0;
-			animationSpeed = speed;
-			loop = true;
-			timesLooped = 0;
+			if (loop != false) { //Like a lock... animateOnce sequence takes priority
+				currentAnimation = animationName;
+				isPlaying = true;
+				currentFrame = 0;
+				animationSpeed = speed;
+				loop = true;
+				timesLooped = 0;
+				this.gameClockAnimation.resetGameClock();
+			}
 		} 
 	}
 	
@@ -108,6 +142,7 @@ public class AnimatedSprite extends Sprite {
 			currentFrame = 0;
 			loop = false;
 			timesLooped = 0;
+			this.gameClockAnimation.resetGameClock();
 		}
 	}
 	
@@ -119,6 +154,7 @@ public class AnimatedSprite extends Sprite {
 			animationSpeed = speed;
 			loop = false;
 			timesLooped = 0;
+			this.gameClockAnimation.resetGameClock();
 		}
 	}
 	
@@ -149,11 +185,12 @@ public class AnimatedSprite extends Sprite {
 	
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
+		
 		super.update(pressedKeys);
 		if (this.isPlaying) {
 			//Stop if done looping
-			//System.out.println("looped " + this.timesLooped);
-			//System.out.println("curr frame " + this.currentFrame);
+			//System.out.println("playing animation");
+			//System.out.println("Current frame: " + currentFrame);
 			if(!this.isLooping() && this.timesLooped == 1) {
 				this.stopAnimation();
 			}
@@ -168,16 +205,15 @@ public class AnimatedSprite extends Sprite {
 				this.increaseFrame();
 				this.gameClockAnimation.resetGameClock();
 			}
-		} else {
-			if (spriteMap.containsKey(currentAnimation) 
-					&& spriteMap.get(currentAnimation).size() >= (this.currentFrame + 1)) {
-				
-				BufferedImage current = spriteMap.get(currentAnimation).get(this.currentFrame);
-				this.setImage(current);
-			}
-		}
+		} 
 	}
 
+	private void setDefaultImage (String animationName) {
+		if (spriteMap.containsKey(animationName)) {
+			BufferedImage current = spriteMap.get(animationName).get(0);
+			this.setImage(current);
+		}
+	}
 	public Map<String, ArrayList<BufferedImage>> getSpriteMap() {
 		return spriteMap;
 	}
