@@ -1,5 +1,9 @@
 package edu.virginia.engine.display;
 
+import java.awt.Font;
+import java.awt.Graphics;
+import java.util.ArrayList;
+
 //This class represents an itemdetail to be displayed in the store
 public class ItemDetail extends DisplayObjectContainer{
 
@@ -7,39 +11,65 @@ public class ItemDetail extends DisplayObjectContainer{
 	private String description;
 	private int cost;
 	private boolean highlighted;
-	
-	public ItemDetail(String id, String iconId, 
-			String iconImageFileName, String description, int cost, int width, int height) {
-		super(id);
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setAlpha(0);
-		this.itemIcon = new Sprite(iconId, iconImageFileName);
+	private Sprite highlight;
+	public ItemDetail(String iconId, String iconImageFileName, 
+			String description, int cost) {
+		super(iconId + "-detail", "store/item-detail-background.png");
+		this.highlighted = true;
+		//this.setWidth(width);
+		//this.setHeight(height);
+		//this.setAlpha(0);
+		
 		this.description = description;
 		this.cost = cost;
+		this.itemIcon = new Sprite(iconId, iconImageFileName);
 		this.addChild(itemIcon);
-		this.highlighted = false;
-		this.itemIcon.setHeight(height*.5);
-		this.itemIcon.setHeight(height*.5);
-		this.itemIcon.setPosition(height*.25, height*.25);
+		this.itemIcon.setHeight(this.getHeight());
+		this.itemIcon.setWidth(this.getHeight());
+		this.itemIcon.setPosition(0, 0);
+		highlight = new Sprite(iconId + "-highlight", "store/item-icon-highlight.png");
+		this.highlight.setHeight(this.getHeight());
+		this.highlight.setWidth(this.getHeight());
+		this.addChild(highlight);
+		this.highlight.setVisible(false);
+		
+	}
+	
+	@Override
+	public void draw(Graphics g){
+		super.draw(g);
+		Font f = new Font("Dialog", Font.PLAIN, 12);
+		g.setFont(f);
+		g.drawString(description, (int)(this.itemIcon.getWidth()*1.1), (int)(this.itemIcon.getHeight()*.1));
+		g.drawString("Cost: " + cost + " VP", (int)(this.itemIcon.getWidth()*1.1), (int)(this.itemIcon.getHeight()*.75));
+	}
+	
+	@Override
+	public void update(ArrayList<String> pressedKeys) {
+		super.update(pressedKeys);
+		if(this.isHighlighted() && !this.highlight.isVisible()) {
+			this.highlight.setVisible(true);
+		}
 		
 	}
 
-	public ItemDetail(String id, String imageFileName, 
-			String iconId, String iconImageFileName, String description, int cost, int width, int height) {
-		super(id, imageFileName);
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setAlpha(0);
-		this.itemIcon = new Sprite(iconId, iconImageFileName);
-		this.description = description;
-		this.cost = cost;
-		this.addChild(itemIcon);
-		this.highlighted = false;
-		this.itemIcon.setHeight(height*.5);
-		this.itemIcon.setHeight(height*.5);
-		this.itemIcon.setPosition(height*.25, height*.25);
+	public boolean isHighlighted() {
+		return highlighted;
 	}
+
+	public void setHighlighted(boolean highlighted) {
+		this.highlighted = highlighted;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	
 
 	
 

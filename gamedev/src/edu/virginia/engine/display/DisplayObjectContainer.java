@@ -12,6 +12,7 @@ public class DisplayObjectContainer extends DisplayObject{
 
 	private ArrayList<DisplayObjectContainer> childObjects;
 	public boolean drawChildren;
+	public boolean updateChildren;
 	private DisplayObjectContainer parentObject;
 	
 	public void setParentObject(DisplayObjectContainer parent) {
@@ -29,12 +30,14 @@ public class DisplayObjectContainer extends DisplayObject{
 	public DisplayObjectContainer(String id) {
 		super(id);
 		this.drawChildren = true;
+		this.updateChildren = true;
 		this.childObjects = new ArrayList<DisplayObjectContainer>();
 	}
 
 	public DisplayObjectContainer(String id, String imageFileName) {
 		super(id, imageFileName);
 		this.drawChildren = true;
+		this.updateChildren = true;
 		this.childObjects = new ArrayList<DisplayObjectContainer>();
 	}
 
@@ -113,7 +116,11 @@ public class DisplayObjectContainer extends DisplayObject{
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
-		
+		if (this.updateChildren) {
+			for(DisplayObject obj : this.childObjects) {
+				obj.update(pressedKeys);
+			}
+		}
 	}
 	
 	@Override

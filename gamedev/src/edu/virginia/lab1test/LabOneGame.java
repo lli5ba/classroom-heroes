@@ -26,6 +26,7 @@ import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.DisplayObject;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Game;
+import edu.virginia.engine.display.ItemDetail;
 import edu.virginia.engine.display.PhysicsSprite;
 import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.SoundManager;
@@ -63,6 +64,7 @@ public class LabOneGame extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
 	private GameClock gameClock;
+	ItemDetail cheesePuffDetail = new ItemDetail("cheesePuffs", "store/cheese-puffs.png", "These are da bomb!", 2);
 
 	public static final double SPAWN_INTERVAL = 1500;
 	public static int p1speed = 8;
@@ -315,6 +317,10 @@ public class LabOneGame extends Game {
 			myTweenJuggler.nextFrame();
 		}
 		
+		if (this.cheesePuffDetail != null) {
+			cheesePuffDetail.update(pressedKeys);
+		}
+		
 	}
 	
 	public void spawnVP() {
@@ -376,6 +382,10 @@ public class LabOneGame extends Game {
 				vp.draw(g);
 				//vp.drawHitboxGlobal(g);
 			}
+		}
+		
+		if (this.cheesePuffDetail != null) {
+			cheesePuffDetail.draw(g);
 		}
 			
 		}
