@@ -12,6 +12,7 @@ public class ItemDetail extends DisplayObjectContainer{
 	private int cost;
 	private boolean highlighted;
 	private Sprite highlight;
+	
 	public ItemDetail(String iconId, String iconImageFileName, 
 			String description, int cost) {
 		super(iconId + "-detail", "store/item-detail-background.png");
