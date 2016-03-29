@@ -10,7 +10,6 @@ public class Store extends DisplayObjectContainer {
 	
 	private ItemDetail cheesePuffsDetail;
 	private ItemDetail gingerAleDetail;
-	private boolean buyingItem; //player is either about to buy an item, or viewing items
 	private Sprite highlight;
 	private String currentHighlight;
 	private ItemDetail itemToBuy;
@@ -29,7 +28,6 @@ public class Store extends DisplayObjectContainer {
 				new Position(this.getWidth()*.1, this.getHeight()*.1 + this.gingerAleDetail.getHeight()));
 		this.highlightGingerAle(); //highlight the first item
 		this.currentHighlight = this.gingerAleDetail.getId();
-		this.buyingItem = false;
 		
 	}
 	
@@ -59,7 +57,7 @@ public class Store extends DisplayObjectContainer {
 		this.gingerAleDetail.setHighlighted(true);
 	}
 	
-	public void cancelBuy(){ //navigate back to items
+	public void stopBuy(){ //navigate back to items
 		this.highlightGingerAle();
 		this.highlight.setVisible(false);
 		this.currentHighlight = "gingerAle";
@@ -79,13 +77,15 @@ public class Store extends DisplayObjectContainer {
 		}
 		this.cheesePuffsDetail.setHighlighted(false);
 		this.gingerAleDetail.setHighlighted(false);
-		this.highlightCancel();
+		this.highlightCancel(); //start on cancel, so player doesn't accidentally buy
 		this.currentHighlight = "cancel";
 	}
 	
 	public void buyItem(ItemDetail item) {
 		//TODO: Leandra
-		//decrement VP, Increase Inventory
+		//check whether enough VP, if so, decrement VP, Increase Inventory, and stopBuy() 
+		//if not enough VP then...?
+		
 	}
 	
 	public void navigateStore(ArrayList<String> pressedKeys) {
@@ -95,7 +95,7 @@ public class Store extends DisplayObjectContainer {
 					this.buyItem(this.itemToBuy);
 					break;
 				case "cancel":
-					this.cancelBuy();
+					this.stopBuy();
 					break;
 				default: //An item is selected
 					this.startBuy();
