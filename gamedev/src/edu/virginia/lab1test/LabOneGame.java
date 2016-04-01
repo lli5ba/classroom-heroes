@@ -27,12 +27,17 @@ import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.DisplayObject;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Game;
+import edu.virginia.engine.display.ItemDetail;
 import edu.virginia.engine.display.PhysicsSprite;
 import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.Poison;
 import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
+<<<<<<< HEAD
 import edu.virginia.engine.display.VP;
+=======
+import edu.virginia.engine.display.Store;
+>>>>>>> 07a9b41876ceaa036ea4e08bcc6550ebda7012d0
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenEvent;
@@ -67,6 +72,9 @@ public class LabOneGame extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
 	private GameClock gameClock;
+	Store store = new Store("store1", "red");
+	
+
 	public static final double SPAWN_INTERVAL = 1500;
 	public static int p1speed = 8;
 	public static int vpcount = 0;
@@ -147,6 +155,9 @@ public class LabOneGame extends Game {
 		return new Position(x, y);
 	}
 	
+	public void changeScreens() {
+		//TODO: Leandra
+	}
 	public void moveNet(Sprite character, Sprite net, String position) {
 		if(position.equals("up")) {
 			//net.setRotationDegrees(-90);
@@ -329,6 +340,9 @@ public class LabOneGame extends Game {
 			} */
 			
 		}
+		if (this.store != null) {
+			store.update(pressedKeys);
+		}
 		if (this.floor != null) {
 			floor.update(pressedKeys);
 		}
@@ -342,6 +356,8 @@ public class LabOneGame extends Game {
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
+		
+		
 		
 	}
 	
@@ -388,6 +404,10 @@ public class LabOneGame extends Game {
 			boss.draw(g);
 		}
 		
+		if(store != null) {
+			store.draw(g);
+		}
+		
 		if(vpNum != null) {
 			 g.drawString("Num of VP: " + vpcount, (int) vpNum.getxPos()+15, (int) vpNum.getyPos()+30);
 			vpNum.draw(g);
@@ -416,6 +436,8 @@ public class LabOneGame extends Game {
 				vp.draw(g);
 			}
 		}
+		
+		
 			
 		}
 		if(net != null) {
