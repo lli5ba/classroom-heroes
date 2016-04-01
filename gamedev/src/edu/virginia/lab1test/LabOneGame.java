@@ -31,6 +31,7 @@ import edu.virginia.engine.display.PhysicsSprite;
 import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.engine.display.Store;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenEvent;
@@ -64,6 +65,7 @@ public class LabOneGame extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
 	private GameClock gameClock;
+	Store store = new Store("store1", "red");
 	
 
 	public static final double SPAWN_INTERVAL = 1500;
@@ -303,6 +305,9 @@ public class LabOneGame extends Game {
 			} */
 			
 		}
+		if (this.store != null) {
+			store.update(pressedKeys);
+		}
 		if (this.floor != null) {
 			floor.update(pressedKeys);
 		}
@@ -360,6 +365,10 @@ public class LabOneGame extends Game {
 		
 		if(boss != null) {
 			boss.draw(g);
+		}
+		
+		if(store != null) {
+			store.draw(g);
 		}
 		
 		if(vpNum != null) {

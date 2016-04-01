@@ -41,8 +41,10 @@ public class ItemDetail extends DisplayObjectContainer{
 		super.draw(g);
 		Font f = new Font("Dialog", Font.PLAIN, 12);
 		g.setFont(f);
-		g.drawString(description, (int)(this.itemIcon.getWidth()*1.1), (int)(this.itemIcon.getHeight()*.25));
-		g.drawString("Cost: " + cost + " VP",(int)(this.itemIcon.getWidth()*1.1), (int)(this.itemIcon.getHeight()*.75));
+		g.drawString(description, (int)(this.getxPos() + this.itemIcon.getWidth()*1.1), 
+				(int)(this.getyPos() + this.itemIcon.getHeight()*.25));
+		g.drawString("Cost: " + cost + " VP",(int)(this.getxPos() + this.itemIcon.getWidth()*1.1), 
+				(int)(this.getyPos() + this.itemIcon.getHeight()*.75));
 	}
 	
 	@Override
