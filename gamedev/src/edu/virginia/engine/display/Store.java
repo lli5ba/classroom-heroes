@@ -20,6 +20,7 @@ public class Store extends DisplayObjectContainer {
 	private String downKey = KeyEvent.getKeyText(KeyEvent.VK_DOWN);
 	private String rightKey = KeyEvent.getKeyText(KeyEvent.VK_RIGHT);
 	private String leftKey = KeyEvent.getKeyText(KeyEvent.VK_LEFT);
+	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
 	
 	public Store(String id, String color) {
 		super(id, "store/store-background-" + color + ".png"); //store background
@@ -28,17 +29,18 @@ public class Store extends DisplayObjectContainer {
 		cheesePuffsDetail = new ItemDetail("cheesePuffs", "store/cheese-puffs.png", "These are da bomb!", 2);
 		gingerAleDetail = new ItemDetail("gingerAle", "store/ginger-ale.png", "Cure your classmates!", 2);
 		Sprite glassSheen = new Sprite("glassSheen", "store/glass-sheen.png");
+		this.addChild(highlight);
 		this.addChild(cheesePuffsDetail);
 		this.addChild(gingerAleDetail);
 		this.addChild(glassSheen);
 		glassSheen.setPosition(
-				this.getWidth()*.1324, this.getHeight()*.2174); //position of top-left corner of inner vending machine
+				this.getWidth()*.20, this.getHeight()*.218); //position of top-left corner of inner vending machine
 		this.gingerAleDetail.setPosition(
 				this.getWidth()*.15, this.getHeight()*.23);
 		this.cheesePuffsDetail.setPosition(
 				this.getWidth()*.15, this.getHeight()*.23 + this.gingerAleDetail.getHeight()*1.05);
 		this.highlightGingerAle(); //highlight the first item
-		this.currentHighlight = this.gingerAleDetail.getId();
+		this.currentHighlight = "gingerAle";
 		
 	}
 	
@@ -46,14 +48,14 @@ public class Store extends DisplayObjectContainer {
 		this.currentHighlight = "cancel";
 		this.highlight.setVisible(true);
 		this.highlight.setPosition(
-				new Position(this.getWidth()*.8101, this.getHeight()*.5031));
+				new Position(this.getWidth()*.8125, this.getHeight()*.507));
 	}
 	
 	public void highlightInsert(){
 		this.currentHighlight = "insert";
 		this.highlight.setVisible(true);
 		this.highlight.setPosition(
-				new Position(this.getWidth()*.7213, this.getHeight()*.5031));
+				new Position(this.getWidth()*.7238, this.getHeight()*.507));
 	}
 	
 	public void highlightCheesePuffs(){
@@ -75,7 +77,7 @@ public class Store extends DisplayObjectContainer {
 	}
 	
 	public void startBuy(){ //navigate to buy sequence
-		switch (this.currentHighlight) {
+		switch (this.currentHighlight) { //switch statements b/c easy to add new items
 			case "gingerAle":
 				this.itemToBuy = this.gingerAleDetail;
 				break;
@@ -96,12 +98,19 @@ public class Store extends DisplayObjectContainer {
 		//TODO: Leandra
 		//check whether enough VP, if so, decrement VP, Increase Inventory, and stopBuy() 
 		//if not enough VP then...?
-		System.out.println("Item purchesed!");
+		System.out.println("You bought " + item.getId() + " for " + item.getCost() + " VP");
+		this.stopBuy();
 		
 	}
 	
 	public void navigateStore(ArrayList<String> pressedKeys) {
-		if(pressedKeys.contains(this.primaryKey)) { //the player is selecting an action
+		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
+		releasedKeys.removeAll(pressedKeys);
+		//System.out.println("Prev: " +prevPressedKeys.toString() + "   Curr: " + pressedKeys.toString()
+		//+ "   Rela: " + releasedKeys.toString());
+		if(releasedKeys.contains(this.primaryKey)) { //the player is selecting an action
+			System.out.println("pressed space! current highlight: " + this.currentHighlight);
+			
 			switch (this.currentHighlight) {
 				case "insert":
 					this.buyItem(this.itemToBuy);
@@ -113,9 +122,11 @@ public class Store extends DisplayObjectContainer {
 					this.startBuy();
 					break;
 			}
-		} else if(pressedKeys.contains(this.secondaryKey)) {
+		} else if(releasedKeys.contains(this.secondaryKey)) {
 			
-		} else if(pressedKeys.contains(this.upKey)) {
+		} else if(releasedKeys.contains(this.upKey)) {
+			System.out.println("pressed up! current highlight: " + this.currentHighlight);
+			
 			switch (this.currentHighlight) {
 				case "cheesePuffs":
 					this.highlightGingerAle();
@@ -123,7 +134,8 @@ public class Store extends DisplayObjectContainer {
 				default: //do nothing if anything else is highlighted
 					break;
 			}
-		} else if(pressedKeys.contains(this.downKey)) {
+		} else if(releasedKeys.contains(this.downKey)) {
+			System.out.println("pressed down! current highlight: " + this.currentHighlight);
 			switch (this.currentHighlight) {
 				case "gingerAle":
 					this.highlightCheesePuffs();
@@ -131,7 +143,8 @@ public class Store extends DisplayObjectContainer {
 				default: //do nothing if anything else
 					break;
 			}
-		} else if(pressedKeys.contains(this.rightKey)) {
+		} else if(releasedKeys.contains(this.rightKey)) {
+			System.out.println("pressed right! current highlight: " + this.currentHighlight);
 			switch (this.currentHighlight) {
 				case "insert":
 					this.highlightCancel();
@@ -139,7 +152,8 @@ public class Store extends DisplayObjectContainer {
 				default: //do nothing if anything else
 					break;
 			}
-		} else if(pressedKeys.contains(this.leftKey)) {
+		} else if(releasedKeys.contains(this.leftKey)) {
+			System.out.println("pressed left! current highlight: " + this.currentHighlight);
 			switch (this.currentHighlight) {
 				case "cancel":
 					this.highlightInsert();
@@ -148,6 +162,8 @@ public class Store extends DisplayObjectContainer {
 					break;
 			}
 		}
+		this.prevPressedKeys.clear();
+		this.prevPressedKeys.addAll(pressedKeys);
 	}
 
 

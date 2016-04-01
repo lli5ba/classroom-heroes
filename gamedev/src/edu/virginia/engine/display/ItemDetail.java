@@ -1,5 +1,6 @@
 package edu.virginia.engine.display;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class ItemDetail extends DisplayObjectContainer{
 		super.draw(g);
 		Font f = new Font("Dialog", Font.PLAIN, 12);
 		g.setFont(f);
+		g.setColor(Color.white);
 		g.drawString(description, (int)(this.getxPos() + this.itemIcon.getWidth()*1.1), 
 				(int)(this.getyPos() + this.itemIcon.getHeight()*.25));
 		g.drawString("Cost: " + cost + " VP",(int)(this.getxPos() + this.itemIcon.getWidth()*1.1), 
@@ -50,9 +52,6 @@ public class ItemDetail extends DisplayObjectContainer{
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
-		if(this.isHighlighted() && !this.highlight.isVisible()) {
-			this.highlight.setVisible(true);
-		}
 		
 	}
 
@@ -62,6 +61,7 @@ public class ItemDetail extends DisplayObjectContainer{
 
 	public void setHighlighted(boolean highlighted) {
 		this.highlighted = highlighted;
+		this.highlight.setVisible(highlighted);
 	}
 
 	public String getDescription() {
