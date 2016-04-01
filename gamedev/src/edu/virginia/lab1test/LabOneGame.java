@@ -20,6 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import edu.virginia.engine.display.AnimatedSprite;
@@ -28,8 +29,10 @@ import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Game;
 import edu.virginia.engine.display.PhysicsSprite;
 import edu.virginia.engine.display.PickedUpItem;
+import edu.virginia.engine.display.Poison;
 import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.engine.display.VP;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenEvent;
@@ -59,19 +62,23 @@ public class LabOneGame extends Game {
 	Sprite floor = new Sprite("Floor", "floor.png");
 	Sprite platform = new Sprite("Platform", "floor.png");
 	Sprite vpNum = new Sprite("vp", "vpbox.png"); //Box for VP; size of 512X512
+	Sprite poisonNum = new Sprite("poison", "vpbox.png");
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
 	private GameClock gameClock;
 	public static final double SPAWN_INTERVAL = 1500;
 	public static int p1speed = 8;
-	public static int vpcounter = 0;
+	public static int vpcount = 0;
+	public static int poisoncount = 5;
+	public static boolean hit = false;
 	
 	//Change this boss sprite later!!
 	Sprite boss = new Sprite("boss", "Mario.png");
 	
 	
 	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
+	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
 	 * @throws UnsupportedAudioFileException 
@@ -98,6 +105,10 @@ public class LabOneGame extends Game {
 		vpNum.setPosition(690,430);
 		vpNum.setScaleX(0.2);
 		vpNum.setScaleY(0.1);
+		
+		poisonNum.setPosition(690,400);
+		poisonNum.setScaleX(0.2);
+		poisonNum.setScaleY(0.1);
 		
 		floor.setPosition(0, 300 - floor.getUnscaledHeight() - 10);
 		floor.setScaleX(20);
@@ -235,13 +246,14 @@ public class LabOneGame extends Game {
 				}
 
 				sprite.animateOnce("net" + currentDir, 10);
+				
 				for(PickedUpItem vp : vpList) {
 					if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {
 						vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
 						vp.setPickedUp(true);
-						vpcounter++;
+						vpcount++;
 					}
-					System.out.println("Current vp is: " + vpcounter);
+					//System.out.println("Current vp is: " + vpcounter);
 				}
 			}
 		}
@@ -264,6 +276,8 @@ public class LabOneGame extends Game {
 			
 		if(this.gameClock.getElapsedTime() > (SPAWN_INTERVAL)) {
 			spawnVP();
+			//FIXME: may need to spawn poison at different intervals
+			spawnPoison();
 			this.gameClock.resetGameClock();
 		}
 		}
@@ -273,6 +287,24 @@ public class LabOneGame extends Game {
 				if(vp != null) {
 					vp.update(pressedKeys);
 					//vp.drawHitboxGlobal(g);
+				}
+			}
+		}
+		
+		if(poisonList != null) {
+			for(PickedUpItem poison : poisonList) {
+				if(poison != null) {
+					poison.update(pressedKeys);
+					
+					if (player1.collidesWithGlobal(poison) && this.hit == false) {
+						poison.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, poison));
+						poison.setPickedUp(true);
+						this.hit = true;
+						poisoncount--;
+						if(poisoncount <= 0) {
+							poisoncount = 0;
+						}
+					}
 				}
 			}
 		}
@@ -315,22 +347,7 @@ public class LabOneGame extends Game {
 	
 	public void spawnVP() {
 		if(myTweenJuggler != null) {
-			PickedUpItem vp = new PickedUpItem("VP", "vp0.png", "vpsheet.png", "vpsheetspecs.txt");
-			Random rand1 = new Random();
-			int colorVar = (int)(rand1.nextDouble() * 3);
-			String color = null;
-			switch (colorVar) {
-				case 0: color = "red";
-						break;
-				case 1: color = "yellow";
-						break;
-				case 2: color = "blue";
-						break;
-				default: color = "red";
-			}
-			vp.animate(color);
-			vp.setScaleX(1);
-			vp.setScaleY(1);
+			VP vp = new VP("VP", "vp0.png", "vpsheet.png", "vpsheetspecs.txt");
 			vp.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
@@ -339,6 +356,23 @@ public class LabOneGame extends Game {
 			tween2.animate(TweenableParam.POS_X, 400, pos.getX(), 10000);
 			tween2.animate(TweenableParam.POS_Y, 20, pos.getY(), 10000);
 			this.vpList.add(vp);
+			this.hit = false;
+			//FIXME: hit sometimes gives 2 vp; i think due to hitbox; not 100% sure
+		}
+	}
+	
+	public void spawnPoison() {
+		if(myTweenJuggler != null) {
+			//FIXME: sprite sheet not implemented
+			Poison poison = new Poison("Poison", "poison.png");
+			poison.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
+			poison.addEventListener(myQuestManager, CollisionEvent.COLLISION);
+			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
+			myTweenJuggler.add(tween2);
+			Position pos =  generatePosition(400, 20, 1000);
+			tween2.animate(TweenableParam.POS_X, 400, pos.getX(), 10000);
+			tween2.animate(TweenableParam.POS_Y, 20, pos.getY(), 10000);
+			this.poisonList.add(poison);
 		}
 	}
 	
@@ -355,8 +389,14 @@ public class LabOneGame extends Game {
 		}
 		
 		if(vpNum != null) {
-			 g.drawString("Num of VP: " + vpcounter, (int) vpNum.getxPos()+15, (int) vpNum.getyPos()+30);
+			 g.drawString("Num of VP: " + vpcount, (int) vpNum.getxPos()+15, (int) vpNum.getyPos()+30);
 			vpNum.draw(g);
+		}
+		
+		if(poisonNum != null) {
+			//FIXME: Player can walk around with health of 0; find out how to stop
+			g.drawString("Health: " + poisoncount, (int) poisonNum.getxPos()+25, (int) poisonNum.getyPos()+30);
+			poisonNum.draw(g);
 		}
 		
 //		if(key != null) {
@@ -365,12 +405,15 @@ public class LabOneGame extends Game {
 		if(player1 != null) {
 			player1.draw(g);
 			
-		
+		for(PickedUpItem poison : poisonList) {
+			if(poison != null) {
+				poison.draw(g);
+			}
+		}
 		
 		for(PickedUpItem vp : vpList) {
 			if(vp != null) {
 				vp.draw(g);
-				//vp.drawHitboxGlobal(g);
 			}
 		}
 			
@@ -387,7 +430,7 @@ public class LabOneGame extends Game {
 		} */
 		
 	}
-
+	
 	/**
 	 * Quick main class that simply creates an instance of our game and starts the timer
 	 * that calls update() and draw() every frame
@@ -398,6 +441,5 @@ public class LabOneGame extends Game {
 	public static void main(String[] args) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		LabOneGame game = new LabOneGame();
 		game.start();
-		
 	}
 }
