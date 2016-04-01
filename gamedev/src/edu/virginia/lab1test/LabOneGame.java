@@ -33,11 +33,8 @@ import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.Poison;
 import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
-<<<<<<< HEAD
 import edu.virginia.engine.display.VP;
-=======
 import edu.virginia.engine.display.Store;
->>>>>>> 07a9b41876ceaa036ea4e08bcc6550ebda7012d0
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenEvent;
