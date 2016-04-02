@@ -4,14 +4,19 @@ package edu.virginia.engine.display;
 //This way you can instantiate a GameScreen and add game elements as children.
 public class Hallway extends DisplayObjectContainer{
 
-	public Hallway(String id) {
-		super(id);
+	private Store store;
+	private Sprite vendingMachine;
+	
+	public Hallway(String id, String styleCode) {
+		super(id, "");
+		
+		store = new Store(id+"-store.png", styleCode);
+		vendingMachine
+		
+		
 		
 	}
 
-	public Hallway(String id, String imageFileName) {
-		super(id, imageFileName);
-	}
 	
 	public Hallway(String id, String backgroundImageFileName, int gameHeight, int gameWidth) {
 		super(id, backgroundImageFileName);

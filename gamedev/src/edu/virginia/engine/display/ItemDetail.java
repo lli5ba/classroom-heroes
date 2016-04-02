@@ -47,6 +47,7 @@ public class ItemDetail extends DisplayObjectContainer{
 				(int)(this.getyPos() + this.itemIcon.getHeight()*.25));
 		g.drawString("Cost: " + cost + " VP",(int)(this.getxPos() + this.itemIcon.getWidth()*1.1), 
 				(int)(this.getyPos() + this.itemIcon.getHeight()*.75));
+		g.setColor(Color.black);
 	}
 	
 	@Override
