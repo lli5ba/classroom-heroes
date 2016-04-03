@@ -23,9 +23,9 @@ public class GameManager {
 
 	public GameManager() {
 		instance = this;
-		gameHeight = 500;
-		gameWidth = 800;
-		numPlayers = 1;
+		gameHeight = 700;
+		gameWidth = 1000;
+		numPlayers = 2;
 	}
 	
 	/***********Game Details Getters and Setters *********/

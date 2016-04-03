@@ -79,8 +79,8 @@ public class PlayerManager implements IEventListener{
 		experience2 = 0;
 		swingSpeed2 = 1;
 		/*   P2 Default Key Mappings */
-		primaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_CAPS_LOCK);
-		secondaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_TAB);
+		primaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_1);
+		secondaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_2);
 		upKey2 = KeyEvent.getKeyText(KeyEvent.VK_W);
 		downKey2 = KeyEvent.getKeyText(KeyEvent.VK_S);
 		rightKey2 = KeyEvent.getKeyText(KeyEvent.VK_D);

@@ -1,5 +1,6 @@
 package edu.virginia.game.objects;
 
+//Has list of events so that string for each event is always the same
 public enum EventTypes {
 	PICKUP_VP("pickup VP"),
 	PICKUP_POISON("pickup poison"),

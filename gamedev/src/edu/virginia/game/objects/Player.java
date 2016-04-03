@@ -133,7 +133,7 @@ public class Player extends AnimatedSprite {
 				this.setDirection("right");
 				moveNet("right");
 			}
-			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))) {
+			if (pressedKeys.contains(this.playerManager.getPrimaryKey(this.numPlayer))) {
 				String currentDir = this.getDirection();
 				//Until we have combined net and walking animation, net animation overrides walking animation
 				

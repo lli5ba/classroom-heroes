@@ -65,13 +65,13 @@ public class Hallway extends DisplayObjectContainer{
 		
 		vendingMachine = new Sprite(id+"-vending-machine", "hallway/vending-machine-" + vendingCode + ".png");
 		drinkMachine = new Sprite(id+"-drink-machine", "hallway/drink-machine-" + drinkCode + ".png");
+		//add as children in order to draw
 		this.addChild(vendingMachine);
 		this.addChild(drinkMachine);
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(store);
 		
-		System.out.println(this.getHeight()*.2267);
 		this.vendingMachine.setPosition(
 				this.getWidth()*.4181, this.getHeight()*.2267);
 		this.drinkMachine.setPosition(
@@ -167,7 +167,6 @@ public class Hallway extends DisplayObjectContainer{
 	@Override
 	public void draw(Graphics g){
 		super.draw(g); //draws children
-		System.out.println(vendingMachine.getyPos());
 	}
 	
 	@Override
