@@ -1,9 +1,12 @@
-package edu.virginia.engine.display;
+package edu.virginia.game.objects;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
+import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.engine.display.Sprite;
 
 //This class represents an itemdetail to be displayed in the store
 public class ItemDetail extends DisplayObjectContainer{
@@ -16,7 +19,7 @@ public class ItemDetail extends DisplayObjectContainer{
 	
 	public ItemDetail(String iconId, String iconImageFileName, 
 			String description, int cost) {
-		super(iconId + "-detail", "store/item-detail-background.png");
+		super(iconId, "store/item-detail-background.png");
 		this.highlighted = true;
 		//this.setWidth(width);
 		//this.setHeight(height);
@@ -48,6 +51,7 @@ public class ItemDetail extends DisplayObjectContainer{
 		g.drawString("Cost: " + cost + " VP",(int)(this.getxPos() + this.itemIcon.getWidth()*1.1), 
 				(int)(this.getyPos() + this.itemIcon.getHeight()*.75));
 		g.setColor(Color.black);
+		
 	}
 	
 	@Override

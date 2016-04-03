@@ -1,4 +1,6 @@
-package edu.virginia.engine.display;
+package edu.virginia.game.objects;
+
+import edu.virginia.engine.display.PickedUpItem;
 
 public class Poison extends PickedUpItem{
 

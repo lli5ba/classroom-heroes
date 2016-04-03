@@ -27,14 +27,10 @@ import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.DisplayObject;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Game;
-import edu.virginia.engine.display.ItemDetail;
 import edu.virginia.engine.display.PhysicsSprite;
 import edu.virginia.engine.display.PickedUpItem;
-import edu.virginia.engine.display.Poison;
 import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
-import edu.virginia.engine.display.VP;
-import edu.virginia.engine.display.Store;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenEvent;
@@ -43,6 +39,11 @@ import edu.virginia.engine.tween.TweenTransitions;
 import edu.virginia.engine.tween.TweenableParam;
 import edu.virginia.engine.util.GameClock;
 import edu.virginia.engine.util.Position;
+import edu.virginia.game.objects.Hallway;
+import edu.virginia.game.objects.ItemDetail;
+import edu.virginia.game.objects.Poison;
+import edu.virginia.game.objects.Store;
+import edu.virginia.game.objects.VP;
 
 /**
  * Modified by: Leandra Irvine (lli5ba)
@@ -69,7 +70,7 @@ public class LabOneGame extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	Sprite net = new Sprite("Net", "Lily.png");
 	private GameClock gameClock;
-	Store store = new Store("store1", "red");
+	Hallway hallway0 = new Hallway("hallway0", "0", gameHeight, gameWidth);
 	
 
 	public static final double SPAWN_INTERVAL = 1500;
@@ -337,8 +338,8 @@ public class LabOneGame extends Game {
 			} */
 			
 		}
-		if (this.store != null) {
-			store.update(pressedKeys);
+		if (this.hallway0 != null) {
+			hallway0.update(pressedKeys);
 		}
 		if (this.floor != null) {
 			floor.update(pressedKeys);
@@ -401,8 +402,8 @@ public class LabOneGame extends Game {
 			boss.draw(g);
 		}
 		
-		if(store != null) {
-			store.draw(g);
+		if(hallway0 != null) {
+			hallway0.draw(g);
 		}
 		
 		if(vpNum != null) {

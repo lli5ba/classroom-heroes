@@ -1,10 +1,12 @@
-package edu.virginia.engine.display;
+package edu.virginia.game.objects;
 
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.util.Position;
 
 public class Store extends DisplayObjectContainer {
@@ -22,8 +24,8 @@ public class Store extends DisplayObjectContainer {
 	private String leftKey = KeyEvent.getKeyText(KeyEvent.VK_LEFT);
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
 	
-	public Store(String id, String color) {
-		super(id, "store/store-background-" + color + ".png"); //store background
+	public Store(String id, String styleCode) {
+		super(id, "store/store-background-" + styleCode + ".png"); //store background
 		this.highlight = new Sprite(id + "-highlight", "store/insert-cancel-highlight.png");
 		this.highlight.setVisible(false);
 		cheesePuffsDetail = new ItemDetail("cheesePuffs", "store/cheese-puffs.png", "These are da bomb!", 2);
@@ -175,6 +177,8 @@ public class Store extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys){
 		super.update(pressedKeys); //draws children
-		navigateStore(pressedKeys);
+		if(this.isVisible()) {
+			navigateStore(pressedKeys);
+		}
 	}
 }

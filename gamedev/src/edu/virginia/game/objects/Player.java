@@ -1,34 +1,26 @@
-package edu.virginia.engine.display;
+package edu.virginia.game.objects;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.virginia.engine.display.AnimatedSprite;
+import edu.virginia.engine.display.PickedUpItem;
+import edu.virginia.engine.display.Sprite;
+import edu.virginia.game.managers.PlayerManager;
 import edu.virginia.lab1test.PickedUpEvent;
 
 
 public class Player extends AnimatedSprite {
 	public static final String[] CARDINAL_DIRS = new String[] {"up", "down","left", "right"};
-	private double speed;
-	private int numPlayer;
-	private int health;
-	private int maxHealth;
-	private int experience;			//total for the entire game 
-	private int level;
 	private Sprite net;
-	private int swingSpeed;
-	//TODO: key-mapping fields for when we have 2 players
-	
+	private PlayerManager playerManager = PlayerManager.getInstance();
+	private int numPlayer;
 	
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int num)
 	{
 		super(id, imageFileName, thisSheetFileName, specsFileName);
-		speed = 1;
 		numPlayer = num;
-		maxHealth = 5;
-		health = maxHealth;
-		experience = 0;
-		level = 1;
 		net = new Sprite("net", imageFileName);
 		net.setScaleX(1.5);
 		net.setScaleY(1.5);
@@ -49,27 +41,18 @@ public class Player extends AnimatedSprite {
 				this.stopAnimation();
 			} 
 			
-			/* Example of collision checking
-			 * 
-			 * if (this.floor != null) {
-				lily2.obstacleCollision(floor);
-				
-			}
-			if (this.platform != null) {
-				lily2.obstacleCollision(platform);
-				
-			} */
 			
 		}
 	}
 
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys){
+		double speed = this.playerManager.getSpeed(this.numPlayer);
 		/* Make sure this is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
 		if(this != null && net != null) {
 			/* update mario's position if a key is pressed, check bounds of canvas */
-			if(pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_UP))) {
+			if(pressedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
 				if(this.getyPos() > 0) {
-					this.setyPos(this.getyPos() - this.speed);
+					this.setyPos(this.getyPos() - speed);
 				}
 				if(!this.isPlaying() || this.getCurrentAnimation() != "up") {
 					this.animate("up");
@@ -78,7 +61,7 @@ public class Player extends AnimatedSprite {
 				this.moveNet(this, net, "up");
 				
 			}
-			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_DOWN))) {
+			if (pressedKeys.contains(this.playerManager.getDownKey(this.numPlayer))) {
 				if(this.getyPos() < gameHeight - this.getUnscaledHeight()*this.getScaleY()){
 					this.setyPos(this.getyPos() + speed);
 				}
@@ -88,7 +71,7 @@ public class Player extends AnimatedSprite {
 				this.setDirection("down");
 				moveNet(this, net, "down");
 			}
-			if(pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_LEFT))) {
+			if(pressedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
 				if(this.getxPos() > 0) {
 					this.setxPos(this.getxPos() - speed);
 				}
@@ -98,7 +81,7 @@ public class Player extends AnimatedSprite {
 				this.setDirection("left");
 				moveNet(this, net, "left");
 			}
-			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_RIGHT))) {
+			if (pressedKeys.contains(this.playerManager.getRightKey(this.numPlayer))) {
 				
 				if(this.getxPos() < gameWidth - this.getUnscaledWidth()*this.getScaleX()){
 					this.setxPos(this.getxPos() + speed);
@@ -128,53 +111,7 @@ public class Player extends AnimatedSprite {
 			}
 		}
 	}
-	public double getSpeed() {
-		return speed;
-	}
 
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public int getMaxHealth() {
-		return maxHealth;
-	}
-
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
-	}
-
-	public int getExperience() {
-		return experience;
-	}
-
-	public void setExperience(int experience) {
-		this.experience = experience;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public int getSwingSpeed() {
-		return swingSpeed;
-	}
-
-	public void setSwingSpeed(int swingSpeed) {
-		this.swingSpeed = swingSpeed;
-	}
 
 	public int getNumPlayer() {
 		return numPlayer;
