@@ -58,8 +58,7 @@ public class ClassroomHeroes extends Game {
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private GameClock gameClock;
-	Hallway hallway0 = new Hallway("hallway0", "0", 
-			gameManager.getGameWidth(), gameManager.getGameHeight());
+	Hallway hallway0 = new Hallway("hallway0", "0");
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
@@ -67,7 +66,7 @@ public class ClassroomHeroes extends Game {
 	 * @throws IOException 
 	 * */
 	public ClassroomHeroes() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
-		super("Lab One Test Game",
+		super("Classroom Heroes",
 				gameManager.getGameWidth(), gameManager.getGameHeight());
 		gameClock = new GameClock();
 		

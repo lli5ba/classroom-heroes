@@ -24,8 +24,14 @@ public class Hallway extends DisplayObjectContainer{
 	private Player player1;
 	private Player player2;
 	
-	public Hallway(String id, String styleCode, int gameWidth, int gameHeight) {
+	public Hallway(String id, String styleCode) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
+		this.setHeight(gameManager.getGameHeight());
+		this.setWidth(gameManager.getGameWidth());
+		player1 = new Player("Player1", "player/player1.png", 
+				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 1);
+		player2 = new Player("Player2", "player/player1.png", 
+				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 2);
 		switch(this.gameManager.getNumPlayers()) {
 			case 1: //set player2 invisible	
 				
@@ -33,8 +39,7 @@ public class Hallway extends DisplayObjectContainer{
 			case 2: //check two players
 			
 		}
-		this.setHeight(gameHeight);
-		this.setWidth(gameWidth);
+		
 		/* use "styleCode" to produce different combos of drink and snack machines */
 		String drinkCode = "0";
 		String vendingCode = "0";

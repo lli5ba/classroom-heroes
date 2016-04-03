@@ -21,9 +21,11 @@ public class Player extends AnimatedSprite {
 	private LevelManager levelManager = LevelManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
 	private int numPlayer;
+	private boolean active;
 	
 	
-	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer)
+	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, 
+			int numPlayer)
 	{
 		super(id, imageFileName, thisSheetFileName, specsFileName);
 		numPlayer = numPlayer;
@@ -38,21 +40,23 @@ public class Player extends AnimatedSprite {
 		
 		
 	}
-	@Override
-	public void update(ArrayList<String> pressedKeys) {
-		super.update(pressedKeys);
-		if (this != null && this.net != null) {
-			moveSpriteCartesianAnimate(pressedKeys);
-			//if there are no keys being pressed, and Lily is walking, then stop the animation
-			if (pressedKeys.isEmpty() && this.isPlaying() 
-					&& Arrays.asList(CARDINAL_DIRS).contains(this.getCurrentAnimation())){
-				this.stopAnimation();
-			} 
-			
-			
-		}
+	
+
+	public int getNumPlayer() {
+		return numPlayer;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
+	public Sprite getNet() {
+		return net;
+	}
+	
 	public void moveNet(String position) {
 		if(position.equals("up")) {
 			//net.setRotationDegrees(-90);
@@ -153,16 +157,24 @@ public class Player extends AnimatedSprite {
 		}
 	}
 
+	
 
-	public int getNumPlayer() {
-		return numPlayer;
+	@Override
+	public void update(ArrayList<String> pressedKeys) {
+		super.update(pressedKeys);
+		if (this != null && this.net != null) {
+			if(this.isActive()) {
+				moveSpriteCartesianAnimate(pressedKeys);
+			}
+			//if there are no keys being pressed, and sprite is walking, then stop the animation
+			if (pressedKeys.isEmpty() && this.isPlaying() 
+					&& Arrays.asList(CARDINAL_DIRS).contains(this.getCurrentAnimation())){
+				this.stopAnimation();
+			} 
+			
+			
+		}
 	}
 
-	public Sprite getNet() {
-		return net;
-	}
-	
-	
-	
 
 }
