@@ -2,11 +2,15 @@ package edu.virginia.game.managers;
 
 import java.awt.event.KeyEvent;
 
+import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.IEventListener;
+import edu.virginia.game.objects.EventTypes;
+
 /*
  * Singleton class that handles all the player details for players 1 and 2 and updates them
  * appropriately once per frame.
 */
-public class PlayerManager {
+public class PlayerManager implements IEventListener{
 	private static volatile PlayerManager instance;
 	/* Player One Stats */
 	private double speed1;
@@ -35,7 +39,11 @@ public class PlayerManager {
 	private String rightKey2;
 	private String leftKey2;
 	
-	
+	/* Combined Inventory */
+	private int vpCount;
+	private int numGingerAle;
+	private int numCheesePuffs;
+
 	public static PlayerManager getInstance(){
                if(instance == null) {
                          instance = new PlayerManager();
@@ -75,6 +83,7 @@ public class PlayerManager {
 		leftKey2 = KeyEvent.getKeyText(KeyEvent.VK_A);
 	}
 
+	/*-------------Player Stats Getters and Setters---------------------*/
 	public double getSpeed(int numPlayer) {
 		switch (numPlayer) {
 		case 1:
@@ -196,6 +205,7 @@ public class PlayerManager {
 		}
 	}
 
+	/*--------------Key Mapping Getters and Setters---------------------*/
 	public void setPrimaryKey1(String newPrimaryKey, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
@@ -315,6 +325,42 @@ public class PlayerManager {
 		default:
 			//error
 		}
+	}
+
+	/*-------------Combined Inventory Getters and Setters---------------------*/
+	public int getVpCount() {
+		return vpCount;
+	}
+
+	public void setVpCount(int vpCount) {
+		this.vpCount = vpCount;
+	}
+
+	public int getNumGingerAle() {
+		return numGingerAle;
+	}
+
+	public void setNumGingerAle(int numGingerAle) {
+		this.numGingerAle = numGingerAle;
+	}
+
+	public int getNumCheesePuffs() {
+		return numCheesePuffs;
+	}
+
+	public void setNumCheesePuffs(int numCheesePuffs) {
+		this.numCheesePuffs = numCheesePuffs;
+	}
+	
+	@Override
+	public void handleEvent(Event event) {
+		if (event.getEventType().equals(EventTypes.POISON_PLAYER.toString())) {
+			
+		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
+			
+		}
+		
+		
 	}
 	
 }
