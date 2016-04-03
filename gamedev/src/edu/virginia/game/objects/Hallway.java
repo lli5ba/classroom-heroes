@@ -3,8 +3,10 @@ package edu.virginia.game.objects;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 
@@ -17,13 +19,14 @@ public class Hallway extends DisplayObjectContainer{
 	private Sprite drinkMachine;
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private LevelManager levelManager = LevelManager.getInstance();
+	private GameManager gameManager = GameManager.getInstance();
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
 	private Player player1;
 	private Player player2;
 	
-	public Hallway(String id, String styleCode, int gameHeight, int gameWidth) {
+	public Hallway(String id, String styleCode, int gameWidth, int gameHeight) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
-		switch(this.levelManager.getNumPlayers()) {
+		switch(this.gameManager.getNumPlayers()) {
 			case 1: //set player2 invisible	
 				
 				break;
@@ -80,7 +83,12 @@ public class Hallway extends DisplayObjectContainer{
 	public void navigateStore(ArrayList<String> pressedKeys) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
-		switch(this.levelManager.getNumPlayers()) {
+		AnimatedSprite player1 = new AnimatedSprite("Player1", "player/player1.png", 
+				"player/player1sheet.png", "player1sheetspecs.txt");
+		AnimatedSprite player2 = new AnimatedSprite("Player2", "player/player1.png", 
+				"player/player1sheet.png", "player1sheetspecs.txt");
+		
+		switch(this.gameManager.getNumPlayers()) {
 			case 1: //only check one player	
 				if(releasedKeys.contains(
 						this.playerManager.getPrimaryKey(1))) { //check if player near vending machine

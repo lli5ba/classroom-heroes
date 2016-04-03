@@ -4,12 +4,13 @@ import edu.virginia.engine.events.Event;
 import edu.virginia.engine.events.IEventListener;
 
 /*
- * Singleton class that handles all the current level (time, what level, etc) and game details
+ * Singleton class that handles all the current level (time, what level, etc) 
 */
 public class LevelManager implements IEventListener{
 	private static volatile LevelManager instance;
+	public int gameHeight = 500;
+	public int gameWidth = 800;
 	int numLevel;
-	int numPlayers;
 	//Some way to keep track of time?
 	
 	/* Temporary Level Stats to Award Bonuses? */
@@ -46,14 +47,6 @@ public class LevelManager implements IEventListener{
 	}
 	
 	/***********Level Stats Getters and Setters *********/
-
-	public int getNumPlayers() {
-		return numPlayers;
-	}
-
-	public void setNumPlayers(int numPlayers) {
-		this.numPlayers = numPlayers;
-	}
 	
 	public int getNumLevel() {
 		return numLevel;

@@ -1,4 +1,4 @@
-package edu.virginia.lab1test;
+package edu.virginia.game.main;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -60,7 +60,8 @@ public class LabOneGame extends Game {
 	PickedUpItem key = new PickedUpItem("Key", "Small_Key.png");
 	//AnimatedSprite lily = new AnimatedSprite("Lily", "Lily.png", "LilySheet.png", "LilySpecs.txt");
 	AnimatedSprite lily2 = new AnimatedSprite("Lily2", "Lily.png", "LilySheet.png", "LilySpecs.txt");
-	AnimatedSprite player1 = new AnimatedSprite("Player1", "player1.png", "player1sheet.png", "player1sheetspecs.txt");
+	AnimatedSprite player1 = new AnimatedSprite("Player1", "player/player1.png", 
+			"player/player1sheet.png", "resources/player/player1sheetspecs.txt");
 	QuestManager myQuestManager = new QuestManager();
 	Sprite floor = new Sprite("Floor", "floor.png");
 	Sprite platform = new Sprite("Platform", "floor.png");
@@ -361,7 +362,8 @@ public class LabOneGame extends Game {
 	
 	public void spawnVP() {
 		if(myTweenJuggler != null) {
-			VP vp = new VP("VP", "vp0.png", "vpsheet.png", "vpsheetspecs.txt");
+			VP vp = new VP("VP", "projectiles/vp0.png", 
+					"projectiles/vpsheet.png", "resources/projectiles/vpsheetspecs.txt");
 			vp.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
@@ -378,7 +380,7 @@ public class LabOneGame extends Game {
 	public void spawnPoison() {
 		if(myTweenJuggler != null) {
 			//FIXME: sprite sheet not implemented
-			Poison poison = new Poison("Poison", "poison.png");
+			Poison poison = new Poison("Poison", "projectiles/poison.png");
 			poison.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			poison.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);

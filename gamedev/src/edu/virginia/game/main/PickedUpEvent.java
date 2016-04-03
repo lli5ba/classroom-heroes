@@ -1,4 +1,4 @@
-package edu.virginia.lab1test;
+package edu.virginia.game.main;
 
 import edu.virginia.engine.events.Event;
 import edu.virginia.engine.events.IEventDispatcher;

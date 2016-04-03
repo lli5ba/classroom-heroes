@@ -7,14 +7,19 @@ import java.util.Arrays;
 import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.engine.util.Position;
+import edu.virginia.game.main.PickedUpEvent;
+import edu.virginia.game.managers.GameManager;
+import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
-import edu.virginia.lab1test.PickedUpEvent;
 
 
 public class Player extends AnimatedSprite {
 	public static final String[] CARDINAL_DIRS = new String[] {"up", "down","left", "right"};
 	private Sprite net;
 	private PlayerManager playerManager = PlayerManager.getInstance();
+	private LevelManager levelManager = LevelManager.getInstance();
+	private GameManager gameManager = GameManager.getInstance();
 	private int numPlayer;
 	
 	
@@ -29,6 +34,8 @@ public class Player extends AnimatedSprite {
 		net.setAlpha(0);
 		this.setScaleX(1.5);
 		this.setScaleY(1.5);
+		this.setPivotPoint(new Position(this.getWidth()/2,this.getHeight()/2));
+		
 		
 	}
 	@Override
@@ -46,6 +53,37 @@ public class Player extends AnimatedSprite {
 		}
 	}
 
+	public void moveNet(String position) {
+		if(position.equals("up")) {
+			//net.setRotationDegrees(-90);
+			net.setyPos(-(this.getWidth()));
+			net.setxPos(-(this.getWidth()/4.0));
+			net.setWidth(this.getHeight());
+			net.setHeight(this.getWidth());
+		}
+		else if(position.equals("down")) {
+			//net.setRotationDegrees(90);
+			net.setyPos(this.getHeight());
+			net.setxPos(-(this.getWidth()/4.0));
+			net.setWidth(this.getHeight());
+			net.setHeight(this.getWidth());
+		}
+		else if(position.equals("right")) {
+			//net.setRotationDegrees(0);
+			net.setxPos((this.getUnscaledWidth()*this.getScaleX()));
+			net.setyPos(0);
+			net.setWidth(this.getWidth());
+			net.setHeight(this.getHeight());
+		}
+		else if(position.equals("left")) {
+			//net.setRotationDegrees(180);
+			net.setxPos(-(this.getUnscaledWidth()*this.getScaleX()));
+			net.setyPos(0);
+			net.setWidth(this.getWidth());
+			net.setHeight(this.getHeight());
+		}
+	}
+	
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys){
 		double speed = this.playerManager.getSpeed(this.numPlayer);
 		/* Make sure this is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
@@ -59,18 +97,18 @@ public class Player extends AnimatedSprite {
 					this.animate("up");
 				}
 				this.setDirection("up");
-				this.moveNet(this, net, "up");
+				this.moveNet( "up");
 				
 			}
 			if (pressedKeys.contains(this.playerManager.getDownKey(this.numPlayer))) {
-				if(this.getyPos() < gameHeight - this.getUnscaledHeight()*this.getScaleY()){
+				if(this.getyPos() < this.gameManager.getGameHeight() - this.getHeight()){
 					this.setyPos(this.getyPos() + speed);
 				}
 				if(!this.isPlaying() || this.getCurrentAnimation() != "down") {
 					this.animate("down");
 				}
 				this.setDirection("down");
-				moveNet(this, net, "down");
+				moveNet("down");
 			}
 			if(pressedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
 				if(this.getxPos() > 0) {
@@ -80,18 +118,18 @@ public class Player extends AnimatedSprite {
 					this.animate("left");
 				}
 				this.setDirection("left");
-				moveNet(this, net, "left");
+				moveNet("left");
 			}
 			if (pressedKeys.contains(this.playerManager.getRightKey(this.numPlayer))) {
 				
-				if(this.getxPos() < gameWidth - this.getUnscaledWidth()*this.getScaleX()){
+				if(this.getxPos() < this.gameManager.getGameWidth() - this.getWidth()){
 					this.setxPos(this.getxPos() + speed);
 				}
 				if(!this.isPlaying() || this.getCurrentAnimation() != "right") {
 					this.animate("right");
 				}
 				this.setDirection("right");
-				moveNet(this, net, "right");
+				moveNet("right");
 			}
 			if (pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))) {
 				String currentDir = this.getDirection();
@@ -103,12 +141,14 @@ public class Player extends AnimatedSprite {
 				}
 
 				this.animateOnce("net" + currentDir, 10);
+				/* Move this to Classroom class
 				for(PickedUpItem vp : vpList) {
 					if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {
 						vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
 						vp.setPickedUp(true);
 					}
 				}
+				*/ 
 			}
 		}
 	}

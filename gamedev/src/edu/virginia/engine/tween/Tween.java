@@ -7,7 +7,7 @@ import java.util.Collections;
 import edu.virginia.engine.display.DisplayObject;
 import edu.virginia.engine.events.EventDispatcher;
 import edu.virginia.engine.util.GameClock;
-import edu.virginia.lab1test.PickedUpEvent;
+import edu.virginia.game.main.PickedUpEvent;
 
 //Object representing on Sprite being tweened in some way. Can have multiple
 //TweenParam objects
