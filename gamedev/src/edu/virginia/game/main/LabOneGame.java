@@ -52,8 +52,7 @@ public class LabOneGame extends Game {
 
 	/** Background **/
 	Sprite floor = new Sprite("Floor", "floor.png");
-	Sprite platform = new Sprite("Platform", "floor.png");
-	
+	Sprite platform = new Sprite("Platform", "floor.png");	
 
 	/** VP and Poison **/
 	Sprite vpNum = new Sprite("vp", "vpbox.png"); // Box for VP; size of 512X512

@@ -45,6 +45,7 @@ import edu.virginia.game.managers.PlayerManager;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.ItemDetail;
+import edu.virginia.game.objects.Player;
 import edu.virginia.game.objects.Poison;
 import edu.virginia.game.objects.Store;
 import edu.virginia.game.objects.VP;
@@ -52,7 +53,7 @@ import edu.virginia.game.objects.VP;
 /**
  * 
  * */
-public class ClassroomHeroes extends Game {
+public class ClassroomHeroes2 extends Game {
 	private static PlayerManager playerManager = PlayerManager.getInstance();
 	private static LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
@@ -67,7 +68,7 @@ public class ClassroomHeroes extends Game {
 	 * @throws UnsupportedAudioFileException 
 	 * @throws IOException 
 	 * */
-	public ClassroomHeroes() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
+	public ClassroomHeroes2() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
 		super("Classroom Heroes",
 				gameManager.getGameWidth(), gameManager.getGameHeight());
 		gameClock = new GameClock();
@@ -94,10 +95,11 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void update(ArrayList<String> pressedKeys){
 		super.update(pressedKeys);
-	
-		if (this.hallway0 != null) {
-			hallway0.update(pressedKeys);
+		
+		if(this.classroom1 != null) {
+			classroom1.update(pressedKeys);
 		}
+
 	}
 	
 	
@@ -109,10 +111,11 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void draw(Graphics g){
 		super.draw(g);
-
-		if(hallway0 != null) {
-			hallway0.draw(g);
+		
+		if(classroom1 != null) {
+			classroom1.draw(g);
 		}
+		
 		
 	}
 	
@@ -124,7 +127,7 @@ public class ClassroomHeroes extends Game {
 	 * @throws LineUnavailableException 
 	 * */
 	public static void main(String[] args) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-		ClassroomHeroes game = new ClassroomHeroes();
+		ClassroomHeroes2 game = new ClassroomHeroes2();
 		game.start();
 	}
 }

@@ -46,16 +46,6 @@ public class LevelManager implements IEventListener{
 		poisonCollected2 = 0;
 	}
 	
-	/***********Level Stats Getters and Setters *********/
-	
-	public int getNumLevel() {
-		return numLevel;
-	}
-
-	public void setNumLevel(int numLevel) {
-		this.numLevel = numLevel;
-	}
-
 	/***********Temporary Level Stats Getters and Setters *********/
 	
 	public int getVPCollected(int numPlayer) {

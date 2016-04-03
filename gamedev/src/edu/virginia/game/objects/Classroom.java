@@ -15,14 +15,15 @@ public class Classroom extends DisplayObjectContainer{
 	
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private LevelManager levelManager = LevelManager.getInstance();
-	private GameManager gameManager = GameManager.getInstance();
+	private static GameManager gameManager = GameManager.getInstance();
 	private StudentManager studentManager = StudentManager.getInstance();
 	private Player player1;
 	private Player player2;
+	private Boss boss;
 	//ArrayLists of VP, poison, students
 	
-	public Classroom(String id, int numLevel, int gameHeight, int gameWidth) {
-		super(id, "classroom/classroom-background-" + numLevel + ".png");
+	public Classroom(String id) {
+		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
 		player1 = new Player("Player1", "player/player1.png", 
 				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 1);
 		player2 = new Player("Player2", "player/player1.png", 
@@ -33,9 +34,22 @@ public class Classroom extends DisplayObjectContainer{
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
+		boss = new Boss("Boss", "Mario.png");
 		
-		this.setHeight(gameHeight);
-		this.setWidth(gameWidth);
+		this.addChild(player1);
+		this.addChild(player2);
+		this.addChild(boss);
+		
+		this.player1.setPosition(
+				this.getWidth()*.08, this.getHeight()*.742);
+		
+		this.player2.setPosition(
+				this.getWidth()*.814, this.getHeight()*.742);
+		
+		this.boss.setPosition(this.getWidth()*.400, this.getHeight()*.003);
+		
+		this.setHeight(gameManager.getGameHeight());
+		this.setWidth(gameManager.getGameWidth());
 	}
 	
 	public void openDoor() {

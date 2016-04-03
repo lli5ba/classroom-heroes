@@ -7,7 +7,7 @@ public class GameManager {
 
 	private static volatile GameManager instance;
 	private int gameHeight;
-	
+	private int numLevel = 1;
 
 	private int gameWidth;
 	private int numPlayers;
@@ -26,6 +26,7 @@ public class GameManager {
 		gameHeight = 700;
 		gameWidth = 1000;
 		numPlayers = 2;
+		numLevel = 1;
 	}
 	
 	/***********Game Details Getters and Setters *********/
@@ -53,4 +54,15 @@ public class GameManager {
 	public void setNumPlayers(int numPlayers) {
 		this.numPlayers = numPlayers;
 	}
+	
+	/***********Level Stats Getters and Setters *********/
+	
+	public int getNumLevel() {
+		return numLevel;
+	}
+
+	public void setNumLevel(int numLevel) {
+		this.numLevel = numLevel;
+	}
 }
+
