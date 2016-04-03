@@ -6,10 +6,10 @@ package edu.virginia.game.managers;
 public class GameManager {
 
 	private static volatile GameManager instance;
-	private int gameHeight = 500;
+	private int gameHeight;
 	
 
-	private int gameWidth = 800;
+	private int gameWidth;
 	private int numPlayers;
 
 	/****************** Constructors ********************/
@@ -22,8 +22,11 @@ public class GameManager {
 	}
 
 	public GameManager() {
-			instance = this;
-		}
+		instance = this;
+		gameHeight = 500;
+		gameWidth = 800;
+		numPlayers = 1;
+	}
 	
 	/***********Game Details Getters and Setters *********/
 

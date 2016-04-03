@@ -21,21 +21,19 @@ public class Player extends AnimatedSprite {
 	private LevelManager levelManager = LevelManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
 	private int numPlayer;
-	private boolean active;
+	private boolean active; //whether movement works
 	
 	
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, 
 			int numPlayer)
 	{
 		super(id, imageFileName, thisSheetFileName, specsFileName);
-		numPlayer = numPlayer;
+		this.numPlayer = numPlayer;
+		this.active = true; 
+		
 		net = new Sprite("net", imageFileName);
-		net.setScaleX(1.5);
-		net.setScaleY(1.5);
 		this.addChild(net);
-		net.setAlpha(0);
-		this.setScaleX(1.5);
-		this.setScaleY(1.5);
+		net.setAlpha(0); 
 		this.setPivotPoint(new Position(this.getWidth()/2,this.getHeight()/2));
 		
 		

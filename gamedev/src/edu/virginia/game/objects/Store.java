@@ -46,6 +46,20 @@ public class Store extends DisplayObjectContainer {
 		
 	}
 	
+	public int getNumPlayer() {
+		return numPlayer;
+	}
+
+	public void setNumPlayer(int numPlayer) {
+		this.numPlayer = numPlayer;
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		this.setDrawChildren(visible); //don't draw children if store isn't visible
+	}
+	
 	public void highlightCancel(){
 		this.currentHighlight = "cancel";
 		this.highlight.setVisible(true);

@@ -68,6 +68,7 @@ public class DisplayObject extends EventDispatcher {
 		this.setHitbox(newHitbox);
 	}
 	
+
 	
 	public void obstacleCollision(DisplayObject sprite){
 		Rectangle obstacle = sprite.getHitbox();

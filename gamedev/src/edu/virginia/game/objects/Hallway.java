@@ -17,9 +17,9 @@ public class Hallway extends DisplayObjectContainer{
 	private Store store;
 	private Sprite vendingMachine;
 	private Sprite drinkMachine;
-	private PlayerManager playerManager = PlayerManager.getInstance();
-	private LevelManager levelManager = LevelManager.getInstance();
-	private GameManager gameManager = GameManager.getInstance();
+	private static PlayerManager playerManager = PlayerManager.getInstance();
+	private static LevelManager levelManager = LevelManager.getInstance();
+	private static GameManager gameManager = GameManager.getInstance();
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
 	private Player player1;
 	private Player player2;
@@ -32,14 +32,12 @@ public class Hallway extends DisplayObjectContainer{
 				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 1);
 		player2 = new Player("Player2", "player/player1.png", 
 				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 2);
-		switch(this.gameManager.getNumPlayers()) {
-			case 1: //set player2 invisible	
-				
-				break;
-			case 2: //check two players
-			
+		if(this.gameManager.getNumPlayers() == 1) {
+			//set player2 inactive and invisible
+			System.out.println("making player 2 invisible ");
+			player2.setActive(false);
+			player2.setVisible(false);
 		}
-		
 		/* use "styleCode" to produce different combos of drink and snack machines */
 		String drinkCode = "0";
 		String vendingCode = "0";
@@ -64,10 +62,14 @@ public class Hallway extends DisplayObjectContainer{
 			break;
 		}
 		store = new Store(id+"-store", styleCode, 1);
+		this.store.setVisible(false);
+		
 		vendingMachine = new Sprite(id+"-vending-machine", "hallway/vending-machine-" + vendingCode + ".png");
 		drinkMachine = new Sprite(id+"-drink-machine", "hallway/drink-machine-" + drinkCode + ".png");
 		this.addChild(vendingMachine);
 		this.addChild(drinkMachine);
+		this.addChild(player1);
+		this.addChild(player2);
 		this.addChild(store);
 		
 		this.vendingMachine.setPosition(
@@ -75,32 +77,79 @@ public class Hallway extends DisplayObjectContainer{
 		this.drinkMachine.setPosition(
 				this.getWidth()*.4181 + this.vendingMachine.getWidth()*1.1, this.getHeight()*.2267);
 		
-	}
-	
-	public void openStore() {
+		this.player1.setPosition(
+				this.getWidth()*.04, this.getHeight()*.48);
 		
 	}
 	
-	public void closeStore() {
-		
+	public void openStore(int numPlayer) {
+		store.setVisible(true);
+		store.setNumPlayer(numPlayer);
+		switch (numPlayer) {
+		case 1:
+			this.player1.setActive(false);
+			break;
+		case 2:
+			this.player2.setActive(false);
+			break;
+		default:
+		}
+	}
+	
+	public void closeStore(int numPlayer) {
+		store.setVisible(false);
+		switch (numPlayer) {
+		case 1:
+			this.player1.setActive(true);
+			break;
+		case 2:
+			this.player2.setActive(true);
+			break;
+		default:
+		}
 	}
 	
 	public void navigateStore(ArrayList<String> pressedKeys) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
-		AnimatedSprite player1 = new AnimatedSprite("Player1", "player/player1.png", 
-				"player/player1sheet.png", "player1sheetspecs.txt");
-		AnimatedSprite player2 = new AnimatedSprite("Player2", "player/player1.png", 
-				"player/player1sheet.png", "player1sheetspecs.txt");
 		
-		switch(this.gameManager.getNumPlayers()) {
+		if(!store.isVisible()) {
+			int range = 10;
+			switch(this.gameManager.getNumPlayers()) {
+				case 1: //only check one player	
+					if(releasedKeys.contains(this.playerManager.getPrimaryKey(1))
+							&& this.player1.inRangeGlobal(this.vendingMachine, range)) { 
+						//player near vending machine
+						this.openStore(1);
+					} 
+					break;
+				case 2: //check two players
+					//FIXME: randomize which player gets first check?
+					if(releasedKeys.contains(this.playerManager.getPrimaryKey(1))
+							&& this.player1.inRangeGlobal(this.vendingMachine, range)) { 
+						//player near vending machine
+						this.openStore(1);
+					} else if (releasedKeys.contains(this.playerManager.getPrimaryKey(2))
+							&& this.player2.inRangeGlobal(this.vendingMachine, range)) { 
+						//player near vending machine
+						this.openStore(2);
+					}
+			}
+		} else { //store is visible, check for close (secondary key)
+			switch(this.gameManager.getNumPlayers()) {
 			case 1: //only check one player	
-				if(releasedKeys.contains(
-						this.playerManager.getPrimaryKey(1))) { //check if player near vending machine
-				}
+				if(releasedKeys.contains(this.playerManager.getSecondaryKey(1))) {
+					this.closeStore(1);
+				} 
 				break;
 			case 2: //check two players
-				
+				//FIXME: randomize which player gets first check?
+				if(releasedKeys.contains(this.playerManager.getSecondaryKey(1))) {
+					this.closeStore(1);
+				} else if(releasedKeys.contains(this.playerManager.getSecondaryKey(2))) {
+					this.closeStore(2);
+				} 
+		}
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
@@ -109,10 +158,12 @@ public class Hallway extends DisplayObjectContainer{
 	@Override
 	public void draw(Graphics g){
 		super.draw(g); //draws children
+		
 	}
 	
 	@Override
 	public void update(ArrayList<String> pressedKeys){
 		super.update(pressedKeys); //updates children
+		this.navigateStore(pressedKeys);
 	}
 }
