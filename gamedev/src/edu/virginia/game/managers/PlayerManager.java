@@ -2,9 +2,13 @@ package edu.virginia.game.managers;
 
 import java.awt.event.KeyEvent;
 
+import edu.virginia.engine.display.AnimatedSprite;
+import edu.virginia.engine.display.PickedUpItem;
+import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.events.Event;
 import edu.virginia.engine.events.IEventListener;
 import edu.virginia.game.objects.EventTypes;
+import edu.virginia.game.objects.Player;
 
 /*
  * Singleton class that handles all the player details for players 1 and 2 and updates them
@@ -117,7 +121,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setHealth1(int newHealth, int numPlayer) {
+	public void setHealth(int newHealth, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.health1 = newHealth;
@@ -139,7 +143,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setMaxHealth1(int newMaxHealth, int numPlayer) {
+	public void setMaxHealth(int newMaxHealth, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.maxHealth1 = newMaxHealth;
@@ -161,7 +165,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setExperience1(int newExperience, int numPlayer) {
+	public void setExperience(int newExperience, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.experience1 = newExperience;
@@ -183,7 +187,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setSwingSpeed1(int newSwingSpeed, int numPlayer) {
+	public void setSwingSpeed(int newSwingSpeed, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.swingSpeed1 = newSwingSpeed;
@@ -194,6 +198,8 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
+	/*--------------Key Mapping Getters and Setters---------------------*/
+	
 	public String getPrimaryKey(int numPlayer) {
 		switch (numPlayer) {
 		case 1:
@@ -205,8 +211,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	/*--------------Key Mapping Getters and Setters---------------------*/
-	public void setPrimaryKey1(String newPrimaryKey, int numPlayer) {
+	public void setPrimaryKey(String newPrimaryKey, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.primaryKey1 = newPrimaryKey;
@@ -228,7 +233,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setSecondaryKey1(String newSecondaryKey, int numPlayer) {
+	public void setSecondaryKey(String newSecondaryKey, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.secondaryKey1 = newSecondaryKey;
@@ -250,7 +255,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setUpKey1(String newUpKey, int numPlayer) {
+	public void setUpKey(String newUpKey, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.upKey1 = newUpKey;
@@ -272,7 +277,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setDownKey1(String newDownKey, int numPlayer) {
+	public void setDownKey(String newDownKey, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.downKey1 = newDownKey;
@@ -294,7 +299,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setRightKey1(String newRightKey, int numPlayer) {
+	public void setRightKey(String newRightKey, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.rightKey1 = newRightKey;
@@ -316,7 +321,7 @@ public class PlayerManager implements IEventListener{
 		}
 	}
 
-	public void setLeftKey1(String newLeftKey, int numPlayer) {
+	public void setLeftKey(String newLeftKey, int numPlayer) {
 		switch (numPlayer) {
 		case 1:
 			this.leftKey1 = newLeftKey;
@@ -355,11 +360,14 @@ public class PlayerManager implements IEventListener{
 	@Override
 	public void handleEvent(Event event) {
 		if (event.getEventType().equals(EventTypes.POISON_PLAYER.toString())) {
-			
+			//should be dispatched by the player
+			Player player = (Player) event.getSource();
+			//player.getPoisonBubbles.animateOnce("poison"); //play animation
+			int currentHealth = this.getHealth(player.getNumPlayer());
+			this.setHealth(currentHealth - 1, player.getNumPlayer()); //decrease health
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
-			
+			this.setVpCount(this.vpCount + 1);
 		}
-		
 		
 	}
 	

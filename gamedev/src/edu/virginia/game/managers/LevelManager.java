@@ -1,10 +1,12 @@
 package edu.virginia.game.managers;
 
+import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.IEventListener;
 
 /*
  * Singleton class that handles all the current level (time, what level, etc) and game details
 */
-public class LevelManager {
+public class LevelManager implements IEventListener{
 	private static volatile LevelManager instance;
 	int numLevel;
 	//Some way to keep track of time?
@@ -80,5 +82,11 @@ public class LevelManager {
 		default:
 			//error
 		}
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		
 	}
 }

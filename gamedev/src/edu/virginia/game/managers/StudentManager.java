@@ -4,19 +4,19 @@ import edu.virginia.engine.events.Event;
 import edu.virginia.engine.events.IEventListener;
 
 /*
- * Singleton class that handles all the VP and Poison events
+ * Singleton class that handles all the classmate interactions
 */
-public class ProjectileManager implements IEventListener{
-	private static volatile ProjectileManager instance;
+public class StudentManager implements IEventListener{
+	private static volatile StudentManager instance;
 	
-	public static ProjectileManager getInstance(){
+	public static StudentManager getInstance(){
                if(instance == null) {
-                         instance = new ProjectileManager();
+                         instance = new StudentManager();
                }
                return instance;
      }
 	 
-	public ProjectileManager() {
+	public StudentManager() {
 		instance = this;
 	}
 
