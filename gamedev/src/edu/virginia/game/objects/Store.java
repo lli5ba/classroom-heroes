@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.util.Position;
+import edu.virginia.game.managers.PlayerManager;
 
 public class Store extends DisplayObjectContainer {
 	
@@ -16,12 +17,8 @@ public class Store extends DisplayObjectContainer {
 	private Sprite highlight;
 	private String currentHighlight;
 	private ItemDetail itemToBuy;
-	private String primaryKey = KeyEvent.getKeyText(KeyEvent.VK_SPACE);
-	private String secondaryKey = KeyEvent.getKeyText(KeyEvent.VK_B);
-	private String upKey = KeyEvent.getKeyText(KeyEvent.VK_UP);
-	private String downKey = KeyEvent.getKeyText(KeyEvent.VK_DOWN);
-	private String rightKey = KeyEvent.getKeyText(KeyEvent.VK_RIGHT);
-	private String leftKey = KeyEvent.getKeyText(KeyEvent.VK_LEFT);
+	private PlayerManager playerManager = PlayerManager.getInstance();
+	private int numPlayer;
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
 	
 	public Store(String id, String styleCode) {
@@ -110,7 +107,8 @@ public class Store extends DisplayObjectContainer {
 		releasedKeys.removeAll(pressedKeys);
 		//System.out.println("Prev: " +prevPressedKeys.toString() + "   Curr: " + pressedKeys.toString()
 		//+ "   Rela: " + releasedKeys.toString());
-		if(releasedKeys.contains(this.primaryKey)) { //the player is selecting an action
+		if(releasedKeys.contains(
+				this.playerManager.getPrimaryKey(this.numPlayer))) { //the player is selecting an action
 			System.out.println("pressed space! current highlight: " + this.currentHighlight);
 			
 			switch (this.currentHighlight) {
@@ -124,9 +122,11 @@ public class Store extends DisplayObjectContainer {
 					this.startBuy();
 					break;
 			}
-		} else if(releasedKeys.contains(this.secondaryKey)) {
+		} else if(releasedKeys.contains(
+				this.playerManager.getSecondaryKey(this.numPlayer))) {
 			
-		} else if(releasedKeys.contains(this.upKey)) {
+		} else if(releasedKeys.contains(
+				this.playerManager.getUpKey(this.numPlayer))) {
 			System.out.println("pressed up! current highlight: " + this.currentHighlight);
 			
 			switch (this.currentHighlight) {
@@ -136,7 +136,8 @@ public class Store extends DisplayObjectContainer {
 				default: //do nothing if anything else is highlighted
 					break;
 			}
-		} else if(releasedKeys.contains(this.downKey)) {
+		} else if(releasedKeys.contains(
+				this.playerManager.getDownKey(this.numPlayer))) {
 			System.out.println("pressed down! current highlight: " + this.currentHighlight);
 			switch (this.currentHighlight) {
 				case "gingerAle":
@@ -145,7 +146,8 @@ public class Store extends DisplayObjectContainer {
 				default: //do nothing if anything else
 					break;
 			}
-		} else if(releasedKeys.contains(this.rightKey)) {
+		} else if(releasedKeys.contains(
+				this.playerManager.getRightKey(this.numPlayer))) {
 			System.out.println("pressed right! current highlight: " + this.currentHighlight);
 			switch (this.currentHighlight) {
 				case "insert":
@@ -154,7 +156,8 @@ public class Store extends DisplayObjectContainer {
 				default: //do nothing if anything else
 					break;
 			}
-		} else if(releasedKeys.contains(this.leftKey)) {
+		} else if(releasedKeys.contains(
+				this.playerManager.getLeftKey(this.numPlayer))) {
 			System.out.println("pressed left! current highlight: " + this.currentHighlight);
 			switch (this.currentHighlight) {
 				case "cancel":
