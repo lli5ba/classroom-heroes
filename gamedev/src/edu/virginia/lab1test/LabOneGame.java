@@ -269,6 +269,7 @@ public class LabOneGame extends Game {
 						vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
 						vp.setPickedUp(true);
 						vpcount++;
+						System.out.println("Num of VP: " + vpcount);
 					}
 					// System.out.println("Current vp is: " + vpcounter);
 				}
@@ -316,6 +317,7 @@ public class LabOneGame extends Game {
 						poison.setPickedUp(true);
 						this.hit = true; //FIXME: fix states
 						poisoncount--;
+						System.out.println("Health: " + poisoncount);
 						
 						if (poisoncount <= 0) {
 							poisoncount = 0;
