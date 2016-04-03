@@ -4,7 +4,7 @@ import java.util.Random;
 
 import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.events.CollisionEvent;
-import edu.virginia.lab1test.PickedUpEvent;
+import edu.virginia.game.main.PickedUpEvent;
 
 public class VP extends PickedUpItem{
 	

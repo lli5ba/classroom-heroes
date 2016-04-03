@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.events.EventDispatcher;
 import edu.virginia.engine.util.Position;
-import edu.virginia.lab1test.PickedUpEvent;
+import edu.virginia.game.main.PickedUpEvent;
 
 /**
  * A very basic display object for a java based gaming engine
@@ -68,6 +68,7 @@ public class DisplayObject extends EventDispatcher {
 		this.setHitbox(newHitbox);
 	}
 	
+
 	
 	public void obstacleCollision(DisplayObject sprite){
 		Rectangle obstacle = sprite.getHitbox();

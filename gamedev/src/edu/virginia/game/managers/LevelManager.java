@@ -1,11 +1,15 @@
 package edu.virginia.game.managers;
 
+import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.IEventListener;
 
 /*
- * Singleton class that handles all the current level (time, what level, etc) and game details
+ * Singleton class that handles all the current level (time, what level, etc) 
 */
-public class LevelManager {
+public class LevelManager implements IEventListener{
 	private static volatile LevelManager instance;
+	public int gameHeight = 500;
+	public int gameWidth = 800;
 	int numLevel;
 	//Some way to keep track of time?
 	
@@ -14,6 +18,8 @@ public class LevelManager {
 	
 	//int studentsCured;
 	
+	
+
 	//Player One
 	int vpCollected1;
 	int poisonCollected1;
@@ -21,6 +27,8 @@ public class LevelManager {
 	//Player Two
 	int vpCollected2;
 	int poisonCollected2;
+	
+	/****************** Constructors ********************/
 	
 	public static LevelManager getInstance(){
                if(instance == null) {
@@ -37,6 +45,18 @@ public class LevelManager {
 		vpCollected2 = 0;
 		poisonCollected2 = 0;
 	}
+	
+	/***********Level Stats Getters and Setters *********/
+	
+	public int getNumLevel() {
+		return numLevel;
+	}
+
+	public void setNumLevel(int numLevel) {
+		this.numLevel = numLevel;
+	}
+
+	/***********Temporary Level Stats Getters and Setters *********/
 	
 	public int getVPCollected(int numPlayer) {
 		switch (numPlayer) {
@@ -80,5 +100,11 @@ public class LevelManager {
 		default:
 			//error
 		}
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -177,6 +177,16 @@ public class DisplayObjectContainer extends DisplayObject{
 		return false;	
 	}
 	
+	public boolean inRangeGlobal(DisplayObjectContainer other, int range) {
+		Rectangle original = this.getHitboxGlobal();
+		//create rectangle that extends out "range" from original hitbox
+		original.grow(range, range);
+		if (original.intersects(other.getHitboxGlobal())) {
+			return true;
+		}
+		return false;	
+	}
+	
 	public void drawHitboxGlobal(Graphics g) {
 		int x = this.getHitboxGlobal().x;
 		int y = this.getHitboxGlobal().y;

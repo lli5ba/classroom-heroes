@@ -1,4 +1,4 @@
-package edu.virginia.lab1test;
+package edu.virginia.game.main;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -45,14 +45,15 @@ public class LabOneGame extends Game {
 	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
 
 	/** User **/
-	AnimatedSprite player1 = new AnimatedSprite("Player1", "player1.png", "player1sheet.png", "player1sheetspecs.txt");
+	AnimatedSprite player1 = new AnimatedSprite("Player1", "player/player1.png", 
+			"player/player1sheet.png", "resources/player/player1sheetspecs.txt");
 	Sprite net = new Sprite("Net", "Lily.png");
 	Sprite boss = new Sprite("boss", "Mario.png"); // TODO: Change boss sprite
 
 	/** Background **/
 	Sprite floor = new Sprite("Floor", "floor.png");
 	Sprite platform = new Sprite("Platform", "floor.png");
-	Store store = new Store("store1", "red");
+	
 
 	/** VP and Poison **/
 	Sprite vpNum = new Sprite("vp", "vpbox.png"); // Box for VP; size of 512X512
@@ -64,7 +65,6 @@ public class LabOneGame extends Game {
 	QuestManager myQuestManager = new QuestManager();
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
-	Hallway hallway0 = new Hallway("hallway0", "0", gameHeight, gameWidth);
 	
 	/** Variable declarations **/
 	private GameClock gameClock;
@@ -348,14 +348,8 @@ public class LabOneGame extends Game {
 
 		}
 		
-		if (this.store != null) {
-			store.update(pressedKeys);
-		}
 
-		if (this.hallway0 != null) {
-			hallway0.update(pressedKeys);
-		}
-		
+
 		if (this.floor != null) {
 			floor.update(pressedKeys);
 		}
@@ -373,8 +367,10 @@ public class LabOneGame extends Game {
 	}
 
 	public void spawnVP() {
-		if (myTweenJuggler != null) {
-			VP vp = new VP("VP", "vp0.png", "vpsheet.png", "vpsheetspecs.txt");
+		if(myTweenJuggler != null) {
+			VP vp = new VP("VP", "projectiles/vp0.png", 
+					"projectiles/vpsheet.png", "resources/projectiles/vpsheetspecs.txt");
+
 			vp.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
@@ -389,9 +385,9 @@ public class LabOneGame extends Game {
 	}
 
 	public void spawnPoison() {
-		if (myTweenJuggler != null) {
-			// FIXME: sprite sheet not implemented
-			Poison poison = new Poison("Poison", "poison.png");
+		if(myTweenJuggler != null) {
+			//FIXME: sprite sheet not implemented
+			Poison poison = new Poison("Poison", "projectiles/poison.png");
 			poison.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			poison.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
@@ -416,13 +412,7 @@ public class LabOneGame extends Game {
 			boss.draw(g);
 		}
 
-		if (store != null) {
-			store.draw(g);
-		}
-		
-		if(hallway0 != null) {
-			hallway0.draw(g);
-		}
+
 
 		if (vpNum != null) {
 			g.drawString("Num of VP: " + vpcount, (int) vpNum.getxPos() + 15, (int) vpNum.getyPos() + 30);
@@ -439,11 +429,13 @@ public class LabOneGame extends Game {
 		if (player1 != null) {
 			player1.draw(g);
 
-			for (PickedUpItem poison : poisonList) {
-				if (poison != null) {
+		if (poisonList != null) {	
+			for(PickedUpItem poison : poisonList) {
+				if(poison != null) {
 					poison.draw(g);
 				}
 			}
+		}
 			for (PickedUpItem vp : vpList) {
 				if (vp != null) {
 					vp.draw(g);
