@@ -26,8 +26,7 @@ public class Hallway extends DisplayObjectContainer{
 	
 	public Hallway(String id, String styleCode) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
-		this.setHeight(gameManager.getGameHeight());
-		this.setWidth(gameManager.getGameWidth());
+		
 		player1 = new Player("Player1", "player/player1.png", 
 				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 1);
 		player2 = new Player("Player2", "player/player1.png", 
@@ -72,6 +71,7 @@ public class Hallway extends DisplayObjectContainer{
 		this.addChild(player2);
 		this.addChild(store);
 		
+		System.out.println(this.getHeight()*.2267);
 		this.vendingMachine.setPosition(
 				this.getWidth()*.4181, this.getHeight()*.2267);
 		this.drinkMachine.setPosition(
@@ -79,7 +79,8 @@ public class Hallway extends DisplayObjectContainer{
 		
 		this.player1.setPosition(
 				this.getWidth()*.04, this.getHeight()*.48);
-		
+		this.setHeight(gameManager.getGameHeight());
+		this.setWidth(gameManager.getGameWidth());
 	}
 	
 	public void openStore(int numPlayer) {
@@ -155,10 +156,18 @@ public class Hallway extends DisplayObjectContainer{
 		this.prevPressedKeys.addAll(pressedKeys);
 	}
 	
+	public void enteringLevel(){
+		//FIXME
+	}
+	
+	public void collisionPrediction(ArrayList<String> pressedKeys) {
+		//FIXME: check between players, sprites, and walls of background
+	}
+	
 	@Override
 	public void draw(Graphics g){
 		super.draw(g); //draws children
-		
+		System.out.println(vendingMachine.getyPos());
 	}
 	
 	@Override
