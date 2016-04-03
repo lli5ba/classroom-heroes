@@ -17,10 +17,11 @@ public class Player extends AnimatedSprite {
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private int numPlayer;
 	
-	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int num)
+	
+	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer)
 	{
 		super(id, imageFileName, thisSheetFileName, specsFileName);
-		numPlayer = num;
+		numPlayer = numPlayer;
 		net = new Sprite("net", imageFileName);
 		net.setScaleX(1.5);
 		net.setScaleY(1.5);

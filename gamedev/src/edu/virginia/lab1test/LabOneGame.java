@@ -423,9 +423,11 @@ public class LabOneGame extends Game {
 		if(player1 != null) {
 			player1.draw(g);
 			
-		for(PickedUpItem poison : poisonList) {
-			if(poison != null) {
-				poison.draw(g);
+		if (poisonList != null) {	
+			for(PickedUpItem poison : poisonList) {
+				if(poison != null) {
+					poison.draw(g);
+				}
 			}
 		}
 		

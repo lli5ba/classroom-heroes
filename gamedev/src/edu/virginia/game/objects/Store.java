@@ -12,6 +12,8 @@ import edu.virginia.game.managers.PlayerManager;
 
 public class Store extends DisplayObjectContainer {
 	
+	private static final String GINGER_ALE_ID = "Ginger Ale";
+	private static final String CHEESE_PUFFS_ID = "Cheese Puffs";
 	private ItemDetail cheesePuffsDetail;
 	private ItemDetail gingerAleDetail;
 	private Sprite highlight;
@@ -21,12 +23,12 @@ public class Store extends DisplayObjectContainer {
 	private int numPlayer;
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
 	
-	public Store(String id, String styleCode) {
+	public Store(String id, String styleCode, int numPlayerBuying) {
 		super(id, "store/store-background-" + styleCode + ".png"); //store background
 		this.highlight = new Sprite(id + "-highlight", "store/insert-cancel-highlight.png");
 		this.highlight.setVisible(false);
-		cheesePuffsDetail = new ItemDetail("cheesePuffs", "store/cheese-puffs.png", "These are da bomb!", 2);
-		gingerAleDetail = new ItemDetail("gingerAle", "store/ginger-ale.png", "Cure your classmates!", 2);
+		cheesePuffsDetail = new ItemDetail(CHEESE_PUFFS_ID, "store/cheese-puffs.png", "These are da bomb!", 2);
+		gingerAleDetail = new ItemDetail(GINGER_ALE_ID, "store/ginger-ale.png", "Cure your classmates!", 2);
 		Sprite glassSheen = new Sprite("glassSheen", "store/glass-sheen.png");
 		this.addChild(highlight);
 		this.addChild(cheesePuffsDetail);
@@ -39,7 +41,8 @@ public class Store extends DisplayObjectContainer {
 		this.cheesePuffsDetail.setPosition(
 				this.getWidth()*.15, this.getHeight()*.23 + this.gingerAleDetail.getHeight()*1.05);
 		this.highlightGingerAle(); //highlight the first item
-		this.currentHighlight = "gingerAle";
+		this.currentHighlight = GINGER_ALE_ID;
+		this.numPlayer = numPlayerBuying;
 		
 	}
 	
@@ -58,13 +61,13 @@ public class Store extends DisplayObjectContainer {
 	}
 	
 	public void highlightCheesePuffs(){
-		this.currentHighlight = "cheesePuffs";
+		this.currentHighlight = CHEESE_PUFFS_ID;
 		this.cheesePuffsDetail.setHighlighted(true);
 		this.gingerAleDetail.setHighlighted(false);
 	}
 	
 	public void highlightGingerAle(){
-		this.currentHighlight = "gingerAle";
+		this.currentHighlight = GINGER_ALE_ID;
 		this.cheesePuffsDetail.setHighlighted(false);
 		this.gingerAleDetail.setHighlighted(true);
 	}
@@ -72,15 +75,15 @@ public class Store extends DisplayObjectContainer {
 	public void stopBuy(){ //navigate back to items
 		this.highlightGingerAle();
 		this.highlight.setVisible(false);
-		this.currentHighlight = "gingerAle";
+		this.currentHighlight = GINGER_ALE_ID;
 	}
 	
 	public void startBuy(){ //navigate to buy sequence
 		switch (this.currentHighlight) { //switch statements b/c easy to add new items
-			case "gingerAle":
+			case GINGER_ALE_ID:
 				this.itemToBuy = this.gingerAleDetail;
 				break;
-			case "cheesePuffs":
+			case CHEESE_PUFFS_ID:
 				this.itemToBuy = this.cheesePuffsDetail;
 				break;
 			default:
@@ -97,7 +100,19 @@ public class Store extends DisplayObjectContainer {
 		//TODO: Leandra
 		//check whether enough VP, if so, decrement VP, Increase Inventory, and stopBuy() 
 		//if not enough VP then...?
+		switch (item.getId()) { //switch statements b/c easy to add new items
+		case GINGER_ALE_ID:
+			this.itemToBuy = this.gingerAleDetail;
+			break;
+		case CHEESE_PUFFS_ID:
+			this.itemToBuy = this.cheesePuffsDetail;
+			break;
+		default:
+			System.out.println("Error in Store startBuy(). Should not happen.");
+			break;
+	}
 		System.out.println("You bought " + item.getId() + " for " + item.getCost() + " VP");
+		
 		this.stopBuy();
 		
 	}
@@ -130,7 +145,7 @@ public class Store extends DisplayObjectContainer {
 			System.out.println("pressed up! current highlight: " + this.currentHighlight);
 			
 			switch (this.currentHighlight) {
-				case "cheesePuffs":
+				case CHEESE_PUFFS_ID:
 					this.highlightGingerAle();
 					break;
 				default: //do nothing if anything else is highlighted
@@ -140,7 +155,7 @@ public class Store extends DisplayObjectContainer {
 				this.playerManager.getDownKey(this.numPlayer))) {
 			System.out.println("pressed down! current highlight: " + this.currentHighlight);
 			switch (this.currentHighlight) {
-				case "gingerAle":
+				case GINGER_ALE_ID:
 					this.highlightCheesePuffs();
 					break;
 				default: //do nothing if anything else

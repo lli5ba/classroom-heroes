@@ -9,6 +9,7 @@ import edu.virginia.engine.events.IEventListener;
 public class LevelManager implements IEventListener{
 	private static volatile LevelManager instance;
 	int numLevel;
+	int numPlayers;
 	//Some way to keep track of time?
 	
 	/* Temporary Level Stats to Award Bonuses? */
@@ -16,6 +17,8 @@ public class LevelManager implements IEventListener{
 	
 	//int studentsCured;
 	
+	
+
 	//Player One
 	int vpCollected1;
 	int poisonCollected1;
@@ -23,6 +26,8 @@ public class LevelManager implements IEventListener{
 	//Player Two
 	int vpCollected2;
 	int poisonCollected2;
+	
+	/****************** Constructors ********************/
 	
 	public static LevelManager getInstance(){
                if(instance == null) {
@@ -39,6 +44,26 @@ public class LevelManager implements IEventListener{
 		vpCollected2 = 0;
 		poisonCollected2 = 0;
 	}
+	
+	/***********Level Stats Getters and Setters *********/
+
+	public int getNumPlayers() {
+		return numPlayers;
+	}
+
+	public void setNumPlayers(int numPlayers) {
+		this.numPlayers = numPlayers;
+	}
+	
+	public int getNumLevel() {
+		return numLevel;
+	}
+
+	public void setNumLevel(int numLevel) {
+		this.numLevel = numLevel;
+	}
+
+	/***********Temporary Level Stats Getters and Setters *********/
 	
 	public int getVPCollected(int numPlayer) {
 		switch (numPlayer) {
