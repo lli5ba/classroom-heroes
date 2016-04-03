@@ -12,12 +12,13 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.Game;
+<<<<<<< HEAD
+=======
+import edu.virginia.engine.display.PhysicsSprite;
+>>>>>>> 5ab397c609d7748f634a2a3175fcd198147cd9c6
 import edu.virginia.engine.display.PickedUpItem;
-import edu.virginia.engine.display.Poison;
 import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
-import edu.virginia.engine.display.VP;
-import edu.virginia.engine.display.Store;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenEvent;
@@ -26,6 +27,11 @@ import edu.virginia.engine.tween.TweenTransitions;
 import edu.virginia.engine.tween.TweenableParam;
 import edu.virginia.engine.util.GameClock;
 import edu.virginia.engine.util.Position;
+import edu.virginia.game.objects.Hallway;
+import edu.virginia.game.objects.ItemDetail;
+import edu.virginia.game.objects.Poison;
+import edu.virginia.game.objects.Store;
+import edu.virginia.game.objects.VP;
 
 /**
  * Modified by: Leandra Irvine (lli5ba) Example game that utilizes our engine.
@@ -61,6 +67,13 @@ public class LabOneGame extends Game {
 	QuestManager myQuestManager = new QuestManager();
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
+<<<<<<< HEAD
+=======
+	Sprite net = new Sprite("Net", "Lily.png");
+	private GameClock gameClock;
+	Hallway hallway0 = new Hallway("hallway0", "0", gameHeight, gameWidth);
+	
+>>>>>>> 5ab397c609d7748f634a2a3175fcd198147cd9c6
 
 	/** Variable declarations **/
 	private GameClock gameClock;
@@ -341,9 +354,14 @@ public class LabOneGame extends Game {
 			 */
 
 		}
+<<<<<<< HEAD
 		
 		if (this.store != null) {
 			store.update(pressedKeys);
+=======
+		if (this.hallway0 != null) {
+			hallway0.update(pressedKeys);
+>>>>>>> 5ab397c609d7748f634a2a3175fcd198147cd9c6
 		}
 		
 		if (this.floor != null) {
@@ -405,9 +423,15 @@ public class LabOneGame extends Game {
 		if (boss != null) {
 			boss.draw(g);
 		}
+<<<<<<< HEAD
 
 		if (store != null) {
 			store.draw(g);
+=======
+		
+		if(hallway0 != null) {
+			hallway0.draw(g);
+>>>>>>> 5ab397c609d7748f634a2a3175fcd198147cd9c6
 		}
 
 		if (vpNum != null) {
