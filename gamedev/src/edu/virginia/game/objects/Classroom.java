@@ -1,5 +1,8 @@
 package edu.virginia.game.objects;
 
+import java.awt.Graphics;
+import java.util.ArrayList;
+
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
@@ -39,6 +42,21 @@ public class Classroom extends DisplayObjectContainer{
 		//TODO: Leandra
 	}
 	
+	@Override
+	public void draw(Graphics g){
+		super.draw(g); //draws children
+	}
+	
+	@Override
+	public void update(ArrayList<String> pressedKeys){
+		super.update(pressedKeys); //updates children
+		this.checkVPCollisions(pressedKeys);
+	}
+
+	private void checkVPCollisions(ArrayList<String> pressedKeys) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
