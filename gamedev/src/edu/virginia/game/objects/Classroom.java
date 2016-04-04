@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.engine.display.PickedUpItem;
+import edu.virginia.engine.display.SoundManager;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
@@ -20,7 +22,8 @@ public class Classroom extends DisplayObjectContainer{
 	private Player player1;
 	private Player player2;
 	private Boss boss;
-	//ArrayLists of VP, poison, students
+	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
+	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	
 	public Classroom(String id) {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
@@ -47,6 +50,8 @@ public class Classroom extends DisplayObjectContainer{
 				this.getWidth()*.814, this.getHeight()*.742);
 		
 		this.boss.setPosition(this.getWidth()*.400, this.getHeight()*.003);
+		this.boss.setScaleX(.75);
+		this.boss.setScaleY(.75);
 		
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
