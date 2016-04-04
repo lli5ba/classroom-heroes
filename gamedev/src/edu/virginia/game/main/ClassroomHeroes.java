@@ -42,7 +42,6 @@ import edu.virginia.engine.util.Position;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
-import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.ItemDetail;
 import edu.virginia.game.objects.Poison;
@@ -60,8 +59,7 @@ public class ClassroomHeroes extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private GameClock gameClock;
 	Hallway hallway0 = new Hallway("hallway0", "0");
-	//Classroom classroom1 = new Classroom("classroom1");
-	
+
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
 	 * @throws UnsupportedAudioFileException 
@@ -98,6 +96,7 @@ public class ClassroomHeroes extends Game {
 		if (this.hallway0 != null) {
 			hallway0.update(pressedKeys);
 		}
+
 	}
 	
 	
@@ -109,10 +108,12 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void draw(Graphics g){
 		super.draw(g);
-
+		
+		
 		if(hallway0 != null) {
 			hallway0.draw(g);
 		}
+		
 		
 	}
 	

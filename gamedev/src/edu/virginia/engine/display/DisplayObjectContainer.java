@@ -169,38 +169,6 @@ public class DisplayObjectContainer extends DisplayObject{
 		}
 	}
 	
-	public boolean collidesWithGlobal(DisplayObjectContainer other) {
-		if (this.getHitboxGlobal().intersects(other.getHitboxGlobal())) {
-			this.dispatchEvent(new CollisionEvent(CollisionEvent.COLLISION, this));
-			return true;
-		}
-		return false;	
-	}
-	
-	public boolean inRangeGlobal(DisplayObjectContainer other, int range) {
-		Rectangle original = this.getHitboxGlobal();
-		//create rectangle that extends out "range" from original hitbox
-		original.grow(range, range);
-		if (original.intersects(other.getHitboxGlobal())) {
-			return true;
-		}
-		return false;	
-	}
-	
-	public void drawHitboxGlobal(Graphics g) {
-		int x = this.getHitboxGlobal().x;
-		int y = this.getHitboxGlobal().y;
-		int width = this.getHitboxGlobal().width;
-		int height = this.getHitboxGlobal().height;
-		g.fillRect(x, y, width, height);
-	}
-	
-	public void drawHitbox(Graphics g) {
-		int x = this.getHitbox().x;
-		int y = this.getHitbox().y;
-		int width = this.getHitbox().width;
-		int height = this.getHitbox().height;
-		g.fillRect(x, y, width, height);
-	}
+
 	
 }
