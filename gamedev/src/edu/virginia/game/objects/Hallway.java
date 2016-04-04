@@ -167,6 +167,12 @@ public class Hallway extends DisplayObjectContainer{
 	@Override
 	public void draw(Graphics g){
 		super.draw(g); //draws children
+		/* if (this.player1 != null) {
+			this.player1.drawHitboxGlobal(g);
+		}
+		if (this.vendingMachine != null) {
+			this.vendingMachine.drawHitboxGlobal(g);
+		} */
 	}
 	
 	@Override
