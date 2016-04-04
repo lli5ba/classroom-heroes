@@ -60,7 +60,7 @@ public class ClassroomHeroes extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private GameClock gameClock;
 	Hallway hallway0 = new Hallway("hallway0", "0");
-	Classroom classroom1 = new Classroom("classroom1");
+	//Classroom classroom1 = new Classroom("classroom1");
 	
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
