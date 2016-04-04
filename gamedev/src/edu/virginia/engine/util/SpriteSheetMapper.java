@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -35,11 +36,13 @@ import edu.virginia.engine.display.Sprite;
  * */
 public class SpriteSheetMapper extends Game implements MouseListener{
 
-	private static String currentDirectory = "resources/player/";
-	private static String textFileName = "resources/player/player1sheespecs.txt";;
+	private static String currentDirectory = "spritesheetmapper/";
+	private static String textFileName = "resources/spritesheetmapper/player-spritesheet-1";
 	private Sprite currentSprite;
 	private boolean waitingForClick;
 	private Position currPosition;
+	private static int xBias = 3;
+	private static int yBias = 25;
 	
 	
 	/**
@@ -50,7 +53,7 @@ public class SpriteSheetMapper extends Game implements MouseListener{
 	public SpriteSheetMapper() {
 		super("Classroom Heroes",
 				200, 200); 
-		currentSprite = new Sprite("sprite", "player/player1.png");
+		currentSprite = null;
 		currPosition = new Position(0, 0);
 		waitingForClick = true;
 		this.getMainFrame().addMouseListener(this);
@@ -105,31 +108,75 @@ public class SpriteSheetMapper extends Game implements MouseListener{
 		SpriteSheetMapper mapper = new SpriteSheetMapper();
 		mapper.start();
 		
+		PrintWriter writer = new PrintWriter(textFileName +"-frameInfo.txt", "UTF-8");
+		PrintWriter writerOnly = new PrintWriter(textFileName +"-frameInfo-only.txt", "UTF-8");
+		
 		try {
-			FileInputStream fstream = new FileInputStream(textFileName);
+			FileInputStream fstream = new FileInputStream(textFileName + ".txt");
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
 			while ((strLine = br.readLine()) != null) {
-
+				
 				String[] tokens = strLine.split(" ");
 				String imageFileName = tokens[0] + " " + tokens[1];
-				mapper.setCurrentSprite(new Sprite(imageFileName, imageFileName + ".png"));
-				//while(mapper.getWaitingForClick);
-				//System.out.println("Adding image at " + xPos + "," + yPos + "," + xWidth + "," + yHeight);
+				mapper.setCurrentSprite(new Sprite(imageFileName, currentDirectory + imageFileName + ".png"));
 				
+				mapper.setWaitingForClick(true);
+				int xPos = 0;
+				int yPos = 0;
+				int width = mapper.getCurrentSprite().getUnscaledWidth();
+				int height = mapper.getCurrentSprite().getUnscaledHeight();
+				
+				while (mapper.isWaitingForClick()) {
+					System.out.print(""); // stall until position is set
+				}
+				;
 
+				Position p1 = mapper.getCurrPosition();
+				xPos = (int) p1.getX();
+				yPos = (int) p1.getY();
+
+				mapper.setWaitingForClick(true);
+				while (mapper.isWaitingForClick()) {
+					System.out.print(""); // stall until position is set
+				}
+				;
+
+				Position p2 = mapper.getCurrPosition();
+				width = (int) calcWidth(p1, p2);
+				height = (int) calcHeight(p1, p2);
+				System.out.println(xPos + " " + yPos + " " + width + " " + height );
+				writer.println(strLine +" " + xPos + " " + yPos + " " + width + " " + height);
+				writerOnly.println(xPos + " " + yPos + " " + width + " " + height);
 			}
 			in.close();
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
 		}
 		
+		writer.close();
+		writerOnly.close();
+		
 	}
 
+	public static int calcHeight(Position p1, Position p2) {
+		int y2 = (int) p2.getY();
+		int y1 = (int) p1.getY();
+		return Math.abs(y2-y1);
+	}
 	
+	public static int calcWidth(Position p1, Position p2) {
+		int x2 = (int) p2.getX();
+		int x1 = (int) p1.getX();
+		return Math.abs(x2-x1);
+	}
 	public Position getCurrPosition() {
 		return this.currPosition;
+	}
+	
+	public Sprite getCurrentSprite() {
+		return this.currentSprite;
 	}
 	
 	public boolean isWaitingForClick() {
@@ -140,6 +187,11 @@ public class SpriteSheetMapper extends Game implements MouseListener{
 		this.currentSprite = sprite;
 		
 	}
+	
+	public void setWaitingForClick(Boolean waiting) {
+		this.waitingForClick = waiting;
+		
+	}
 
 
 	@Override
@@ -147,8 +199,8 @@ public class SpriteSheetMapper extends Game implements MouseListener{
 		if (waitingForClick) {
 			int x=e.getX();
 		    int y=e.getY();
-		    System.out.println(x+","+y);
-		    currPosition = new Position(x, y);
+		    //System.out.println(x+","+y);
+		    currPosition = new Position(x - xBias, y - yBias);
 		    waitingForClick = false; 
 		}
 	}

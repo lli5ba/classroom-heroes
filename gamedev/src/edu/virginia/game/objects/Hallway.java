@@ -27,10 +27,10 @@ public class Hallway extends DisplayObjectContainer{
 	public Hallway(String id, String styleCode) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
 		
-		player1 = new Player("Player1", "player/player1.png", 
-				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 1);
-		player2 = new Player("Player2", "player/player1.png", 
-				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 2);
+		player1 = new Player("Player1", "player/player-spritesheet-1.png", 
+				"player/player1sheet.png", "resources/player/player-spritesheet-1-frameInfo.txt", 1);
+		player2 = new Player("Player2", "player/player-spritesheet-1.png", 
+				"player/player1sheet.png", "resources/player/player-spritesheet-1-frameInfo.txt", 2);
 		if(this.gameManager.getNumPlayers() == 1) {
 			//set player2 inactive and invisible
 			System.out.println("making player 2 invisible ");
@@ -167,9 +167,10 @@ public class Hallway extends DisplayObjectContainer{
 	@Override
 	public void draw(Graphics g){
 		super.draw(g); //draws children
-		/* if (this.player1 != null) {
+		if (this.player1 != null) {
 			this.player1.drawHitboxGlobal(g);
 		}
+		/*
 		if (this.vendingMachine != null) {
 			this.vendingMachine.drawHitboxGlobal(g);
 		} */

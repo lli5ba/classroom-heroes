@@ -201,6 +201,7 @@ public class AnimatedSprite extends Sprite {
 						&& spriteMap.get(currentAnimation).size() >= (this.currentFrame + 1)) {
 					
 					BufferedImage current = spriteMap.get(currentAnimation).get(this.currentFrame).getImage();
+					this.setOriginalHitbox(spriteMap.get(currentAnimation).get(this.currentFrame).getHitbox());
 					this.setImage(current);
 				}
 				this.increaseFrame();
@@ -266,14 +267,14 @@ public class AnimatedSprite extends Sprite {
 					spriteArray.add(
 							new FrameInfo(
 									spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight),
-									new Rectangle(xPos, yPos, xWidth, yHeight)));
+									new Rectangle(0,0, xWidth, yHeight)));
 					spriteMap.put(name, spriteArray);
 				} else {
 					ArrayList<FrameInfo> spriteArray = new ArrayList<FrameInfo>();
 					spriteArray.add(
 							new FrameInfo(
 									spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight),
-									new Rectangle(xPos, yPos, xWidth, yHeight)));
+									new Rectangle(0,0, xWidth, yHeight)));
 					spriteMap.put(name, spriteArray);
 
 				}
