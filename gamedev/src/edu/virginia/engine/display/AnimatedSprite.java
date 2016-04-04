@@ -1,5 +1,6 @@
 package edu.virginia.engine.display;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -24,7 +25,7 @@ import edu.virginia.engine.util.Position;
 public class AnimatedSprite extends Sprite {
 
 	public static final double AVE_DRAW = 17.5;
-	private Map<String, ArrayList<BufferedImage>> spriteMap;
+	private Map<String, ArrayList<FrameInfo>> spriteMap;
 	private int currentFrame;
 	private String currentAnimation;
 	private boolean isPlaying;
@@ -38,7 +39,7 @@ public class AnimatedSprite extends Sprite {
 	public AnimatedSprite(String id) {
 		super(id);
 		currentFrame = 0;
-		spriteMap = new HashMap<String, ArrayList<BufferedImage>>();
+		spriteMap = new HashMap<String, ArrayList<FrameInfo>>();
 		isPlaying = false;
 		currentAnimation = null;
 		animationSpeed = 1;
@@ -53,7 +54,7 @@ public class AnimatedSprite extends Sprite {
 	public AnimatedSprite(String id, String imageFileName) {
 		super(id, imageFileName);
 		currentFrame = 0;
-		spriteMap = new HashMap<String, ArrayList<BufferedImage>>();
+		spriteMap = new HashMap<String, ArrayList<FrameInfo>>();
 		isPlaying = false;
 		currentAnimation = null;
 		animationSpeed = 1;
@@ -67,7 +68,7 @@ public class AnimatedSprite extends Sprite {
 	public AnimatedSprite(String id, String imageFileName, String spriteSheetFileName, String specsFileName) {
 		super(id, imageFileName);
 		currentFrame = 0;
-		spriteMap = new HashMap<String, ArrayList<BufferedImage>>();
+		spriteMap = new HashMap<String, ArrayList<FrameInfo>>();
 		loadSprites(specsFileName, spriteSheetFileName);
 		isPlaying = false;
 		currentAnimation = null;
@@ -199,7 +200,7 @@ public class AnimatedSprite extends Sprite {
 				if (spriteMap.containsKey(currentAnimation) 
 						&& spriteMap.get(currentAnimation).size() >= (this.currentFrame + 1)) {
 					
-					BufferedImage current = spriteMap.get(currentAnimation).get(this.currentFrame);
+					BufferedImage current = spriteMap.get(currentAnimation).get(this.currentFrame).getImage();
 					this.setImage(current);
 				}
 				this.increaseFrame();
@@ -210,11 +211,11 @@ public class AnimatedSprite extends Sprite {
 
 	private void setDefaultImage (String animationName) {
 		if (spriteMap.containsKey(animationName)) {
-			BufferedImage current = spriteMap.get(animationName).get(0);
+			BufferedImage current = spriteMap.get(animationName).get(0).getImage();
 			this.setImage(current);
 		}
 	}
-	public Map<String, ArrayList<BufferedImage>> getSpriteMap() {
+	public Map<String, ArrayList<FrameInfo>> getSpriteMap() {
 		return spriteMap;
 	}
 
@@ -261,12 +262,18 @@ public class AnimatedSprite extends Sprite {
 				int yHeight = Integer.parseInt(tokens[6]);
 				//System.out.println("Adding image at " + xPos + "," + yPos + "," + xWidth + "," + yHeight);
 				if (spriteMap.containsKey(name)) {
-					ArrayList<BufferedImage> spriteArray = spriteMap.get(name);
-					spriteArray.add(spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight));
+					ArrayList<FrameInfo> spriteArray = spriteMap.get(name);
+					spriteArray.add(
+							new FrameInfo(
+									spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight),
+									new Rectangle(xPos, yPos, xWidth, yHeight)));
 					spriteMap.put(name, spriteArray);
 				} else {
-					ArrayList<BufferedImage> spriteArray = new ArrayList<BufferedImage>();
-					spriteArray.add(spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight));
+					ArrayList<FrameInfo> spriteArray = new ArrayList<FrameInfo>();
+					spriteArray.add(
+							new FrameInfo(
+									spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight),
+									new Rectangle(xPos, yPos, xWidth, yHeight)));
 					spriteMap.put(name, spriteArray);
 
 				}
