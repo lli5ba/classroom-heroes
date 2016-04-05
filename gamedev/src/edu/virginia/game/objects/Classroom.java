@@ -24,6 +24,7 @@ public class Classroom extends DisplayObjectContainer{
 	private Boss boss;
 	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
+	ArrayList<Student> studentList = new ArrayList<Student>();
 	
 	public Classroom(String id) {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
@@ -36,11 +37,20 @@ public class Classroom extends DisplayObjectContainer{
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
+		
+		
 		boss = new Boss("Boss", "Mario.png");
 		
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(boss);
+		
+		/* Generate Students */
+		Student student0 = new Student("Student0", "0");
+		this.addChild(student0);
+		student0.setPosition(
+				this.getWidth()*.5, this.getHeight()*.742);
+		this.studentList.add(student0);
 		
 		this.player1.setPosition(
 				this.getWidth()*.08, this.getHeight()*.742);
@@ -69,6 +79,7 @@ public class Classroom extends DisplayObjectContainer{
 	public void update(ArrayList<String> pressedKeys){
 		super.update(pressedKeys); //updates children
 		this.checkVPCollisions(pressedKeys);
+		
 	}
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {

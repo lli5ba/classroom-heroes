@@ -64,7 +64,10 @@ public class Student extends AnimatedSprite{
 	public void setCurrentHealth(double currHealth) {
 		if (currHealth < 0) {
 			currHealth = 0; //cannot be less than 0
+		} else if (currHealth > this.maxHealth) {
+			currHealth = this.maxHealth;
 		}
+		this.healthBar.setHealthBar(currHealth, this.maxHealth);
 		this.currentHealth = currHealth;
 	}
 	public boolean isPoisoned() {
