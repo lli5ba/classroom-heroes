@@ -5,16 +5,21 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.engine.display.Sprite;
 
-public class StudentHealthBar extends DisplayObjectContainer {
+public class StudentHealthBar extends Sprite {
 
-	public StudentHealthBar(String id, String imageFileName) {
-		super(id, imageFileName);
-		// TODO Auto-generated constructor stub
-	}
-
-
-
+	private Sprite greenBar;
 	
+	public StudentHealthBar(String id) {
+		super(id, "student/student-healthbar-red.png"); //red bar is in the back
+		greenBar = new Sprite("student/student-healthbar-green.png");
+		this.addChild(greenBar);
+	}
+	
+	public void setHealthBar(double currHealth, double maxHealth) {
+		
+		this.greenBar.setScaleX(currHealth/maxHealth);
+	}
 
 }
