@@ -23,7 +23,10 @@ import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 import edu.virginia.game.managers.ProjectileManager;
+<<<<<<< HEAD
 import edu.virginia.game.managers.SoundManager;
+=======
+>>>>>>> 0af037cce39afb87991f83cdd618c275cf043360
 import edu.virginia.game.managers.StudentManager;
 
 //This class represents a game screen object to be used for levels and hallway scenes.
@@ -60,19 +63,19 @@ public class Classroom extends DisplayObjectContainer {
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
 		this.vpClock = new GameClock();
-
-		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
-		player2 = new Player("Player2", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
-		if (this.gameManager.getNumPlayers() == 1) {
-			// set player2 inactive and invisible
+		
+		player1 = new Player("Player1", "player/player1.png", 
+				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 1);
+		player2 = new Player("Player2", "player/player1.png", 
+				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 2);
+		if(this.gameManager.getNumPlayers() == 1) {
+			//set player2 inactive and invisible
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
 
 		boss = new Boss("Boss", "Mario.png");
-
+		
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(boss);
@@ -94,8 +97,13 @@ public class Classroom extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 
 		mySoundManager = new SoundManager();
+<<<<<<< HEAD
+		//mySoundManager.LoadMusic("bg", "theme.wav");
+		//mySoundManager.PlayMusic("bg");
+=======
 		mySoundManager.LoadMusic("bg", "theme.wav");
 		mySoundManager.PlayMusic("bg");
+>>>>>>> db8190e0a697c9eb1af5717e94e2d3ec54bebce9
 	}
 
 	
@@ -114,6 +122,7 @@ public class Classroom extends DisplayObjectContainer {
 		return new Position(x, y);
 	}
 
+<<<<<<< HEAD
 	public void spawnVP() {
 		if (myTweenJuggler != null) {
 			VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
@@ -121,6 +130,15 @@ public class Classroom extends DisplayObjectContainer {
 			vp.setCenterPos(this.boss.getCenterPos());
 			vp.addEventListener(projectileManager, EventTypes.PICKUP_VP.toString());
 			vp.addEventListener(playerManager, EventTypes.PICKUP_VP.toString());
+=======
+	public void spawnVP() {
+		if(myTweenJuggler != null) {
+			VP vp = new VP("VP", "projectiles/vp0.png", 
+					"projectiles/vpsheet.png", "resources/projectiles/vpsheetspecs.txt");
+			vp.setCenterPos(this.boss.getCenterPos());
+			vp.addEventListener(playerManager, PickedUpEvent.KEY_PICKED_UP);
+			vp.addEventListener(playerManager, CollisionEvent.COLLISION);
+>>>>>>> 0af037cce39afb87991f83cdd618c275cf043360
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition(vp.getxPos(), vp.getyPos(), 1000);
@@ -158,7 +176,7 @@ public class Classroom extends DisplayObjectContainer {
 				this.vp1++;
 				System.out.println("Player 1's Number of VP: " + vp1);
 			}
-
+			
 			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
@@ -167,7 +185,7 @@ public class Classroom extends DisplayObjectContainer {
 			}
 		}
 	}
-
+	
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
 			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
@@ -184,7 +202,7 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	public void openDoor() {
-		// TODO: Leandra
+		//TODO: Leandra
 	}
 
 	@Override

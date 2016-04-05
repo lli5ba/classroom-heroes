@@ -4,10 +4,13 @@ import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
 import edu.virginia.game.objects.EventTypes;
+<<<<<<< HEAD
 import edu.virginia.game.objects.PickedUpItem;
 import edu.virginia.game.objects.Player;
 import edu.virginia.game.objects.Poison;
 import edu.virginia.game.objects.VP;
+=======
+>>>>>>> 0af037cce39afb87991f83cdd618c275cf043360
 
 /*
  * Singleton class that handles all the VP and Poison events
@@ -27,6 +30,7 @@ public class ProjectileManager implements IEventListener {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public void handleEvent(GameEvent event) {
 		if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
 			// should be dispatched by the poison
@@ -41,6 +45,10 @@ public class ProjectileManager implements IEventListener {
 				vp.setVisible(false);
 			}
 			
+=======
+	public void handleEvent(Event event) {
+		if(event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
+>>>>>>> 0af037cce39afb87991f83cdd618c275cf043360
 			
 		}
 

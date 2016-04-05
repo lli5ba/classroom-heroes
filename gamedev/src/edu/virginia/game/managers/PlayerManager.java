@@ -46,6 +46,7 @@ public class PlayerManager implements IEventListener {
 
 	/* Combined Inventory */
 	private int vpCount;
+	private int poisonCount;
 	private int numGingerAle;
 	private int numCheesePuffs;
 
@@ -341,6 +342,14 @@ public class PlayerManager implements IEventListener {
 	public void setVpCount(int vpCount) {
 		this.vpCount = vpCount;
 	}
+	
+	public int getPoisonCount() {
+		return poisonCount;
+	}
+	
+	public void setPoisonCount() {
+		this.poisonCount = poisonCount;
+	}
 
 	public int getNumGingerAle() {
 		return numGingerAle;
@@ -369,6 +378,8 @@ public class PlayerManager implements IEventListener {
 																		// health
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.setVpCount(this.vpCount + 1);
+		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
+			
 		}
 
 	}
