@@ -157,16 +157,14 @@ public class Classroom extends DisplayObjectContainer {
 			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
 				vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
 				vp.setPickedUp(true);
-				vp1 = player1.getVP();
-				vp1++;
+				this.vp1++;
 				System.out.println("Player 1's Number of VP: " + vp1);
 			}
 			
 			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
 				vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
 				vp.setPickedUp(true);
-				vp2 = player2.getVP();
-				vp2++;
+				this.vp2++;
 				System.out.println("Player 2's Number of VP: " + vp2);
 			}
 		}
