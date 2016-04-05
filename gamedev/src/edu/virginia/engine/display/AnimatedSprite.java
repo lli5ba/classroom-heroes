@@ -261,20 +261,30 @@ public class AnimatedSprite extends Sprite {
 				int yPos = Integer.parseInt(tokens[4]);
 				int xWidth = Integer.parseInt(tokens[5]);
 				int yHeight = Integer.parseInt(tokens[6]);
+				int xPosHitbox = 0;
+				int yPosHitbox = 0;
+				int xWidthHitbox = xWidth;
+				int yHeightHitbox = yHeight;
+				if (tokens.length == 11) {
+					xPosHitbox = Integer.parseInt(tokens[7]);
+					yPosHitbox = Integer.parseInt(tokens[8]);
+					xWidthHitbox = Integer.parseInt(tokens[9]);
+					yHeightHitbox = Integer.parseInt(tokens[10]);
+				}
 				//System.out.println("Adding image at " + xPos + "," + yPos + "," + xWidth + "," + yHeight);
 				if (spriteMap.containsKey(name)) {
 					ArrayList<FrameInfo> spriteArray = spriteMap.get(name);
 					spriteArray.add(
 							new FrameInfo(
 									spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight),
-									new Rectangle(0,0, xWidth, yHeight)));
+									new Rectangle(xPosHitbox, yPosHitbox, xWidthHitbox, yHeightHitbox)));
 					spriteMap.put(name, spriteArray);
 				} else {
 					ArrayList<FrameInfo> spriteArray = new ArrayList<FrameInfo>();
 					spriteArray.add(
 							new FrameInfo(
 									spriteSheet.getSubimage(xPos, yPos, xWidth, yHeight),
-									new Rectangle(0,0, xWidth, yHeight)));
+									new Rectangle(xPosHitbox, yPosHitbox, xWidthHitbox, yHeightHitbox)));
 					spriteMap.put(name, spriteArray);
 
 				}
