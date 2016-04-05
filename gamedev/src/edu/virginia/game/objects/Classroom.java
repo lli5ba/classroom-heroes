@@ -94,15 +94,16 @@ public class Classroom extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 
 		mySoundManager = new SoundManager();
+<<<<<<< HEAD
 		//mySoundManager.LoadMusic("bg", "theme.wav");
 		//mySoundManager.PlayMusic("bg");
+=======
+		mySoundManager.LoadMusic("bg", "theme.wav");
+		mySoundManager.PlayMusic("bg");
+>>>>>>> db8190e0a697c9eb1af5717e94e2d3ec54bebce9
 	}
 
-	public void netSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-		mySoundManager = new SoundManager();
-		mySoundManager.LoadMusic("net", "net.wav");
-		mySoundManager.PlayMusic("net");
-	}
+	
 
 	/** Generates random position on semi-circle for spawning poison/VP **/
 	public Position generatePosition(double centerx, double centery, double radius) {

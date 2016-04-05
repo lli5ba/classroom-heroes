@@ -12,6 +12,8 @@ import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.engine.events.CollisionEvent;
+import edu.virginia.engine.events.Event;
 import edu.virginia.engine.util.Position;
 import edu.virginia.game.main.PickedUpEvent;
 import edu.virginia.game.managers.GameManager;
@@ -31,6 +33,12 @@ public class Player extends AnimatedSprite {
 
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
+		try {
+			this.soundManager = SoundManager.getInstance();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+		this.addEventListener(soundManager, EventTypes.SWING_NET.toString());
 		this.numPlayer = numPlayer;
 		this.active = true;
 
@@ -153,6 +161,7 @@ public class Player extends AnimatedSprite {
 				}
 
 				this.animateOnce("net" + currentDir, 5);
+				this.dispatchEvent(new Event(EventTypes.SWING_NET.toString(), this));
 				/*
 				 * Move this to Classroom class for(PickedUpItem vp : vpList) {
 				 * if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {

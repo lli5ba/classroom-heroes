@@ -1,7 +1,11 @@
 package edu.virginia.engine.events;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class EventDispatcher implements IEventDispatcher {
 
@@ -33,7 +37,12 @@ public class EventDispatcher implements IEventDispatcher {
 	public void dispatchEvent(Event event) {
 		if (observers.containsKey(event.getEventType())) {
 			for (IEventListener observer : observers.get(event.getEventType())) {
-				observer.handleEvent(event);
+				try {
+					observer.handleEvent(event);
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
