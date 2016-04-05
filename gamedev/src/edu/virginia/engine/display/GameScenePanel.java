@@ -5,9 +5,10 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 /**
- * This class is essentially something I needed to do to get around Java's swing stuff. It is the JPanel we are drawing
- * all of our graphics on. You can ignore this class.
- * */
+ * This class is essentially something I needed to do to get around Java's swing
+ * stuff. It is the JPanel we are drawing all of our graphics on. You can ignore
+ * this class.
+ */
 @SuppressWarnings("serial")
 public class GameScenePanel extends JPanel {
 
@@ -16,12 +17,12 @@ public class GameScenePanel extends JPanel {
 
 	/**
 	 * Constructor
-	 * */
+	 */
 	public GameScenePanel(Game gameRef) {
 		super();
 		this.setLayout(null);
 		this.setGameRef(gameRef);
-		this.setBounds(0,0,gameRef.getUnscaledWidth(), gameRef.getUnscaledHeight());
+		this.setBounds(0, 0, gameRef.getUnscaledWidth(), gameRef.getUnscaledHeight());
 	}
 
 	public Game getGameRef() {
@@ -31,7 +32,7 @@ public class GameScenePanel extends JPanel {
 	public void setGameRef(Game sceneRef) {
 		this.gameRef = sceneRef;
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -40,7 +41,6 @@ public class GameScenePanel extends JPanel {
 
 	@Override
 	public String toString() {
-		return gameRef.getId() + " (width = " + this.getWidth()
-				+ ", height = " + this.getHeight();
+		return gameRef.getId() + " (width = " + this.getWidth() + ", height = " + this.getHeight();
 	}
 }

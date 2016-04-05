@@ -14,13 +14,14 @@ import edu.virginia.game.objects.Player;
  * Singleton class that handles all the player details for players 1 and 2 and updates them
  * appropriately once per frame.
 */
-public class PlayerManager implements IEventListener{
+public class PlayerManager implements IEventListener {
 	private static volatile PlayerManager instance;
 	/* Player One Stats */
 	private double speed1;
 	private int health1;
 	private int maxHealth1;
-	private int experience1;			//total for the entire game  (can calculate level based on experience)
+	private int experience1; // total for the entire game (can calculate level
+								// based on experience)
 	private int swingSpeed1;
 	private String primaryKey1;
 	private String secondaryKey1;
@@ -28,13 +29,13 @@ public class PlayerManager implements IEventListener{
 	private String downKey1;
 	private String rightKey1;
 	private String leftKey1;
-	
-	
+
 	/* Player Two Stats */
 	private double speed2;
 	private int health2;
 	private int maxHealth2;
-	private int experience2;			//total for the entire game (can calculate level based on experience)
+	private int experience2; // total for the entire game (can calculate level
+								// based on experience)
 	private int swingSpeed2;
 	private String primaryKey2;
 	private String secondaryKey2;
@@ -42,43 +43,43 @@ public class PlayerManager implements IEventListener{
 	private String downKey2;
 	private String rightKey2;
 	private String leftKey2;
-	
+
 	/* Combined Inventory */
 	private int vpCount;
 	private int numGingerAle;
 	private int numCheesePuffs;
 
-	public static PlayerManager getInstance(){
-               if(instance == null) {
-                         instance = new PlayerManager();
-               }
-               return instance;
-     }
-	 
+	public static PlayerManager getInstance() {
+		if (instance == null) {
+			instance = new PlayerManager();
+		}
+		return instance;
+	}
+
 	public PlayerManager() {
 		instance = this;
-		
-		/*   P1 Default Stats */
+
+		/* P1 Default Stats */
 		speed1 = 1;
 		maxHealth1 = 5;
 		health1 = maxHealth1;
 		experience1 = 0;
 		swingSpeed1 = 1;
-		/*   P1 Default Key Mappings */
+		/* P1 Default Key Mappings */
 		primaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_SPACE);
 		secondaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_B);
 		upKey1 = KeyEvent.getKeyText(KeyEvent.VK_UP);
 		downKey1 = KeyEvent.getKeyText(KeyEvent.VK_DOWN);
 		rightKey1 = KeyEvent.getKeyText(KeyEvent.VK_RIGHT);
 		leftKey1 = KeyEvent.getKeyText(KeyEvent.VK_LEFT);
-		
-		/*   P2 Default Stats */
+
+		/* P2 Default Stats */
 		speed2 = 1;
 		maxHealth2 = 5;
 		health2 = maxHealth2;
 		experience2 = 0;
 		swingSpeed2 = 1;
-		/*   P2 Default Key Mappings */
+		/* P2 Default Key Mappings */
 		primaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_1);
 		secondaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_2);
 		upKey2 = KeyEvent.getKeyText(KeyEvent.VK_W);
@@ -95,7 +96,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return speed2;
 		default:
-			return -1; //error
+			return -1; // error
 		}
 	}
 
@@ -106,7 +107,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.speed2 = newSpeed;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -117,7 +118,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return health2;
 		default:
-			return -1; //error
+			return -1; // error
 		}
 	}
 
@@ -128,7 +129,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.health2 = newHealth;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -139,7 +140,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return maxHealth2;
 		default:
-			return -1; //error
+			return -1; // error
 		}
 	}
 
@@ -150,7 +151,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.maxHealth2 = newMaxHealth;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -161,7 +162,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return experience2;
 		default:
-			return -1; //error
+			return -1; // error
 		}
 	}
 
@@ -172,7 +173,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.experience2 = newExperience;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -183,7 +184,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return swingSpeed2;
 		default:
-			return -1; //error
+			return -1; // error
 		}
 	}
 
@@ -194,12 +195,12 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.swingSpeed2 = newSwingSpeed;
 		default:
-			//error
+			// error
 		}
 	}
 
 	/*--------------Key Mapping Getters and Setters---------------------*/
-	
+
 	public String getPrimaryKey(int numPlayer) {
 		switch (numPlayer) {
 		case 1:
@@ -207,7 +208,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return primaryKey2;
 		default:
-			return null; //error
+			return null; // error
 		}
 	}
 
@@ -218,7 +219,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.primaryKey2 = newPrimaryKey;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -229,7 +230,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return secondaryKey2;
 		default:
-			return null; //error
+			return null; // error
 		}
 	}
 
@@ -240,7 +241,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.secondaryKey2 = newSecondaryKey;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -251,7 +252,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return upKey2;
 		default:
-			return null; //error
+			return null; // error
 		}
 	}
 
@@ -262,7 +263,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.upKey2 = newUpKey;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -273,7 +274,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return downKey2;
 		default:
-			return null; //error
+			return null; // error
 		}
 	}
 
@@ -284,7 +285,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.downKey2 = newDownKey;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -295,7 +296,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return rightKey2;
 		default:
-			return null; //error
+			return null; // error
 		}
 	}
 
@@ -306,7 +307,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.rightKey2 = newRightKey;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -317,7 +318,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			return leftKey2;
 		default:
-			return null; //error
+			return null; // error
 		}
 	}
 
@@ -328,7 +329,7 @@ public class PlayerManager implements IEventListener{
 		case 2:
 			this.leftKey2 = newLeftKey;
 		default:
-			//error
+			// error
 		}
 	}
 
@@ -356,19 +357,20 @@ public class PlayerManager implements IEventListener{
 	public void setNumCheesePuffs(int numCheesePuffs) {
 		this.numCheesePuffs = numCheesePuffs;
 	}
-	
+
 	@Override
 	public void handleEvent(Event event) {
 		if (event.getEventType().equals(EventTypes.POISON_PLAYER.toString())) {
-			//should be dispatched by the player
+			// should be dispatched by the player
 			Player player = (Player) event.getSource();
-			//player.getPoisonBubbles.animateOnce("poison"); //play animation
+			// player.getPoisonBubbles.animateOnce("poison"); //play animation
 			int currentHealth = this.getHealth(player.getNumPlayer());
-			this.setHealth(currentHealth - 1, player.getNumPlayer()); //decrease health
+			this.setHealth(currentHealth - 1, player.getNumPlayer()); // decrease
+																		// health
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.setVpCount(this.vpCount + 1);
 		}
-		
+
 	}
-	
+
 }

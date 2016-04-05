@@ -45,14 +45,14 @@ public class LabOneGame extends Game {
 	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
 
 	/** User **/
-	AnimatedSprite player1 = new AnimatedSprite("Player1", "player/player1.png", 
-			"player/player1sheet.png", "resources/player/player1sheetspecs.txt");
+	AnimatedSprite player1 = new AnimatedSprite("Player1", "player/player1.png", "player/player1sheet.png",
+			"resources/player/player1sheetspecs.txt");
 	Sprite net = new Sprite("Net", "Lily.png");
 	Sprite boss = new Sprite("boss", "Mario.png"); // TODO: Change boss sprite
 
 	/** Background **/
 	Sprite floor = new Sprite("Floor", "floor.png");
-	Sprite platform = new Sprite("Platform", "floor.png");	
+	Sprite platform = new Sprite("Platform", "floor.png");
 
 	/** VP and Poison **/
 	Sprite vpNum = new Sprite("vp", "vpbox.png"); // Box for VP; size of 512X512
@@ -64,7 +64,7 @@ public class LabOneGame extends Game {
 	QuestManager myQuestManager = new QuestManager();
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
-	
+
 	/** Variable declarations **/
 	private GameClock gameClock;
 	public static final double SPAWN_INTERVAL = 1500;
@@ -314,10 +314,10 @@ public class LabOneGame extends Game {
 					if (player1.collidesWithGlobal(poison) && this.hit == false) {
 						poison.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, poison));
 						poison.setPickedUp(true);
-						this.hit = true; //FIXME: fix states
+						this.hit = true; // FIXME: fix states
 						poisoncount--;
 						System.out.println("Health: " + poisoncount);
-						
+
 						if (poisoncount <= 0) {
 							poisoncount = 0;
 						}
@@ -346,8 +346,6 @@ public class LabOneGame extends Game {
 			 */
 
 		}
-		
-
 
 		if (this.floor != null) {
 			floor.update(pressedKeys);
@@ -355,7 +353,7 @@ public class LabOneGame extends Game {
 		if (this.platform != null) {
 			platform.update(pressedKeys);
 		}
-		
+
 		if (this.net != null) {
 			net.update(pressedKeys);
 		}
@@ -366,9 +364,9 @@ public class LabOneGame extends Game {
 	}
 
 	public void spawnVP() {
-		if(myTweenJuggler != null) {
-			VP vp = new VP("VP", "projectiles/vp0.png", 
-					"projectiles/vpsheet.png", "resources/projectiles/vpsheetspecs.txt");
+		if (myTweenJuggler != null) {
+			VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
+					"resources/projectiles/vpsheetspecs.txt");
 
 			vp.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(myQuestManager, CollisionEvent.COLLISION);
@@ -384,8 +382,8 @@ public class LabOneGame extends Game {
 	}
 
 	public void spawnPoison() {
-		if(myTweenJuggler != null) {
-			//FIXME: sprite sheet not implemented
+		if (myTweenJuggler != null) {
+			// FIXME: sprite sheet not implemented
 			Poison poison = new Poison("Poison", "projectiles/poison.png");
 			poison.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			poison.addEventListener(myQuestManager, CollisionEvent.COLLISION);
@@ -411,8 +409,6 @@ public class LabOneGame extends Game {
 			boss.draw(g);
 		}
 
-
-
 		if (vpNum != null) {
 			g.drawString("Num of VP: " + vpcount, (int) vpNum.getxPos() + 15, (int) vpNum.getyPos() + 30);
 			vpNum.draw(g);
@@ -429,26 +425,26 @@ public class LabOneGame extends Game {
 			player1.draw(g);
 
 		}
-		if (poisonList != null) {	
-			for(PickedUpItem poison : poisonList) {
-				if(poison != null) {
+		if (poisonList != null) {
+			for (PickedUpItem poison : poisonList) {
+				if (poison != null) {
 					poison.draw(g);
 				}
 			}
 		}
-		
-		if(vpList != null) {
+
+		if (vpList != null) {
 			for (PickedUpItem vp : vpList) {
 				if (vp != null) {
 					vp.draw(g);
 				}
 			}
 		}
-		
+
 		if (net != null) {
 			// net.drawHitboxGlobal(g);
 		}
-		
+
 		/*
 		 * if(floor != null) { floor.draw(g); } if(platform != null) {
 		 * platform.draw(g); }

@@ -18,7 +18,7 @@ import edu.virginia.engine.util.Position;
 /**
  * A very basic display object for a java based gaming engine
  * 
- * */
+ */
 public class DisplayObject extends EventDispatcher {
 
 	private DisplayObject parent;
@@ -27,18 +27,20 @@ public class DisplayObject extends EventDispatcher {
 
 	/* The image that is displayed by this object */
 	private BufferedImage displayImage;
-	
+
 	private boolean visible;
 	private Position position;
 	private Position pivotPoint;
-	private double scaleX; 	//1.0 is actual size
-	private double scaleY;	//1.0 is actual size
-	private double rotation; //in degrees
-	private float alpha; //1.0f is solid
-	private Rectangle originalHitbox; //position of hitbox assuming that the character is Unscaled and at position (0, 0)
-	private Rectangle hitbox; //current hitbox moved and scaled with character
+	private double scaleX; // 1.0 is actual size
+	private double scaleY; // 1.0 is actual size
+	private double rotation; // in degrees
+	private float alpha; // 1.0f is solid
+	private Rectangle originalHitbox; // position of hitbox assuming that the
+										// character is Unscaled and at position
+										// (0, 0)
+	private Rectangle hitbox; // current hitbox moved and scaled with character
 	private boolean onGround;
-	
+
 	/**
 	 * Constructors: can pass in the id OR the id and image's file path and
 	 * position OR the id and a buffered image and position
@@ -53,12 +55,11 @@ public class DisplayObject extends EventDispatcher {
 		this.setScaleX(1.0);
 		this.setScaleY(1.0);
 		this.setHitbox(hitbox);
-		this.setOriginalHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
-		this.setHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setOriginalHitbox(new Rectangle((int) 0, (int) 0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setHitbox(new Rectangle((int) 0, (int) 0, this.getUnscaledWidth(), this.getUnscaledHeight()));
 		this.setOnGround(false);
-		
-	}
 
+	}
 
 	public DisplayObject(String id, String fileName) {
 		this.setId(id);
@@ -70,13 +71,12 @@ public class DisplayObject extends EventDispatcher {
 		this.setRotationDegrees(0);
 		this.setScaleX(1.0);
 		this.setScaleY(1.0);
-		this.setOriginalHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
-		this.setHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setOriginalHitbox(new Rectangle((int) 0, (int) 0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setHitbox(new Rectangle((int) 0, (int) 0, this.getUnscaledWidth(), this.getUnscaledHeight()));
 		this.setOnGround(false);
 	}
-	
-	public DisplayObject(String id, String fileName, 
-			double xPos, double yPos) {
+
+	public DisplayObject(String id, String fileName, double xPos, double yPos) {
 		this.setId(id);
 		this.setPivotPoint(new Position(0, 0));
 		this.setImage(fileName);
@@ -86,12 +86,11 @@ public class DisplayObject extends EventDispatcher {
 		this.setRotationDegrees(0);
 		this.setScaleX(1.0);
 		this.setScaleY(1.0);
-		this.setOriginalHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
-		this.setHitbox(new Rectangle((int)xPos, (int)yPos, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setOriginalHitbox(new Rectangle((int) 0, (int) 0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setHitbox(new Rectangle((int) xPos, (int) yPos, this.getUnscaledWidth(), this.getUnscaledHeight()));
 		this.setOnGround(false);
 	}
-	
-	
+
 	/*
 	 * Getters and Setters
 	 */
@@ -107,62 +106,63 @@ public class DisplayObject extends EventDispatcher {
 	public Rectangle getHitbox() {
 		return hitbox;
 	}
-	
-	
-	
+
 	private void setHitbox(Rectangle hitbox) {
 		this.hitbox = hitbox;
 	}
-	
+
 	private void moveHitbox() {
 		Rectangle newHitbox = new Rectangle();
-		newHitbox.setBounds((int)(this.getxPos() + this.getOriginalHitbox().getX()), 
-				(int) (this.getyPos() + this.getOriginalHitbox().getY()), 
-				(int) (this.getOriginalHitbox().getWidth()*this.scaleX), 
-				(int) (this.getOriginalHitbox().getHeight()*this.scaleY));
+		newHitbox.setBounds((int) (this.getxPos() + this.getOriginalHitbox().getX()),
+				(int) (this.getyPos() + this.getOriginalHitbox().getY()),
+				(int) (this.getOriginalHitbox().getWidth() * this.scaleX),
+				(int) (this.getOriginalHitbox().getHeight() * this.scaleY));
 		this.setHitbox(newHitbox);
 	}
-	
-	
-	public void obstacleCollision(DisplayObject sprite){
+
+	public void obstacleCollision(DisplayObject sprite) {
 		Rectangle obstacle = sprite.getHitbox();
 		boolean insideRightBound;
 		boolean insideLeftBound;
 		boolean belowUpperBound;
 		boolean aboveLowerBound;
-		if(this.hitbox.intersects(obstacle)){ //If true, should move away from rectangle
-			insideRightBound = (this.hitbox.getMinX() > obstacle.getMinX()); //true if inside Right bounc
+		if (this.hitbox.intersects(obstacle)) { // If true, should move away
+												// from rectangle
+			insideRightBound = (this.hitbox.getMinX() > obstacle.getMinX()); // true
+																				// if
+																				// inside
+																				// Right
+																				// bounc
 			insideLeftBound = (this.hitbox.getMaxX() < obstacle.getMaxX());
 			belowUpperBound = (this.hitbox.getMinY() > obstacle.getMinY());
 			aboveLowerBound = (this.hitbox.getMaxY() < obstacle.getMaxY());
-			
-			if(!belowUpperBound){
-				//Move Up
-				//this.setyPos((float) (this.yCurrent - (1.25)*this.yChange));
-				
+
+			if (!belowUpperBound) {
+				// Move Up
+				// this.setyPos((float) (this.yCurrent - (1.25)*this.yChange));
+
 				this.setyPos(obstacle.getMinY() - this.getHitbox().getHeight());
 				this.setOnGround(true);
 			} else {
 				this.setOnGround(false);
 			}
-			if(!aboveLowerBound){
-				//Move down
+			if (!aboveLowerBound) {
+				// Move down
 				this.setyPos(obstacle.getMaxY());
 			}
-			if(!insideRightBound){
-				//Move right
+			if (!insideRightBound) {
+				// Move right
 				this.setxPos(obstacle.getMinX() - this.getHitbox().getWidth());
 			}
-			if(!insideLeftBound){
-				//Move left
+			if (!insideLeftBound) {
+				// Move left
 				this.setxPos(obstacle.getMaxX());
 			}
-			
-			
+
 		}
-			
+
 	}
-	
+
 	public boolean isVisible() {
 		return visible;
 	}
@@ -174,7 +174,7 @@ public class DisplayObject extends EventDispatcher {
 	public Position getPosition() {
 		return position;
 	}
-	
+
 	public double getxPos() {
 		return this.position.getX();
 	}
@@ -197,30 +197,29 @@ public class DisplayObject extends EventDispatcher {
 		this.position.setX(x);
 		this.position.setY(y);
 		this.moveHitbox();
-	} 
-	
+	}
+
 	public void setPosition(Position position) {
 		this.position = position;
 		this.moveHitbox();
 	}
+
 	public Position getCenterPos() {
-		return new Position(this.getxPos() + this.getWidth()/2,
-							this.getyPos() + this.getHeight()/2);
+		return new Position(this.getxPos() + this.getWidth() / 2, this.getyPos() + this.getHeight() / 2);
 	}
 
 	public void setCenterPos(double x, double y) {
-		this.position.setX(x - this.getWidth()/2);
-		this.position.setY(y - this.getHeight()/2);
+		this.position.setX(x - this.getWidth() / 2);
+		this.position.setY(y - this.getHeight() / 2);
 		this.moveHitbox();
 	}
-	
+
 	public void setCenterPos(Position p) {
-		this.position = new Position(p.getX() - this.getWidth()/2,
-				p.getY() - this.getHeight()/2);
+		this.position = new Position(p.getX() - this.getWidth() / 2, p.getY() - this.getHeight() / 2);
 		this.moveHitbox();
-	
+
 	}
-	
+
 	public Position getPivotPoint() {
 		return pivotPoint;
 	}
@@ -230,21 +229,21 @@ public class DisplayObject extends EventDispatcher {
 	}
 
 	public double getWidth() {
-		return (double)(this.getUnscaledWidth()*this.getScaleX());
+		return (double) (this.getUnscaledWidth() * this.getScaleX());
 	}
 
 	public double getHeight() {
-		return (double)(this.getUnscaledHeight()*this.getScaleY());
+		return (double) (this.getUnscaledHeight() * this.getScaleY());
 	}
-	
+
 	public void setHeight(double newHeight) {
-		this.setScaleY(newHeight/(double)this.getUnscaledHeight());
+		this.setScaleY(newHeight / (double) this.getUnscaledHeight());
 	}
-	
+
 	public void setWidth(double newWidth) {
-		this.setScaleX(newWidth/(double)this.getUnscaledWidth());
+		this.setScaleX(newWidth / (double) this.getUnscaledWidth());
 	}
-	
+
 	public double getScaleX() {
 		return scaleX;
 	}
@@ -268,7 +267,7 @@ public class DisplayObject extends EventDispatcher {
 	public void setRotationDegrees(double degrees) {
 		this.rotation = Math.toRadians(degrees);
 	}
-	
+
 	public void setRotationRadians(double rotation) {
 		this.rotation = rotation;
 	}
@@ -280,10 +279,10 @@ public class DisplayObject extends EventDispatcher {
 	public void setAlpha(float alpha) {
 		this.alpha = alpha;
 	}
-	
+
 	public void setPivotPoint(double x, double y) {
 		this.pivotPoint.setX(x);
-		this.pivotPoint.setY(y);	
+		this.pivotPoint.setY(y);
 	}
 
 	public void setId(String id) {
@@ -294,17 +293,18 @@ public class DisplayObject extends EventDispatcher {
 		return id;
 	}
 
-
 	/**
 	 * Returns the unscaled width and height of this display object
-	 * */
+	 */
 	public int getUnscaledWidth() {
-		if(displayImage == null) return 0;
+		if (displayImage == null)
+			return 0;
 		return displayImage.getWidth();
 	}
 
 	public int getUnscaledHeight() {
-		if(displayImage == null) return 0;
+		if (displayImage == null)
+			return 0;
 		return displayImage.getHeight();
 	}
 
@@ -321,9 +321,9 @@ public class DisplayObject extends EventDispatcher {
 		if (displayImage == null) {
 			System.err.println("[DisplayObject.setImage] ERROR: " + imageName + " does not exist!");
 		}
-		this.setPivotPoint(new Position(this.getUnscaledWidth()/2,this.getUnscaledHeight()/2));
+		this.setPivotPoint(new Position(this.getUnscaledWidth() / 2, this.getUnscaledHeight() / 2));
 	}
-	
+
 	public Rectangle getOriginalHitbox() {
 		return originalHitbox;
 	}
@@ -332,11 +332,10 @@ public class DisplayObject extends EventDispatcher {
 		this.originalHitbox = originalHitbox;
 	}
 
-
 	/**
 	 * Helper function that simply reads an image from the given image name
 	 * (looks in resources\\) and returns the bufferedimage for that filename
-	 * */
+	 */
 	public BufferedImage readImage(String imageName) {
 		BufferedImage image = null;
 		try {
@@ -350,16 +349,16 @@ public class DisplayObject extends EventDispatcher {
 	}
 
 	public void setImage(BufferedImage image) {
-		if(image == null) return;
+		if (image == null)
+			return;
 		displayImage = image;
 	}
-
 
 	/**
 	 * Invoked on every frame before drawing. Used to update this display
 	 * objects state before the draw occurs. Should be overridden if necessary
 	 * to update objects appropriately.
-	 * */
+	 */
 	protected void update(ArrayList<String> pressedKeys) {
 		this.moveHitbox();
 	}
@@ -368,23 +367,23 @@ public class DisplayObject extends EventDispatcher {
 	 * Draws this image. This should be overloaded if a display object should
 	 * draw to the screen differently. This method is automatically invoked on
 	 * every frame.
-	 * */
+	 */
 	public void draw(Graphics g) {
-		
+
 		if (displayImage != null && this.visible) {
-			
+
 			/*
 			 * Get the graphics and apply this objects transformations
 			 * (rotation, etc.)
 			 */
 			Graphics2D g2d = (Graphics2D) g;
 			applyTransformations(g2d);
-			
-			/* Actually draw the image, perform the pivot point translation here */
-			g2d.drawImage(displayImage, 0, 0,
-					(int) (getUnscaledWidth()),
-					(int) (getUnscaledHeight()), null);
-			
+
+			/*
+			 * Actually draw the image, perform the pivot point translation here
+			 */
+			g2d.drawImage(displayImage, 0, 0, (int) (getUnscaledWidth()), (int) (getUnscaledHeight()), null);
+
 			/*
 			 * undo the transformations so this doesn't affect other display
 			 * objects
@@ -396,67 +395,66 @@ public class DisplayObject extends EventDispatcher {
 	/**
 	 * Applies transformations for this display object to the given graphics
 	 * object
-	 * */
+	 */
 	protected void applyTransformations(Graphics2D g2d) {
 		g2d.setComposite(makeComposite(this.alpha));
-		g2d.translate(this.getxPos()-this.getOriginalHitbox().getX(), 
-				this.getyPos()-this.getOriginalHitbox().getY());
+		g2d.translate(this.getxPos() - this.getOriginalHitbox().getX(),
+				this.getyPos() - this.getOriginalHitbox().getY());
 		g2d.rotate(this.getRotation(), this.pivotPoint.getX(), this.pivotPoint.getY());
 		g2d.scale(this.getScaleX(), this.getScaleY());
-		
+
 	}
 
 	/**
 	 * Reverses transformations for this display object to the given graphics
 	 * object
-	 * */
+	 */
 	protected void reverseTransformations(Graphics2D g2d) {
-		g2d.scale((1/this.getScaleX()), (1/this.getScaleY()));
+		g2d.scale((1 / this.getScaleX()), (1 / this.getScaleY()));
 		g2d.rotate(-this.getRotation(), this.pivotPoint.getX(), this.pivotPoint.getY());
-		g2d.translate(-(this.getxPos()-this.getOriginalHitbox().getX()), 
-				-(this.getyPos()-this.getOriginalHitbox().getY()));
-		
-		
+		g2d.translate(-(this.getxPos() - this.getOriginalHitbox().getX()),
+				-(this.getyPos() - this.getOriginalHitbox().getY()));
+
 		g2d.setComposite(makeComposite(1.0f));
-		
-		
+
 	}
-	
+
 	private AlphaComposite makeComposite(float alpha) {
-		  int type = AlphaComposite.SRC_OVER;
-		  return(AlphaComposite.getInstance(type, alpha));
+		int type = AlphaComposite.SRC_OVER;
+		return (AlphaComposite.getInstance(type, alpha));
 	}
-	
+
 	/**
 	 * Compares two images pixel by pixel.
 	 *
-	 * @param imgA the first image.
-	 * @param imgB the second image.
+	 * @param imgA
+	 *            the first image.
+	 * @param imgB
+	 *            the second image.
 	 * @return whether the images are both the same or not.
 	 */
 	public static boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
-	  // The images must be the same size.
-	  if (imgA.getWidth() == imgB.getWidth() && imgA.getHeight() == imgB.getHeight()) {
-	    int width = imgA.getWidth();
-	    int height = imgA.getHeight();
+		// The images must be the same size.
+		if (imgA.getWidth() == imgB.getWidth() && imgA.getHeight() == imgB.getHeight()) {
+			int width = imgA.getWidth();
+			int height = imgA.getHeight();
 
-	    // Loop over every pixel.
-	    for (int y = 0; y < height; y++) {
-	      for (int x = 0; x < width; x++) {
-	        // Compare the pixels for equality.
-	        if (imgA.getRGB(x, y) != imgB.getRGB(x, y)) {
-	          return false;
-	        }
-	      }
-	    }
-	  } else {
-	    return false;
-	  }
+			// Loop over every pixel.
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					// Compare the pixels for equality.
+					if (imgA.getRGB(x, y) != imgB.getRGB(x, y)) {
+						return false;
+					}
+				}
+			}
+		} else {
+			return false;
+		}
 
-	  return true;
+		return true;
 	}
-	
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

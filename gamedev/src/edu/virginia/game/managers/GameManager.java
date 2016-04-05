@@ -28,8 +28,8 @@ public class GameManager {
 		numPlayers = 2;
 		numLevel = 1;
 	}
-	
-	/***********Game Details Getters and Setters *********/
+
+	/*********** Game Details Getters and Setters *********/
 
 	public int getGameHeight() {
 		return gameHeight;
@@ -46,7 +46,7 @@ public class GameManager {
 	public void setGameWidth(int gameWidth) {
 		this.gameWidth = gameWidth;
 	}
-	
+
 	public int getNumPlayers() {
 		return numPlayers;
 	}
@@ -54,9 +54,9 @@ public class GameManager {
 	public void setNumPlayers(int numPlayers) {
 		this.numPlayers = numPlayers;
 	}
-	
-	/***********Level Stats Getters and Setters *********/
-	
+
+	/*********** Level Stats Getters and Setters *********/
+
 	public int getNumLevel() {
 		return numLevel;
 	}
@@ -65,4 +65,3 @@ public class GameManager {
 		this.numLevel = numLevel;
 	}
 }
-

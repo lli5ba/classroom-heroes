@@ -20,37 +20,40 @@ import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 
 /* this is a student! It is a sprite that is sitting in a chair that can be poisoned and unpoisoned */
-public class Student extends AnimatedSprite{
+public class Student extends AnimatedSprite {
 	private static PlayerManager playerManager = PlayerManager.getInstance();
 	private static LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
-	public static final double DRAIN_INTERVAL = 1500; //FIXME: should depend on what level we are on
+	public static final double DRAIN_INTERVAL = 1500; // FIXME: should depend on
+														// what level we are on
 	private GameClock healthDrainClock;
 	private double maxHealth;
 	private double currentHealth;
 	private boolean poisoned;
 	private boolean dead;
 	private StudentHealthBar healthBar;
-	private String direction; //for falling and floating animations, "back", "left" or "right"
-	
-	public Student(String id, String styleCode, String fallDir)
-	{
-		 /* super(id, "student/student-default-" + styleCode + ".png", 
-				"student/student-spritesheet-" + styleCode + ".png", 
-				"recources/student/student-spritesheet-specs-" + styleCode + ".txt"); */
+	private String direction; // for falling and floating animations, "back",
+								// "left" or "right"
+
+	public Student(String id, String styleCode, String fallDir) {
+		/*
+		 * super(id, "student/student-default-" + styleCode + ".png",
+		 * "student/student-spritesheet-" + styleCode + ".png",
+		 * "recources/student/student-spritesheet-specs-" + styleCode + ".txt");
+		 */
 		super(id, "student/student-default-" + styleCode + ".png");
 		this.direction = fallDir;
-		this.maxHealth = 20; //FIXME: should depend on what level we are on
+		this.maxHealth = 20; // FIXME: should depend on what level we are on
 		this.currentHealth = maxHealth;
 		this.healthBar = new StudentHealthBar(id + "-healthBar");
 		this.addChild(healthBar);
-		this.healthBar.setPosition(10, -5); //float over head
+		this.healthBar.setPosition(10, -5); // float over head
 		this.dead = false;
 		this.poisoned = false;
 		healthDrainClock = new GameClock();
-		
+
 	}
-	
+
 	public boolean isDead() {
 		return dead;
 	}
@@ -58,6 +61,7 @@ public class Student extends AnimatedSprite{
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	}
+
 	public double getMaxHealth() {
 		return maxHealth;
 	}
@@ -69,34 +73,37 @@ public class Student extends AnimatedSprite{
 	public double getCurrentHealth() {
 		return currentHealth;
 	}
+
 	public void setCurrentHealth(double currHealth) {
 		if (currHealth < 0) {
-			currHealth = 0; //cannot be less than 0
+			currHealth = 0; // cannot be less than 0
 		} else if (currHealth > this.maxHealth) {
 			currHealth = this.maxHealth;
 		}
 		this.healthBar.setHealthBar(currHealth, this.maxHealth);
 		this.currentHealth = currHealth;
 	}
+
 	public boolean isPoisoned() {
 		return poisoned;
 	}
+
 	public void setPoisoned(boolean poisoned) {
-		if (poisoned == true) { //clock has been running, so need to reset it!
-			this.healthDrainClock.resetGameClock(); 
+		if (poisoned == true) { // clock has been running, so need to reset it!
+			this.healthDrainClock.resetGameClock();
 		}
 		this.poisoned = poisoned;
 	}
 
 	private void drainHealthIfPoisoned(ArrayList<String> pressedKeys) {
-		double percentToDrain = 0.2; //FIXME: should depend on what level we are on
+		double percentToDrain = 0.2; // FIXME: should depend on what level we
+										// are on
 		if (this.healthDrainClock != null) {
-			if (this.healthDrainClock.getElapsedTime() > (DRAIN_INTERVAL) && 
-					this.isPoisoned() && !this.isDead()) {
+			if (this.healthDrainClock.getElapsedTime() > (DRAIN_INTERVAL) && this.isPoisoned() && !this.isDead()) {
 				double newHealth = this.currentHealth - percentToDrain * this.maxHealth;
-				if(newHealth < 0) {
+				if (newHealth < 0) {
 					this.currentHealth = 0;
-					//FIXME: this.animateOnce("fall" + Dir);
+					// FIXME: this.animateOnce("fall" + Dir);
 					this.dead = true;
 				} else {
 					this.currentHealth = newHealth;
@@ -106,16 +113,15 @@ public class Student extends AnimatedSprite{
 			}
 		}
 	}
-	
 
 	@Override
-	public void draw(Graphics g){
-		super.draw(g); //draws children
+	public void draw(Graphics g) {
+		super.draw(g); // draws children
 	}
-	
+
 	@Override
-	public void update(ArrayList<String> pressedKeys){
-		super.update(pressedKeys); //updates children
+	public void update(ArrayList<String> pressedKeys) {
+		super.update(pressedKeys); // updates children
 		this.drainHealthIfPoisoned(pressedKeys);
 	}
 }

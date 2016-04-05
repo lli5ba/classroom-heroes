@@ -61,69 +61,62 @@ public class ClassroomHeroes extends Game {
 	Hallway hallway0 = new Hallway("hallway0", "0");
 
 	/**
-	 * Constructor. See constructor in Game.java for details on the parameters given
-	 * @throws UnsupportedAudioFileException 
-	 * @throws IOException 
-	 * */
-	public ClassroomHeroes() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
-		super("Classroom Heroes",
-				gameManager.getGameWidth(), gameManager.getGameHeight());
+	 * Constructor. See constructor in Game.java for details on the parameters
+	 * given
+	 * 
+	 * @throws UnsupportedAudioFileException
+	 * @throws IOException
+	 */
+	public ClassroomHeroes() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+		super("Classroom Heroes", gameManager.getGameWidth(), gameManager.getGameHeight());
 		gameClock = new GameClock();
-		
-		
+
 		mySoundManager = new SoundManager();
 		mySoundManager.LoadMusic("thebestsong", "whatisthis.wav");
-		
-	
-	}
-	
-	
-	public void changeScreens() {
-		//TODO: Leandra
+
 	}
 
-	
-	
-	
+	public void changeScreens() {
+		// TODO: Leandra
+	}
+
 	/**
-	 * Engine will automatically call this update method once per frame and pass to us
-	 * the set of keys (as strings) that are currently being pressed down
-	 * */
+	 * Engine will automatically call this update method once per frame and pass
+	 * to us the set of keys (as strings) that are currently being pressed down
+	 */
 	@Override
-	public void update(ArrayList<String> pressedKeys){
+	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
-	
+
 		if (this.hallway0 != null) {
 			hallway0.update(pressedKeys);
 		}
 
 	}
-	
-	
-	
+
 	/**
-	 * Engine automatically invokes draw() every frame as well. If we want to make sure mario gets drawn to
-	 * the screen, we need to make sure to override this method and call mario's draw method.
-	 * */
+	 * Engine automatically invokes draw() every frame as well. If we want to
+	 * make sure mario gets drawn to the screen, we need to make sure to
+	 * override this method and call mario's draw method.
+	 */
 	@Override
-	public void draw(Graphics g){
+	public void draw(Graphics g) {
 		super.draw(g);
-		
-		
-		if(hallway0 != null) {
+
+		if (hallway0 != null) {
 			hallway0.draw(g);
 		}
-		
-		
+
 	}
-	
+
 	/**
-	 * Quick main class that simply creates an instance of our game and starts the timer
-	 * that calls update() and draw() every frame
-	 * @throws UnsupportedAudioFileException 
-	 * @throws IOException 
-	 * @throws LineUnavailableException 
-	 * */
+	 * Quick main class that simply creates an instance of our game and starts
+	 * the timer that calls update() and draw() every frame
+	 * 
+	 * @throws UnsupportedAudioFileException
+	 * @throws IOException
+	 * @throws LineUnavailableException
+	 */
 	public static void main(String[] args) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		ClassroomHeroes game = new ClassroomHeroes();
 		game.start();

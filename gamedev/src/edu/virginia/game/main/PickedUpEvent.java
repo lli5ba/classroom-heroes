@@ -9,5 +9,5 @@ public class PickedUpEvent extends Event {
 	public PickedUpEvent(String eventType, IEventDispatcher source) {
 		super(eventType, source);
 	}
-	
+
 }
