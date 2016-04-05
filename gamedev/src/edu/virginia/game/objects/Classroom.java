@@ -155,14 +155,14 @@ public class Classroom extends DisplayObjectContainer {
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
 			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
-				vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
+				vp.dispatchEvent(new CollisionEvent(CollisionEvent.COLLISION, vp));
 				vp.setPickedUp(true);
 				this.vp1++;
 				System.out.println("Player 1's Number of VP: " + vp1);
 			}
 			
 			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
-				vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
+				vp.dispatchEvent(new CollisionEvent(CollisionEvent.COLLISION, vp));
 				vp.setPickedUp(true);
 				this.vp2++;
 				System.out.println("Player 2's Number of VP: " + vp2);
@@ -188,35 +188,11 @@ public class Classroom extends DisplayObjectContainer {
 	public void openDoor() {
 		//TODO: Leandra
 	}
-	
-		
-
-
-	private void drawProjectiles(Graphics g) {
-		if (vpList != null) {
-			for (PickedUpItem vp : vpList) {
-				if (vp != null) {
-					vp.draw(g);
-				}
-			}
-		}
-		
-
-		if (poisonList != null) {
-			for (PickedUpItem poison : poisonList) {
-				if (poison != null) {
-					poison.draw(g);
-				}
-			}
-		}
-	}
-
 
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		spawnProjectiles();
-		//drawProjectiles(g);
 
 	}
 
