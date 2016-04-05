@@ -1,6 +1,6 @@
 package edu.virginia.game.managers;
 
-import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
 
 /*
@@ -91,7 +91,7 @@ public class LevelManager implements IEventListener {
 	}
 
 	@Override
-	public void handleEvent(Event event) {
+	public void handleEvent(GameEvent event) {
 		// TODO Auto-generated method stub
 
 	}

@@ -34,7 +34,7 @@ public class EventDispatcher implements IEventDispatcher {
 	}
 
 	@Override
-	public void dispatchEvent(Event event) {
+	public void dispatchEvent(GameEvent event) {
 		if (observers.containsKey(event.getEventType())) {
 			for (IEventListener observer : observers.get(event.getEventType())) {
 				try {

@@ -1,4 +1,4 @@
-package edu.virginia.engine.display;
+package edu.virginia.game.managers;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,9 +9,8 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
-import edu.virginia.game.managers.ProjectileManager;
 import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
 
@@ -78,7 +77,7 @@ public class SoundManager implements IEventListener{
 	}
 
 	@Override
-	public void handleEvent(Event event) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+	public void handleEvent(GameEvent event) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		if (event.getEventType().equals(EventTypes.SWING_NET.toString())) {
 			this.netSound();
 		}

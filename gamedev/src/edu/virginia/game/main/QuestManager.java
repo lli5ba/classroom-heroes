@@ -1,14 +1,14 @@
 package edu.virginia.game.main;
 
 import edu.virginia.engine.display.DisplayObject;
-import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.Sprite;
-import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenJuggler;
 import edu.virginia.engine.tween.TweenTransitions;
 import edu.virginia.engine.tween.TweenableParam;
+import edu.virginia.game.objects.PickedUpItem;
 import edu.virginia.engine.tween.TweenEvent;
 
 public class QuestManager implements IEventListener {
@@ -19,7 +19,7 @@ public class QuestManager implements IEventListener {
 	}
 
 	@Override
-	public void handleEvent(Event event) {
+	public void handleEvent(GameEvent event) {
 		if (event.getEventType().equals(PickedUpEvent.KEY_PICKED_UP)) {
 			System.out.println("Quest is complete!");
 			Sprite pickedUpItem = (PickedUpItem) event.getSource();

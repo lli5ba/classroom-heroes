@@ -1,4 +1,6 @@
-package edu.virginia.engine.display;
+package edu.virginia.game.objects;
+
+import edu.virginia.engine.display.AnimatedSprite;
 
 public class PickedUpItem extends AnimatedSprite {
 

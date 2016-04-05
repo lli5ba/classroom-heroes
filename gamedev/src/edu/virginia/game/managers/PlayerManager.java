@@ -3,11 +3,11 @@ package edu.virginia.game.managers;
 import java.awt.event.KeyEvent;
 
 import edu.virginia.engine.display.AnimatedSprite;
-import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.Sprite;
-import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
 import edu.virginia.game.objects.EventTypes;
+import edu.virginia.game.objects.PickedUpItem;
 import edu.virginia.game.objects.Player;
 
 /*
@@ -359,7 +359,7 @@ public class PlayerManager implements IEventListener {
 	}
 
 	@Override
-	public void handleEvent(Event event) {
+	public void handleEvent(GameEvent event) {
 		if (event.getEventType().equals(EventTypes.POISON_PLAYER.toString())) {
 			// should be dispatched by the player
 			Player player = (Player) event.getSource();
