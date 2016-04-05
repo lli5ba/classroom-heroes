@@ -46,7 +46,7 @@ public class Classroom extends DisplayObjectContainer{
 		this.addChild(boss);
 		
 		/* Generate Students */
-		Student student0 = new Student("Student0", "0");
+		Student student0 = new Student("Student0", "0", "back");
 		this.addChild(student0);
 		student0.setPosition(
 				this.getWidth()*.5, this.getHeight()*.742);

@@ -25,13 +25,15 @@ public class Student extends AnimatedSprite{
 	private boolean poisoned;
 	private boolean dead;
 	private StudentHealthBar healthBar;
+	private String direction; //for falling and floating animations, "back", "left" or "right"
 	
-	public Student(String id, String styleCode)
+	public Student(String id, String styleCode, String fallDir)
 	{
 		 /* super(id, "student/student-default-" + styleCode + ".png", 
 				"student/student-spritesheet-" + styleCode + ".png", 
 				"recources/student/student-spritesheet-specs-" + styleCode + ".txt"); */
 		super(id, "student/student-default-" + styleCode + ".png");
+		this.direction = fallDir;
 		this.maxHealth = 20; //FIXME: should depend on what level we are on
 		this.currentHealth = maxHealth;
 		this.healthBar = new StudentHealthBar(id + "-healthBar");
@@ -88,6 +90,7 @@ public class Student extends AnimatedSprite{
 				double newHealth = this.currentHealth - percentToDrain * this.maxHealth;
 				if(newHealth < 0) {
 					this.currentHealth = 0;
+					//FIXME: this.animateOnce("fall" + Dir);
 					this.dead = true;
 				} else {
 					this.currentHealth = newHealth;
@@ -98,6 +101,7 @@ public class Student extends AnimatedSprite{
 		}
 	}
 	
+
 	@Override
 	public void draw(Graphics g){
 		super.draw(g); //draws children
