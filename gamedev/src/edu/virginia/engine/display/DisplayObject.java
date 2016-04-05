@@ -382,7 +382,8 @@ public class DisplayObject extends EventDispatcher {
 	 * */
 	protected void applyTransformations(Graphics2D g2d) {
 		g2d.setComposite(makeComposite(this.alpha));
-		g2d.translate(this.getxPos(), this.getyPos());
+		g2d.translate(this.getxPos()-this.getOriginalHitbox().getX(), 
+				this.getyPos()-this.getOriginalHitbox().getY());
 		g2d.rotate(this.getRotation(), this.pivotPoint.getX(), this.pivotPoint.getY());
 		g2d.scale(this.getScaleX(), this.getScaleY());
 		
@@ -395,7 +396,8 @@ public class DisplayObject extends EventDispatcher {
 	protected void reverseTransformations(Graphics2D g2d) {
 		g2d.scale((1/this.getScaleX()), (1/this.getScaleY()));
 		g2d.rotate(-this.getRotation(), this.pivotPoint.getX(), this.pivotPoint.getY());
-		g2d.translate(-this.getxPos(), -this.getyPos());
+		g2d.translate(-(this.getxPos()-this.getOriginalHitbox().getX()), 
+				-(this.getyPos()-this.getOriginalHitbox().getY()));
 		
 		
 		g2d.setComposite(makeComposite(1.0f));

@@ -33,7 +33,6 @@ public class Classroom extends DisplayObjectContainer{
 				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 2);
 		if(this.gameManager.getNumPlayers() == 1) {
 			//set player2 inactive and invisible
-			System.out.println("making player 2 invisible ");
 			player2.setActive(false);
 			player2.setVisible(false);
 		}

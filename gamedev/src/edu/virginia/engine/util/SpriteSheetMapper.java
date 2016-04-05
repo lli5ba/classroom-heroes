@@ -127,7 +127,7 @@ public class SpriteSheetMapper extends Game implements MouseListener{
 				int yPos = 0;
 				int width = mapper.getCurrentSprite().getUnscaledWidth();
 				int height = mapper.getCurrentSprite().getUnscaledHeight();
-				
+				System.out.println(imageFileName + " Click 1");
 				while (mapper.isWaitingForClick()) {
 					System.out.print(""); // stall until position is set
 				}
@@ -138,6 +138,7 @@ public class SpriteSheetMapper extends Game implements MouseListener{
 				yPos = (int) p1.getY();
 
 				mapper.setWaitingForClick(true);
+				System.out.println(imageFileName + " Click 2");
 				while (mapper.isWaitingForClick()) {
 					System.out.print(""); // stall until position is set
 				}
@@ -157,7 +158,7 @@ public class SpriteSheetMapper extends Game implements MouseListener{
 		
 		writer.close();
 		writerOnly.close();
-		
+		System.out.println("Done");
 	}
 
 	public static int calcHeight(Position p1, Position p2) {

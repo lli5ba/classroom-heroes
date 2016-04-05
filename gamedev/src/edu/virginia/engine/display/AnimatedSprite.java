@@ -200,9 +200,9 @@ public class AnimatedSprite extends Sprite {
 				if (spriteMap.containsKey(currentAnimation) 
 						&& spriteMap.get(currentAnimation).size() >= (this.currentFrame + 1)) {
 					
-					BufferedImage current = spriteMap.get(currentAnimation).get(this.currentFrame).getImage();
+					this.setImage(spriteMap.get(currentAnimation).get(this.currentFrame).getImage());
 					this.setOriginalHitbox(spriteMap.get(currentAnimation).get(this.currentFrame).getHitbox());
-					this.setImage(current);
+					
 				}
 				this.increaseFrame();
 				this.gameClockAnimation.resetGameClock();
