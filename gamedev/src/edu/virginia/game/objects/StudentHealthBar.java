@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-public class StudentHealthBar extends Rectangle, DisplayObjectContainer{
+public class StudentHealthBar extends Rectangle {
 
 	public StudentHealthBar() {
 		// TODO Auto-generated constructor stub
