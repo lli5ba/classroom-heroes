@@ -39,24 +39,33 @@ public class Classroom extends DisplayObjectContainer{
 	public static int poisoncount = 5;
 	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
+	ArrayList<Student> studentList = new ArrayList<Student>();
 	
 	public Classroom(String id) {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
 		player1 = new Player("Player1", "player/player1.png", 
-				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 1);
+				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 1);
 		player2 = new Player("Player2", "player/player1.png", 
-				"player/player1sheet.png", "resources/player/player1sheetspecs.txt", 2);
+				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 2);
 		if(this.gameManager.getNumPlayers() == 1) {
 			//set player2 inactive and invisible
-			System.out.println("making player 2 invisible ");
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
+		
+		
 		boss = new Boss("Boss", "Mario.png");
 		
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(boss);
+		
+		/* Generate Students */
+		Student student0 = new Student("Student0", "0", "back");
+		this.addChild(student0);
+		student0.setPosition(
+				this.getWidth()*.5, this.getHeight()*.742);
+		this.studentList.add(student0);
 		
 		this.player1.setPosition(
 				this.getWidth()*.08, this.getHeight()*.742);
@@ -167,6 +176,7 @@ public class Classroom extends DisplayObjectContainer{
 	public void update(ArrayList<String> pressedKeys){
 		super.update(pressedKeys); //updates children
 		this.checkVPCollisions(pressedKeys);
+		
 	}
 
 }

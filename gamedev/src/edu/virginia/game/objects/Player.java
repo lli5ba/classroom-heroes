@@ -136,11 +136,11 @@ public class Player extends AnimatedSprite {
 				// animation overrides walking animation
 
 				if (this.isPlaying() && !this.getCurrentAnimation().contains("net")) {
-					System.out.println("STOPPING\n");
+					//System.out.println("STOPPING\n");
 					this.stopAnimation();
 				}
 
-				this.animateOnce("net" + currentDir, 10);
+				this.animateOnce("net" + currentDir, 5);
 				/*
 				 * Move this to Classroom class for(PickedUpItem vp : vpList) {
 				 * if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {

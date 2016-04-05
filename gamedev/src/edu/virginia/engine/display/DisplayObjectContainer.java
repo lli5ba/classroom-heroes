@@ -148,9 +148,11 @@ public class DisplayObjectContainer extends DisplayObject{
 	//fix hitbox methods to work globally
 	public Rectangle getHitboxGlobal() {
 		Rectangle globalHitbox = new Rectangle();
-		globalHitbox.setBounds((int)this.getxPosGlobal(), (int)this.getyPosGlobal(), 
-				(int) (this.getUnscaledWidth()*this.getScaleX()), 
-				(int) (this.getUnscaledHeight()*this.getScaleY()));
+		globalHitbox.setBounds(
+				(int) (this.getxPosGlobal() + this.getOriginalHitbox().getX()), 
+				(int) (this.getyPosGlobal() + this.getOriginalHitbox().getY()), 
+				(int) (this.getOriginalHitbox().getWidth()*this.getScaleXGlobal()), 
+				(int) (this.getOriginalHitbox().getHeight()*this.getScaleYGlobal()));
 		return globalHitbox;
 	}
 	
@@ -158,14 +160,32 @@ public class DisplayObjectContainer extends DisplayObject{
 		if (!this.hasParentObject()) {
 			return this.getxPos();
 		} else {
-			return this.getxPos() + this.getParentObject().getxPosGlobal();
+			return this.getxPos()*this.getParentObject().getScaleX() 
+					+ this.getParentObject().getxPosGlobal();
 		}
 	}
 	public double getyPosGlobal() {
 		if (!this.hasParentObject()) {
 			return this.getyPos();
 		} else {
-			return this.getyPos() + this.getParentObject().getyPosGlobal();
+			return this.getyPos()*this.getParentObject().getScaleY() 
+					+ this.getParentObject().getyPosGlobal();
+		}
+	}
+	
+	public double getScaleXGlobal() {
+		if (!this.hasParentObject()) {
+			return this.getScaleX();
+		} else {
+			return this.getScaleX() * this.getParentObject().getScaleXGlobal();
+		}
+	}
+	
+	public double getScaleYGlobal() {
+		if (!this.hasParentObject()) {
+			return this.getScaleY();
+		} else {
+			return this.getScaleY() * this.getParentObject().getScaleYGlobal();
 		}
 	}
 	

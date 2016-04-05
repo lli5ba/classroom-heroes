@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.events.EventDispatcher;
 import edu.virginia.engine.util.Position;
-import edu.virginia.game.main.PickedUpEvent;
 
 /**
  * A very basic display object for a java based gaming engine
@@ -36,8 +35,63 @@ public class DisplayObject extends EventDispatcher {
 	private double scaleY;	//1.0 is actual size
 	private double rotation; //in degrees
 	private float alpha; //1.0f is solid
-	private Rectangle hitbox;
+	private Rectangle originalHitbox; //position of hitbox assuming that the character is Unscaled and at position (0, 0)
+	private Rectangle hitbox; //current hitbox moved and scaled with character
 	private boolean onGround;
+	
+	/**
+	 * Constructors: can pass in the id OR the id and image's file path and
+	 * position OR the id and a buffered image and position
+	 */
+	public DisplayObject(String id) {
+		this.setId(id);
+		this.setPivotPoint(new Position(0, 0));
+		this.setVisible(true);
+		this.setAlpha(1.0f);
+		this.position = (new Position(0, 0));
+		this.setRotationDegrees(0);
+		this.setScaleX(1.0);
+		this.setScaleY(1.0);
+		this.setHitbox(hitbox);
+		this.setOriginalHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setOnGround(false);
+		
+	}
+
+
+	public DisplayObject(String id, String fileName) {
+		this.setId(id);
+		this.setPivotPoint(new Position(0, 0));
+		this.setImage(fileName);
+		this.setVisible(true);
+		this.setAlpha(1.0f);
+		this.position = (new Position(0, 0));
+		this.setRotationDegrees(0);
+		this.setScaleX(1.0);
+		this.setScaleY(1.0);
+		this.setOriginalHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setOnGround(false);
+	}
+	
+	public DisplayObject(String id, String fileName, 
+			double xPos, double yPos) {
+		this.setId(id);
+		this.setPivotPoint(new Position(0, 0));
+		this.setImage(fileName);
+		this.setVisible(true);
+		this.setAlpha(1.0f);
+		this.position = (new Position(xPos, yPos));
+		this.setRotationDegrees(0);
+		this.setScaleX(1.0);
+		this.setScaleY(1.0);
+		this.setOriginalHitbox(new Rectangle((int)0, (int)0, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setHitbox(new Rectangle((int)xPos, (int)yPos, this.getUnscaledWidth(), this.getUnscaledHeight()));
+		this.setOnGround(false);
+	}
+	
+	
 	/*
 	 * Getters and Setters
 	 */
@@ -62,13 +116,13 @@ public class DisplayObject extends EventDispatcher {
 	
 	private void moveHitbox() {
 		Rectangle newHitbox = new Rectangle();
-		newHitbox.setBounds((int)this.getxPos(), (int)this.getyPos(), 
-				(int) (this.getUnscaledWidth()*this.scaleX), 
-				(int) (this.getUnscaledHeight()*this.scaleY));
+		newHitbox.setBounds((int)(this.getxPos() + this.getOriginalHitbox().getX()), 
+				(int) (this.getyPos() + this.getOriginalHitbox().getY()), 
+				(int) (this.getOriginalHitbox().getWidth()*this.scaleX), 
+				(int) (this.getOriginalHitbox().getHeight()*this.scaleY));
 		this.setHitbox(newHitbox);
 	}
 	
-
 	
 	public void obstacleCollision(DisplayObject sprite){
 		Rectangle obstacle = sprite.getHitbox();
@@ -214,105 +268,6 @@ public class DisplayObject extends EventDispatcher {
 		this.pivotPoint.setX(x);
 		this.pivotPoint.setY(y);	
 	}
-	
-	/**
-	 * Constructors: can pass in the id OR the id and image's file path and
-	 * position OR the id and a buffered image and position
-	 */
-	public DisplayObject(String id) {
-		this.setId(id);
-		this.setAlpha(1.0f);
-		this.setPivotPoint(new Position(0, 0));
-		this.setPosition(new Position(0, 0));
-		this.setRotationDegrees(0);
-		this.setScaleX(1.0);
-		this.setScaleY(1.0);
-		this.setVisible(false);
-		this.displayImage = null;
-		
-	}
-
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DisplayObject other = (DisplayObject) obj;
-		if (Float.floatToIntBits(alpha) != Float.floatToIntBits(other.alpha))
-			return false;
-		if (displayImage == null) {
-			if (other.displayImage != null)
-				return false;
-		} else if (!compareImages(displayImage, other.displayImage))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (parent == null) {
-			if (other.parent != null)
-				return false;
-		} else if (!parent.equals(other.parent))
-			return false;
-		if (pivotPoint == null) {
-			if (other.pivotPoint != null)
-				return false;
-		} else if (!pivotPoint.equals(other.pivotPoint))
-			return false;
-		if (position == null) {
-			if (other.position != null)
-				return false;
-		} else if (!position.equals(other.position))
-			return false;
-		if (Double.doubleToLongBits(rotation) != Double.doubleToLongBits(other.rotation))
-			return false;
-		if (Double.doubleToLongBits(scaleX) != Double.doubleToLongBits(other.scaleX))
-			return false;
-		if (Double.doubleToLongBits(scaleY) != Double.doubleToLongBits(other.scaleY))
-			return false;
-		if (visible != other.visible)
-			return false;
-		return true;
-	}
-
-	public DisplayObject(String id, String fileName) {
-		this.setId(id);
-		this.setPivotPoint(new Position(0, 0));
-		this.setImage(fileName);
-		this.setVisible(true);
-		this.setAlpha(1.0f);
-		this.setPosition(new Position(0, 0));
-		this.setRotationDegrees(0);
-		this.setScaleX(1.0);
-		this.setScaleY(1.0);
-		Rectangle hitbox = new Rectangle();
-		hitbox.setBounds(0, 0, this.getUnscaledWidth(), this.getUnscaledHeight());
-		this.setHitbox(hitbox);
-		this.setOnGround(false);
-	}
-	
-	public DisplayObject(String id, String fileName, 
-			double xPos, double yPos) {
-		this.setId(id);
-		this.setPivotPoint(new Position(0, 0));
-		this.setImage(fileName);
-		this.setVisible(true);
-		this.setAlpha(1.0f);
-		this.setPosition(new Position(xPos, yPos));
-		this.setRotationDegrees(0);
-		this.setScaleX(1.0);
-		this.setScaleY(1.0);
-		Rectangle hitbox = new Rectangle();
-		hitbox.setBounds((int)xPos, (int)yPos, this.getUnscaledWidth(), this.getUnscaledHeight());
-		this.setHitbox(hitbox);
-		this.setOnGround(false);
-	}
 
 	public void setId(String id) {
 		this.id = id;
@@ -350,6 +305,14 @@ public class DisplayObject extends EventDispatcher {
 			System.err.println("[DisplayObject.setImage] ERROR: " + imageName + " does not exist!");
 		}
 		this.setPivotPoint(new Position(this.getUnscaledWidth()/2,this.getUnscaledHeight()/2));
+	}
+	
+	public Rectangle getOriginalHitbox() {
+		return originalHitbox;
+	}
+
+	public void setOriginalHitbox(Rectangle originalHitbox) {
+		this.originalHitbox = originalHitbox;
 	}
 
 
@@ -419,7 +382,8 @@ public class DisplayObject extends EventDispatcher {
 	 * */
 	protected void applyTransformations(Graphics2D g2d) {
 		g2d.setComposite(makeComposite(this.alpha));
-		g2d.translate(this.getxPos(), this.getyPos());
+		g2d.translate(this.getxPos()-this.getOriginalHitbox().getX(), 
+				this.getyPos()-this.getOriginalHitbox().getY());
 		g2d.rotate(this.getRotation(), this.pivotPoint.getX(), this.pivotPoint.getY());
 		g2d.scale(this.getScaleX(), this.getScaleY());
 		
@@ -432,7 +396,8 @@ public class DisplayObject extends EventDispatcher {
 	protected void reverseTransformations(Graphics2D g2d) {
 		g2d.scale((1/this.getScaleX()), (1/this.getScaleY()));
 		g2d.rotate(-this.getRotation(), this.pivotPoint.getX(), this.pivotPoint.getY());
-		g2d.translate(-this.getxPos(), -this.getyPos());
+		g2d.translate(-(this.getxPos()-this.getOriginalHitbox().getX()), 
+				-(this.getyPos()-this.getOriginalHitbox().getY()));
 		
 		
 		g2d.setComposite(makeComposite(1.0f));
@@ -472,6 +437,54 @@ public class DisplayObject extends EventDispatcher {
 	  }
 
 	  return true;
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DisplayObject other = (DisplayObject) obj;
+		if (Float.floatToIntBits(alpha) != Float.floatToIntBits(other.alpha))
+			return false;
+		if (displayImage == null) {
+			if (other.displayImage != null)
+				return false;
+		} else if (!compareImages(displayImage, other.displayImage))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		if (pivotPoint == null) {
+			if (other.pivotPoint != null)
+				return false;
+		} else if (!pivotPoint.equals(other.pivotPoint))
+			return false;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		if (Double.doubleToLongBits(rotation) != Double.doubleToLongBits(other.rotation))
+			return false;
+		if (Double.doubleToLongBits(scaleX) != Double.doubleToLongBits(other.scaleX))
+			return false;
+		if (Double.doubleToLongBits(scaleY) != Double.doubleToLongBits(other.scaleY))
+			return false;
+		if (visible != other.visible)
+			return false;
+		return true;
 	}
 
 }

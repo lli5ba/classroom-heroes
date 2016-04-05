@@ -1,43 +1,42 @@
 package edu.virginia.game.objects;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
+<<<<<<< HEAD
 public class StudentHealthBar extends Rectangle {
+=======
+import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.engine.display.Sprite;
+>>>>>>> cd7e4de74449f626be652350717bb4479ac9aa2a
 
-	public StudentHealthBar() {
-		// TODO Auto-generated constructor stub
+public class StudentHealthBar extends Sprite {
+
+	private Sprite greenBar;
+	
+	public StudentHealthBar(String id) {
+		super(id, "student/student-healthbar-red.png"); //red bar is in the back
+		greenBar = new Sprite(id + "-green", "student/student-healthbar-green.png");
+		this.addChild(greenBar);
 	}
-
-	public StudentHealthBar(Rectangle r) {
-		super(r);
-		// TODO Auto-generated constructor stub
+	
+	public void setHealthBar(double currHealth, double maxHealth) {
+		this.greenBar.setScaleX(currHealth/maxHealth);
 	}
-
-	public StudentHealthBar(Point p) {
-		super(p);
-		// TODO Auto-generated constructor stub
+	
+	@Override
+	public void draw(Graphics g){
+		super.draw(g); //draws children
+		
 	}
-
-	public StudentHealthBar(Dimension d) {
-		super(d);
-		// TODO Auto-generated constructor stub
-	}
-
-	public StudentHealthBar(int width, int height) {
-		super(width, height);
-		// TODO Auto-generated constructor stub
-	}
-
-	public StudentHealthBar(Point p, Dimension d) {
-		super(p, d);
-		// TODO Auto-generated constructor stub
-	}
-
-	public StudentHealthBar(int x, int y, int width, int height) {
-		super(x, y, width, height);
-		// TODO Auto-generated constructor stub
+	
+	@Override
+	public void update(ArrayList<String> pressedKeys){
+		super.update(pressedKeys); //updates children
+		
 	}
 
 }

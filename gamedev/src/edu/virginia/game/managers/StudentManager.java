@@ -2,6 +2,9 @@ package edu.virginia.game.managers;
 
 import edu.virginia.engine.events.Event;
 import edu.virginia.engine.events.IEventListener;
+import edu.virginia.game.objects.EventTypes;
+import edu.virginia.game.objects.Player;
+import edu.virginia.game.objects.Student;
 
 /*
  * Singleton class that handles all the classmate interactions
@@ -22,7 +25,18 @@ public class StudentManager implements IEventListener{
 
 	@Override
 	public void handleEvent(Event event) {
-		// TODO Auto-generated method stub
+		if (event.getEventType().equals(EventTypes.POISON_STUDENT.toString())) {
+			//should be dispatched by the student
+			Student student = (Student) event.getSource();
+			//player.getPoisonBubbles.animateOnce("poison"); //play animation 
+			student.setPoisoned(true);
+		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
+			//should be dispatched by the student
+			Student student = (Student) event.getSource();
+			 //play animation to show student floating back up
+			student.setDead(false);
+			student.setPoisoned(false);
+		}
 		
 	}
 }
