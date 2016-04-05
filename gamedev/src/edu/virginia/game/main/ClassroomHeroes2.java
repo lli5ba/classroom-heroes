@@ -42,6 +42,7 @@ import edu.virginia.engine.util.Position;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
+import edu.virginia.game.managers.ProjectileManager;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.ItemDetail;
@@ -57,6 +58,7 @@ public class ClassroomHeroes2 extends Game {
 	private static PlayerManager playerManager = PlayerManager.getInstance();
 	private static LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
+	private static ProjectileManager projectileManager = ProjectileManager.getInstance();
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private GameClock gameClock;

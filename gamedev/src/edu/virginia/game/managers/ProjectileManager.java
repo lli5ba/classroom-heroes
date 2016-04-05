@@ -2,6 +2,7 @@ package edu.virginia.game.managers;
 
 import edu.virginia.engine.events.Event;
 import edu.virginia.engine.events.IEventListener;
+import edu.virginia.game.objects.EventTypes;
 
 /*
  * Singleton class that handles all the VP and Poison events
@@ -22,7 +23,9 @@ public class ProjectileManager implements IEventListener {
 
 	@Override
 	public void handleEvent(Event event) {
-		// TODO Auto-generated method stub
+		if(event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
+			
+		}
 
 	}
 }
