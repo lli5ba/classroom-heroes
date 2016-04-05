@@ -5,13 +5,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-
-<<<<<<< HEAD
-public class StudentHealthBar extends Rectangle {
-=======
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Sprite;
->>>>>>> cd7e4de74449f626be652350717bb4479ac9aa2a
 
 public class StudentHealthBar extends Sprite {
 

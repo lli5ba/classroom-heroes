@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package edu.virginia.game.objects;
 
 import edu.virginia.engine.display.AnimatedSprite;
@@ -8,11 +7,6 @@ import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 
-=======
-
-package edu.virginia.game.objects;
-
->>>>>>> cd7e4de74449f626be652350717bb4479ac9aa2a
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -47,16 +41,11 @@ public class Student extends AnimatedSprite{
 		super(id, "student/student-default-" + styleCode + ".png");
 		this.direction = fallDir;
 		this.maxHealth = 20; //FIXME: should depend on what level we are on
-<<<<<<< HEAD
-		this.currentHealth = maxHealth; 
-		//this.addChild(new Rectangle());
-=======
 		this.currentHealth = maxHealth;
 		this.healthBar = new StudentHealthBar(id + "-healthBar");
 		this.addChild(healthBar);
 		this.healthBar.setPosition(10, -5); //float over head
 		this.dead = false;
->>>>>>> cd7e4de74449f626be652350717bb4479ac9aa2a
 		this.poisoned = false;
 		healthDrainClock = new GameClock();
 		
@@ -129,10 +118,4 @@ public class Student extends AnimatedSprite{
 		super.update(pressedKeys); //updates children
 		this.drainHealthIfPoisoned(pressedKeys);
 	}
-
-	
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> cd7e4de74449f626be652350717bb4479ac9aa2a
