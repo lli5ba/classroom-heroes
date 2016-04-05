@@ -203,7 +203,24 @@ public class DisplayObject extends EventDispatcher {
 		this.position = position;
 		this.moveHitbox();
 	}
+	public Position getCenterPos() {
+		return new Position(this.getxPos() + this.getWidth()/2,
+							this.getyPos() + this.getHeight()/2);
+	}
 
+	public void setCenterPos(double x, double y) {
+		this.position.setX(x - this.getWidth()/2);
+		this.position.setY(y - this.getHeight()/2);
+		this.moveHitbox();
+	}
+	
+	public void setCenterPos(Position p) {
+		this.position = new Position(p.getX() - this.getWidth()/2,
+				p.getY() - this.getHeight()/2);
+		this.moveHitbox();
+	
+	}
+	
 	public Position getPivotPoint() {
 		return pivotPoint;
 	}
