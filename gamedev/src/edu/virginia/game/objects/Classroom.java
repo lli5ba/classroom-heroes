@@ -39,7 +39,10 @@ public class Classroom extends DisplayObjectContainer {
 	private Player player2;
 	private Boss boss;
 	private GameClock gameClock;
-	public static final double SPAWN_INTERVAL = 1500;
+	private GameClock poisonClock;
+	private GameClock vpClock;
+	public static final double VP_SPAWN_INTERVAL = 1500;
+	public static final double POISON_SPAWN_INTERVAL = 3000;
 	private static boolean hit = false;
 	public static int vp1 = 0;
 	public static int vp2 = 0;
@@ -50,12 +53,18 @@ public class Classroom extends DisplayObjectContainer {
 
 	public Classroom(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
-		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
-		player2 = new Player("Player2", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
-		if (this.gameManager.getNumPlayers() == 1) {
-			// set player2 inactive and invisible
+
+		/* GameClocks */
+		this.gameClock = new GameClock();
+		this.poisonClock = new GameClock();
+		this.vpClock = new GameClock();
+		
+		player1 = new Player("Player1", "player/player1.png", 
+				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 1);
+		player2 = new Player("Player2", "player/player1.png", 
+				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 2);
+		if(this.gameManager.getNumPlayers() == 1) {
+			//set player2 inactive and invisible
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
@@ -83,8 +92,8 @@ public class Classroom extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 
 		mySoundManager = new SoundManager();
-		mySoundManager.LoadMusic("bg", "theme.wav");
-		mySoundManager.PlayMusic("bg");
+		//mySoundManager.LoadMusic("bg", "theme.wav");
+		//mySoundManager.PlayMusic("bg");
 	}
 
 	public void netSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
@@ -108,18 +117,19 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	public void spawnVP() {
-		if (myTweenJuggler != null) {
-			VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
-					"resources/projectiles/vpsheetspecs.txt");
-
+		if(myTweenJuggler != null) {
+			VP vp = new VP("VP", "projectiles/vp0.png", 
+					"projectiles/vpsheet.png", "resources/projectiles/vpsheetspecs.txt");
+			vp.setCenterPos(this.boss.getCenterPos());
 			vp.addEventListener(playerManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(playerManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			Position pos = generatePosition(400, 20, 1000);
-			tween2.animate(TweenableParam.POS_X, 400, pos.getX(), 10000);
-			tween2.animate(TweenableParam.POS_Y, 20, pos.getY(), 10000);
+			Position pos = generatePosition(vp.getxPos(), vp.getyPos(), 1000);
+			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), 10000);
+			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 10000);
 			this.vpList.add(vp);
+			this.addChild(vp);
 			this.hit = false;
 			// FIXME: hit sometimes gives 2 vp; i think due to hitbox??
 		}
@@ -129,14 +139,16 @@ public class Classroom extends DisplayObjectContainer {
 		if (myTweenJuggler != null) {
 			// FIXME: sprite sheet not implemented
 			Poison poison = new Poison("Poison", "projectiles/poison.png");
+			poison.setCenterPos(this.boss.getCenterPos());
 			poison.addEventListener(playerManager, PickedUpEvent.KEY_PICKED_UP);
 			poison.addEventListener(playerManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			Position pos = generatePosition(400, 20, 1000);
-			tween2.animate(TweenableParam.POS_X, 400, pos.getX(), 10000);
-			tween2.animate(TweenableParam.POS_Y, 20, pos.getY(), 10000);
+			Position pos = generatePosition(poison.getxPos(), poison.getyPos(), 1000);
+			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 10000);
+			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 10000);
 			this.poisonList.add(poison);
+			this.addChild(poison);
 		}
 	}
 
@@ -159,17 +171,28 @@ public class Classroom extends DisplayObjectContainer {
 			}
 		}
 	}
-
+	
 	private void spawnProjectiles() {
-		if (this.gameClock != null) {
-			if (this.gameClock.getElapsedTime() > (SPAWN_INTERVAL)) {
+		if (this.vpClock != null) {
+			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
 				spawnVP();
+				this.vpClock.resetGameClock();
+			}
+		}
+		if (this.poisonClock != null) {
+			if (this.poisonClock.getElapsedTime() > (POISON_SPAWN_INTERVAL)) {
 				spawnPoison();
-				// FIXME: may need to spawn poison at different intervals
-				this.gameClock.resetGameClock();
+				this.poisonClock.resetGameClock();
 			}
 		}
 	}
+
+	public void openDoor() {
+		//TODO: Leandra
+	}
+	
+		
+
 
 	private void drawProjectiles(Graphics g) {
 		if (vpList != null) {
@@ -179,6 +202,7 @@ public class Classroom extends DisplayObjectContainer {
 				}
 			}
 		}
+		
 
 		if (poisonList != null) {
 			for (PickedUpItem poison : poisonList) {
@@ -189,15 +213,12 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 
-	public void openDoor() {
-		// TODO: Leandra
-	}
 
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		spawnProjectiles();
-		drawProjectiles(g);
+		//drawProjectiles(g);
 
 	}
 
@@ -205,6 +226,10 @@ public class Classroom extends DisplayObjectContainer {
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		this.checkVPCollisions(pressedKeys);
+
+		if (myTweenJuggler != null) {
+			myTweenJuggler.nextFrame();
+		}
 
 	}
 
