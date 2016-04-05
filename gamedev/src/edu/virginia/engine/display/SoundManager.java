@@ -9,12 +9,27 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class SoundManager {
+import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.IEventListener;
+import edu.virginia.game.managers.ProjectileManager;
+import edu.virginia.game.objects.EventTypes;
+import edu.virginia.game.objects.Player;
+
+public class SoundManager implements IEventListener{
 	HashMap<String, String> soundeffects;
 	HashMap<String, String> music;
 	AudioInputStream audioIn;
+	AudioInputStream audioInSoundEffect;
 	Clip clipPlaying;
+	Clip clipPlayingSoundEffect;
+	private static volatile SoundManager instance;
 
+	public static SoundManager getInstance() throws LineUnavailableException {
+		if (instance == null) {
+			instance = new SoundManager();
+		}
+		return instance;
+	}
 	// sound effects are short and don't loop
 	public void LoadSoundEffect(String id, String filename) {
 		soundeffects.put(id, filename);
@@ -22,13 +37,14 @@ public class SoundManager {
 	}
 
 	public void PlaySoundEffect(String id) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-		clipPlaying.stop();
+		clipPlayingSoundEffect.stop();
 		if (soundeffects.containsKey(id)) {
 			String filename = soundeffects.get(id);
-			audioIn = AudioSystem.getAudioInputStream(SoundManager.class.getResource(filename));
-			clipPlaying = AudioSystem.getClip();
-			clipPlaying.open(audioIn);
-			clipPlaying.start();
+			audioInSoundEffect = AudioSystem.getAudioInputStream(SoundManager.class.getResource(filename));
+			clipPlayingSoundEffect = AudioSystem.getClip();
+			clipPlayingSoundEffect.open(audioInSoundEffect);
+			clipPlayingSoundEffect.start();
+			
 		} else {
 			return;
 		}
@@ -53,9 +69,24 @@ public class SoundManager {
 	}
 
 	public SoundManager() throws LineUnavailableException {
+		instance = this;
 		soundeffects = new HashMap<String, String>();
 		music = new HashMap<String, String>();
 		clipPlaying = AudioSystem.getClip();
+		clipPlayingSoundEffect = AudioSystem.getClip();
 
+	}
+
+	@Override
+	public void handleEvent(Event event) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+		if (event.getEventType().equals(EventTypes.SWING_NET.toString())) {
+			this.netSound();
+		}
+		
+	}
+	
+	public void netSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+		this.LoadSoundEffect("net", "net.wav");
+		this.PlaySoundEffect("net");
 	}
 }
