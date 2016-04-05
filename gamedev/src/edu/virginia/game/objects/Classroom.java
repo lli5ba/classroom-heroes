@@ -1,8 +1,12 @@
 package edu.virginia.game.objects;
 
 import java.awt.Graphics;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.PickedUpItem;
@@ -22,13 +26,14 @@ import edu.virginia.game.managers.StudentManager;
 
 //This class represents a game screen object to be used for levels and hallway scenes.
 //This way you can instantiate a GameScreen and add game elements as children.
-public class Classroom extends DisplayObjectContainer{
-	
-	private static PlayerManager playerManager = PlayerManager.getInstance();
-	private static LevelManager levelManager = LevelManager.getInstance();
+public class Classroom extends DisplayObjectContainer {
+
+	private PlayerManager playerManager = PlayerManager.getInstance();
+	private LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
-	private static StudentManager studentManager = StudentManager.getInstance();
-	private static TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
+	private StudentManager studentManager = StudentManager.getInstance();
+	private SoundManager mySoundManager;
+	private TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private Player player1;
 	private Player player2;
 	private Boss boss;
@@ -43,10 +48,10 @@ public class Classroom extends DisplayObjectContainer{
 	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
-	
-	public Classroom(String id) {
+
+	public Classroom(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
-		
+
 		/* GameClocks */
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
@@ -61,35 +66,35 @@ public class Classroom extends DisplayObjectContainer{
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
-		
-		
+
 		boss = new Boss("Boss", "Mario.png");
-		
+
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(boss);
-		
+
 		/* Generate Students */
 		Student student0 = new Student("Student0", "0", "back");
 		this.addChild(student0);
-		student0.setPosition(
-				this.getWidth()*.5, this.getHeight()*.742);
+		student0.setPosition(this.getWidth() * .5, this.getHeight() * .742);
 		this.studentList.add(student0);
-		
-		this.player1.setPosition(
-				this.getWidth()*.08, this.getHeight()*.742);
-		
-		this.player2.setPosition(
-				this.getWidth()*.814, this.getHeight()*.742);
-		
-		this.boss.setPosition(this.getWidth()*.400, this.getHeight()*.003);
+
+		this.player1.setPosition(this.getWidth() * .08, this.getHeight() * .742);
+
+		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
+
+		this.boss.setPosition(this.getWidth() * .400, this.getHeight() * .003);
 		this.boss.setScaleX(.75);
 		this.boss.setScaleY(.75);
-		
+
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
+		
+		mySoundManager = new SoundManager();
+		//mySoundManager.LoadMusic("bg", "theme.wav");
+		//mySoundManager.PlayMusic("bg");
 	}
-	
+
 	/** Generates random position on semi-circle for spawning poison/VP **/
 	public Position generatePosition(double centerx, double centery, double radius) {
 		double ang_min = (0);
@@ -103,7 +108,7 @@ public class Classroom extends DisplayObjectContainer{
 		// System.out.println("X:" + x);
 		return new Position(x, y);
 	}
-	
+
 	public void spawnVP() {
 		if(myTweenJuggler != null) {
 			VP vp = new VP("VP", "projectiles/vp0.png", 
@@ -122,10 +127,10 @@ public class Classroom extends DisplayObjectContainer{
 			// FIXME: hit sometimes gives 2 vp; i think due to hitbox??
 		}
 	}
-	
+
 	public void spawnPoison() {
-		if(myTweenJuggler != null) {
-			//FIXME: sprite sheet not implemented
+		if (myTweenJuggler != null) {
+			// FIXME: sprite sheet not implemented
 			Poison poison = new Poison("Poison", "projectiles/poison.png");
 			poison.setCenterPos(this.boss.getCenterPos());
 			poison.addEventListener(playerManager, PickedUpEvent.KEY_PICKED_UP);
@@ -142,10 +147,9 @@ public class Classroom extends DisplayObjectContainer{
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 
-		
 	}
 	
-	private void spawnProjectile() {
+	private void spawnProjectiles() {
 		if (this.vpClock != null) {
 			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
 				spawnVP();
@@ -159,42 +163,51 @@ public class Classroom extends DisplayObjectContainer{
 			}
 		}
 	}
-	
+
 	public void openDoor() {
 		//TODO: Leandra
 	}
 	
-	@Override
-	public void draw(Graphics g){
-		super.draw(g); //draws children
-		spawnProjectile();
 		
-		/*if (poisonList != null) {	
-			for(PickedUpItem poison : poisonList) {
-				if(poison != null) {
-					poison.draw(g);
-				}
-			}
-		} */
-		
-		/*if(vpList != null) {
+
+
+	private void drawProjectiles(Graphics g) {
+		if (vpList != null) {
 			for (PickedUpItem vp : vpList) {
 				if (vp != null) {
 					vp.draw(g);
 				}
 			}
-		}*/
+		}
 		
-		
+
+		if (poisonList != null) {
+			for (PickedUpItem poison : poisonList) {
+				if (poison != null) {
+					poison.draw(g);
+				}
+			}
+		}
 	}
-	
+
+
 	@Override
-	public void update(ArrayList<String> pressedKeys){
-		super.update(pressedKeys); //updates children
+	public void draw(Graphics g) {
+		super.draw(g); // draws children
+		spawnProjectiles();
+		//drawProjectiles(g);
+
+	}
+
+	@Override
+	public void update(ArrayList<String> pressedKeys) {
+		super.update(pressedKeys); // updates children
 		this.checkVPCollisions(pressedKeys);
+
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
+
 	}
 
 }
