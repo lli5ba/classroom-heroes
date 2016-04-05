@@ -11,6 +11,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.display.SoundManager;
+import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenJuggler;
@@ -40,7 +41,8 @@ public class Classroom extends DisplayObjectContainer {
 	private GameClock gameClock;
 	public static final double SPAWN_INTERVAL = 1500;
 	private static boolean hit = false;
-	public static int vpcount = 0;
+	public static int vp1 = 0;
+	public static int vp2 = 0;
 	public static int poisoncount = 5;
 	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
@@ -59,11 +61,10 @@ public class Classroom extends DisplayObjectContainer {
 		}
 
 		boss = new Boss("Boss", "Mario.png");
-
+		
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(boss);
-
 		/* Generate Students */
 		Student student0 = new Student("Student0", "0", "back");
 		this.addChild(student0);
@@ -80,10 +81,16 @@ public class Classroom extends DisplayObjectContainer {
 
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
-		
+
 		mySoundManager = new SoundManager();
 		mySoundManager.LoadMusic("bg", "theme.wav");
 		mySoundManager.PlayMusic("bg");
+	}
+
+	public void netSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+		mySoundManager = new SoundManager();
+		mySoundManager.LoadMusic("net", "net.wav");
+		mySoundManager.PlayMusic("net");
 	}
 
 	/** Generates random position on semi-circle for spawning poison/VP **/
@@ -134,7 +141,23 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
-
+		for (PickedUpItem vp : vpList) {
+			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
+				vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
+				vp.setPickedUp(true);
+				vp1 = player1.getVP();
+				vp1++;
+				System.out.println("Player 1's Number of VP: " + vp1);
+			}
+			
+			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
+				vp.dispatchEvent(new PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
+				vp.setPickedUp(true);
+				vp2 = player2.getVP();
+				vp2++;
+				System.out.println("Player 2's Number of VP: " + vp2);
+			}
+		}
 	}
 
 	private void spawnProjectiles() {

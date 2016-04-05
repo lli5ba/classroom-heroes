@@ -1,11 +1,16 @@
 package edu.virginia.game.objects;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.PickedUpItem;
+import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.util.Position;
 import edu.virginia.game.main.PickedUpEvent;
@@ -19,8 +24,10 @@ public class Player extends AnimatedSprite {
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private LevelManager levelManager = LevelManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
+	private SoundManager soundManager;
 	private int numPlayer;
 	private boolean active; // whether movement works
+	private int vpCount;
 
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
@@ -45,6 +52,10 @@ public class Player extends AnimatedSprite {
 		this.active = active;
 	}
 
+	public int getVP() {
+		return vpCount;
+	}
+
 	public Sprite getNet() {
 		return net;
 	}
@@ -56,6 +67,7 @@ public class Player extends AnimatedSprite {
 			net.setxPos(-(this.getWidth() / 4.0));
 			net.setWidth(this.getHeight());
 			net.setHeight(this.getWidth());
+
 		} else if (position.equals("down")) {
 			// net.setRotationDegrees(90);
 			net.setyPos(this.getHeight());
@@ -136,7 +148,7 @@ public class Player extends AnimatedSprite {
 				// animation overrides walking animation
 
 				if (this.isPlaying() && !this.getCurrentAnimation().contains("net")) {
-					//System.out.println("STOPPING\n");
+					// System.out.println("STOPPING\n");
 					this.stopAnimation();
 				}
 
