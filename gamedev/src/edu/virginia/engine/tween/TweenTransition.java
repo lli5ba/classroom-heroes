@@ -14,7 +14,9 @@ public class TweenTransition {
 	}
 
 	private static double easeInOut(double percentDone) {
-		return Math.pow(percentDone, percentDone);
+		return Math.pow(percentDone, percentDone); //(percent done can't )
 	}
+	
+
 
 }
