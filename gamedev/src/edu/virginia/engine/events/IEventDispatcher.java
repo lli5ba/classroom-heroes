@@ -6,7 +6,7 @@ public interface IEventDispatcher {
 
 	public void removeEventListener(IEventListener listener, String eventType);
 
-	public void dispatchEvent(Event event);
+	public void dispatchEvent(GameEvent event);
 
 	public boolean hasEventListener(IEventListener listener, String eventType);
 }

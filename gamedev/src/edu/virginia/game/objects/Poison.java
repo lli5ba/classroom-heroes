@@ -1,7 +1,5 @@
 package edu.virginia.game.objects;
 
-import edu.virginia.engine.display.PickedUpItem;
-
 public class Poison extends PickedUpItem {
 
 	boolean pickedUp;

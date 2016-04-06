@@ -1,11 +1,11 @@
 package edu.virginia.engine.events;
 
-public class Event {
+public class GameEvent {
 	String eventType;
 	IEventDispatcher source; // the object that created this event with the new
 								// keyword
 
-	public Event(String eventType, IEventDispatcher source) {
+	public GameEvent(String eventType, IEventDispatcher source) {
 		this.eventType = eventType;
 		this.source = source;
 	}

@@ -6,6 +6,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public interface IEventListener {
-	public void handleEvent(Event event) throws LineUnavailableException, IOException, UnsupportedAudioFileException; // equivalent to notify
+	public void handleEvent(GameEvent event) throws LineUnavailableException, IOException, UnsupportedAudioFileException; // equivalent to notify
 
 }

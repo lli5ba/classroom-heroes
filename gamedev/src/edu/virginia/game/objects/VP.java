@@ -2,7 +2,6 @@ package edu.virginia.game.objects;
 
 import java.util.Random;
 
-import edu.virginia.engine.display.PickedUpItem;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.game.main.PickedUpEvent;
 

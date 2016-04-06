@@ -9,10 +9,9 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
-import edu.virginia.engine.display.PickedUpItem;
-import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.events.CollisionEvent;
+import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.tween.TweenJuggler;
 import edu.virginia.engine.tween.TweenTransitions;
@@ -24,6 +23,10 @@ import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 import edu.virginia.game.managers.ProjectileManager;
+<<<<<<< HEAD
+import edu.virginia.game.managers.SoundManager;
+=======
+>>>>>>> 0af037cce39afb87991f83cdd618c275cf043360
 import edu.virginia.game.managers.StudentManager;
 
 //This class represents a game screen object to be used for levels and hallway scenes.
@@ -114,6 +117,15 @@ public class Classroom extends DisplayObjectContainer {
 		return new Position(x, y);
 	}
 
+<<<<<<< HEAD
+	public void spawnVP() {
+		if (myTweenJuggler != null) {
+			VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
+					"resources/projectiles/vpsheetspecs.txt");
+			vp.setCenterPos(this.boss.getCenterPos());
+			vp.addEventListener(projectileManager, EventTypes.PICKUP_VP.toString());
+			vp.addEventListener(playerManager, EventTypes.PICKUP_VP.toString());
+=======
 	public void spawnVP() {
 		if(myTweenJuggler != null) {
 			VP vp = new VP("VP", "projectiles/vp0.png", 
@@ -121,6 +133,7 @@ public class Classroom extends DisplayObjectContainer {
 			vp.setCenterPos(this.boss.getCenterPos());
 			vp.addEventListener(playerManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(playerManager, CollisionEvent.COLLISION);
+>>>>>>> 0af037cce39afb87991f83cdd618c275cf043360
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition(vp.getxPos(), vp.getyPos(), 1000);
@@ -138,8 +151,8 @@ public class Classroom extends DisplayObjectContainer {
 			// FIXME: sprite sheet not implemented
 			Poison poison = new Poison("Poison", "projectiles/poison.png");
 			poison.setCenterPos(this.boss.getCenterPos());
-			poison.addEventListener(playerManager, PickedUpEvent.KEY_PICKED_UP);
-			poison.addEventListener(playerManager, CollisionEvent.COLLISION);
+			poison.addEventListener(projectileManager, EventTypes.PICKUP_POISON.toString());
+			poison.addEventListener(playerManager, EventTypes.PICKUP_POISON.toString());
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition(poison.getxPos(), poison.getyPos(), 1000);
@@ -153,14 +166,14 @@ public class Classroom extends DisplayObjectContainer {
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
 			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
-				vp.dispatchEvent(new CollisionEvent(CollisionEvent.COLLISION, vp));
+				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp1++;
 				System.out.println("Player 1's Number of VP: " + vp1);
 			}
 			
 			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
-				vp.dispatchEvent(new CollisionEvent(CollisionEvent.COLLISION, vp));
+				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp2++;
 				System.out.println("Player 2's Number of VP: " + vp2);

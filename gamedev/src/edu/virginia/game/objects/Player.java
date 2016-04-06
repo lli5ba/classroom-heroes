@@ -9,16 +9,15 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import edu.virginia.engine.display.AnimatedSprite;
-import edu.virginia.engine.display.PickedUpItem;
-import edu.virginia.engine.display.SoundManager;
 import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.events.CollisionEvent;
-import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.util.Position;
 import edu.virginia.game.main.PickedUpEvent;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
+import edu.virginia.game.managers.SoundManager;
 
 public class Player extends AnimatedSprite {
 	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
@@ -161,7 +160,7 @@ public class Player extends AnimatedSprite {
 				}
 
 				this.animateOnce("net" + currentDir, 5);
-				this.dispatchEvent(new Event(EventTypes.SWING_NET.toString(), this));
+				this.dispatchEvent(new GameEvent(EventTypes.SWING_NET.toString(), this));
 				/*
 				 * Move this to Classroom class for(PickedUpItem vp : vpList) {
 				 * if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {

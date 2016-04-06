@@ -1,6 +1,6 @@
 package edu.virginia.game.managers;
 
-import edu.virginia.engine.events.Event;
+import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
 import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
@@ -24,7 +24,7 @@ public class StudentManager implements IEventListener {
 	}
 
 	@Override
-	public void handleEvent(Event event) {
+	public void handleEvent(GameEvent event) {
 		if (event.getEventType().equals(EventTypes.POISON_STUDENT.toString())) {
 			// should be dispatched by the student
 			Student student = (Student) event.getSource();
