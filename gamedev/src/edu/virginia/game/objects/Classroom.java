@@ -310,8 +310,13 @@ public class Classroom extends DisplayObjectContainer {
 			}
 
 		}
+<<<<<<< HEAD
 	}
 
+=======
+	}	
+	
+>>>>>>> cb2c57b17a378103b7f21101951e518c00a518e6
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
 			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
