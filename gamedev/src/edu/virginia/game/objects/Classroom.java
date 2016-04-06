@@ -35,7 +35,7 @@ public class Classroom extends DisplayObjectContainer {
 	private static GameManager gameManager = GameManager.getInstance();
 	private StudentManager studentManager = StudentManager.getInstance();
 	private ProjectileManager projectileManager = ProjectileManager.getInstance();
-	private SoundManager mySoundManager;
+	private SoundManager soundManager;
 	private TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private Player player1;
 	private Player player2;
@@ -48,7 +48,9 @@ public class Classroom extends DisplayObjectContainer {
 	private static boolean hit = false;
 	public static int vp1 = 0;
 	public static int vp2 = 0;
-	public static int poisoncount = 5;
+	public static int vpCount;
+	public static int health1 = 5;
+	public static int health2 = 5;
 	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -60,6 +62,9 @@ public class Classroom extends DisplayObjectContainer {
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
 		this.vpClock = new GameClock();
+		
+		this.addEventListener(soundManager, EventTypes.PICKUP_VP.toString());
+		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
 		
 		player1 = new Player("Player1", "player/player1.png", 
 				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 1);
@@ -93,8 +98,8 @@ public class Classroom extends DisplayObjectContainer {
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 
-		mySoundManager = new SoundManager();
-		mySoundManager.LoadMusic("bg", "theme.wav");
+		soundManager = new SoundManager();
+		soundManager.LoadMusic("bg", "theme.wav");
 		//mySoundManager.PlayMusic("bg");
 	}
 
@@ -161,14 +166,22 @@ public class Classroom extends DisplayObjectContainer {
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp1++;
+				vpCount = this.vp1 + this.vp2;
+				//FIXME: sound
 				System.out.println("Player 1's Number of VP: " + vp1);
+				System.out.println("Player 2's Number of VP: " + vp2);
+				System.out.println("Total number of VP: " + vpCount);
+				//FIXME: connecting vpCount to vpCount of playerstat
 			}
 			
 			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() & pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp2++;
+				vpCount = this.vp1 + this.vp2;
+				System.out.println("Player 1's Number of VP: " + vp1);
 				System.out.println("Player 2's Number of VP: " + vp2);
+				System.out.println("Total number of VP: " + this.vpCount);
 			}
 		}
 	}

@@ -380,6 +380,8 @@ public class PlayerManager implements IEventListener {
 			this.setVpCount(this.vpCount + 1);
 		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
 			
+			//FIXME: getnumplayer
+			//this.setHealth(this.poisonCount-1, this.getNumPlayer());
 		}
 
 	}

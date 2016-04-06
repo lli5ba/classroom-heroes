@@ -87,6 +87,7 @@ public class SoundManager implements IEventListener {
 			this.LoadSoundEffect("walk", "walk.wav");
 			this.PlaySoundEffect("walk");
 			// FIXME: Walk occurs at end of key press
+			// FIXME: can only play walk OR net, not both at same time
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.LoadSoundEffect("vp", "vp.wav");
 			this.PlaySoundEffect("vp");
