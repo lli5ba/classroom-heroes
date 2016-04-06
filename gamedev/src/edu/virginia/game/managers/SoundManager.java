@@ -22,6 +22,7 @@ public class SoundManager implements IEventListener {
 	Clip clipPlaying;
 	Clip clipPlayingSoundEffect;
 	private static volatile SoundManager instance;
+	private String soundEffect1;
 
 	public static SoundManager getInstance() throws LineUnavailableException {
 		if (instance == null) {
@@ -37,18 +38,20 @@ public class SoundManager implements IEventListener {
 	}
 
 	public void PlaySoundEffect(String id) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-		//clipPlayingSoundEffect.stop();
+		clipPlayingSoundEffect.stop();
 		if (soundeffects.containsKey(id)) {
+			soundEffect1 = id;
 			String filename = soundeffects.get(id);
 			audioInSoundEffect = AudioSystem.getAudioInputStream(SoundManager.class.getResource(filename));
 			clipPlayingSoundEffect = AudioSystem.getClip();
 			clipPlayingSoundEffect.open(audioInSoundEffect);
 			clipPlayingSoundEffect.start();
-
 		} else {
 			return;
 		}
 	}
+	
+
 
 	// music loops and plays forever
 	public void LoadMusic(String id, String filename) {
@@ -74,27 +77,55 @@ public class SoundManager implements IEventListener {
 		music = new HashMap<String, String>();
 		clipPlaying = AudioSystem.getClip();
 		clipPlayingSoundEffect = AudioSystem.getClip();
-
+		soundEffect1 = "";
 	}
 
 	@Override
 	public void handleEvent(GameEvent event)
 			throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		if (event.getEventType().equals(EventTypes.SWING_NET.toString())) {
+<<<<<<< HEAD
 			this.LoadSoundEffect("net", "net.wav");
 			this.PlaySoundEffect("net");
+=======
+			if(!this.isPlayingSoundEffect1()) {
+				this.LoadSoundEffect("net", "net.wav");
+				this.PlaySoundEffect("net");
+			}
+>>>>>>> 0eef7ec0cd6fb0b02fdf116d1499285a536f557a
 		} else if (event.getEventType().equals(EventTypes.WALK.toString())) {
-			this.LoadSoundEffect("walk", "walk.wav");
-			this.PlaySoundEffect("walk");
+			if(!this.isPlayingSoundEffect1()) {
+				this.LoadSoundEffect("walk", "walk.wav");
+				this.PlaySoundEffect("walk");
+			}
 			// FIXME: Walk occurs at end of key press
 			// FIXME: can only play walk OR net, not both at same time
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
-			this.LoadSoundEffect("vp", "vp.wav");
-			this.PlaySoundEffect("vp");
+			if(!this.isPlayingSoundEffect1()) {
+				this.LoadSoundEffect("vp", "vp.wav");
+				this.PlaySoundEffect("vp");
+			}
 		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
-			this.LoadSoundEffect("poison", "poison.wav");
-			this.PlaySoundEffect("poison");
+			if(!this.isPlayingSoundEffect1()) {
+				this.LoadSoundEffect("poison", "poison.wav");
+				this.PlaySoundEffect("poison");
+			}
 		}
 	}
+	
+	public String getSoundEffect1() {
+		return soundEffect1;
+	}
+
+	public void setSoundEffect1(String soundEffect1) {
+		this.soundEffect1 = soundEffect1;
+	}
+
+	public boolean isPlayingSoundEffect1() {
+		return this.clipPlayingSoundEffect.isRunning();
+	}
+
+
+
 
 }

@@ -36,7 +36,7 @@ import edu.virginia.engine.display.Sprite;
 public class SpriteSheetMapper extends Game implements MouseListener {
 
 	private static String currentDirectory = "spritesheetmapper/";
-	private static String textFileName = "resources/spritesheetmapper/player-spritesheet-1";
+	private static String textFileName = "resources/spritesheetmapper/student-spritesheet-0";
 	private Sprite currentSprite;
 	private boolean waitingForClick;
 	private Position currPosition;
