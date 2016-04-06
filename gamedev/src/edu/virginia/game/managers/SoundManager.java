@@ -37,7 +37,7 @@ public class SoundManager implements IEventListener {
 	}
 
 	public void PlaySoundEffect(String id) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-		clipPlayingSoundEffect.stop();
+		//clipPlayingSoundEffect.stop();
 		if (soundeffects.containsKey(id)) {
 			String filename = soundeffects.get(id);
 			audioInSoundEffect = AudioSystem.getAudioInputStream(SoundManager.class.getResource(filename));
@@ -81,6 +81,7 @@ public class SoundManager implements IEventListener {
 	public void handleEvent(GameEvent event)
 			throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		if (event.getEventType().equals(EventTypes.SWING_NET.toString())) {
+			
 			this.LoadSoundEffect("net", "net.wav");
 			this.PlaySoundEffect("net");
 		} else if (event.getEventType().equals(EventTypes.WALK.toString())) {

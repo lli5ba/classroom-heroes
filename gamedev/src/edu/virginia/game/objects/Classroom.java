@@ -168,6 +168,7 @@ public class Classroom extends DisplayObjectContainer {
 				//But the other times primary key is used (during store),
 				//vp will never collide since vp will not be spawning
 				//This works rn, but let me know what you think
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp1++;
@@ -180,6 +181,7 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			
 			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() & pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp2++;
@@ -194,6 +196,7 @@ public class Classroom extends DisplayObjectContainer {
 	private void checkPoisonCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem poison : poisonList) {
 			if (player1.collidesWithGlobal(poison) && !poison.isPickedUp()) {
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				poison.setPickedUp(true);
 				this.health1--;
@@ -207,6 +210,7 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			
 			if (player2.collidesWithGlobal(poison) && !poison.isPickedUp()) {
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				poison.setPickedUp(true);
 				this.health2--;
