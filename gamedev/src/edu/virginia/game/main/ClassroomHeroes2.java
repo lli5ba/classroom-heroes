@@ -94,7 +94,6 @@ public class ClassroomHeroes2 extends Game {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
-
 		if (this.classroom1 != null) {
 			classroom1.update(pressedKeys);
 		}

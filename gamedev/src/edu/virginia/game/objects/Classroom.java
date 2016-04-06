@@ -3,6 +3,7 @@ package edu.virginia.game.objects;
 import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -51,7 +52,7 @@ public class Classroom extends DisplayObjectContainer {
 	public static int vpCount;
 	public static int health1 = 5;
 	public static int health2 = 5;
-	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
+	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
 
@@ -276,11 +277,45 @@ public class Classroom extends DisplayObjectContainer {
 		spawnProjectiles();
 
 	}
+	
+	private void garbageVPCollect()
+	{
+		for(Iterator<PickedUpItem> it = vpList.iterator(); it.hasNext();)
+		{
+			PickedUpItem garbage = it.next();
+			if(garbage.isPickedUp())
+			{
+				it.remove();
+			}
+			else if(!garbage.collidesWithGlobal(this))
+			{
+				it.remove();
+			}
+		}
+	}
+	
+	private void garbagePoisonCollect()
+	{
+		for(Iterator<PickedUpItem> it = poisonList.iterator(); it.hasNext();)
+		{
+			PickedUpItem garbage = it.next();
+			if(garbage.isPickedUp())
+			{
+				it.remove();
+			}
+			else if(!garbage.collidesWithGlobal(this))
+			{
+				it.remove();
+			}
+		}
+	}
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		this.checkVPCollisions(pressedKeys);
+		this.garbagePoisonCollect();
+		this.garbageVPCollect();
 		this.checkPoisonCollisions(pressedKeys);
 
 		if (myTweenJuggler != null) {
