@@ -173,6 +173,7 @@ public class Player extends AnimatedSprite {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
+		/*
 		if (this != null && this.net != null) {
 			if (this.isActive()) {
 				moveSpriteCartesianAnimate(pressedKeys);
@@ -184,7 +185,7 @@ public class Player extends AnimatedSprite {
 				this.stopAnimation();
 			}
 
-		}
+		}*/
 	}
 
 }
