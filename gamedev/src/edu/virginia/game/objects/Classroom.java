@@ -72,35 +72,49 @@ public class Classroom extends DisplayObjectContainer {
 		this.addEventListener(soundManager, EventTypes.PICKUP_VP.toString());
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
 		
+		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", 
 				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 1);
 		player2 = new Player("Player2", "player/player1.png", 
 				"player/player-spritesheet-1.png", "resources/player/player-spritesheet-1-frameInfo.txt", 2);
+		
+		this.player1.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
+		this.player1.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
+		this.player1.addEventListener(levelManager, EventTypes.PICKUP_POISON.toString());
+		
+		this.player2.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
+		this.player2.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
+		this.player2.addEventListener(levelManager, EventTypes.PICKUP_POISON.toString());
+
 		if(this.gameManager.getNumPlayers() == 1) {
 			//set player2 inactive and invisible
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
-
-		boss = new Boss("Boss", "Mario.png");
 		
 		this.addChild(player1);
 		this.addChild(player2);
+		
+		this.player1.setPosition(this.getWidth() * .08, this.getHeight() * .742);
+		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
+		
+		/* Boss constructor */
+		boss = new Boss("Boss", "Mario.png");
 		this.addChild(boss);
+		this.boss.setPosition(this.getWidth() * .400, this.getHeight() * .003);
+		this.boss.setScaleX(.75);
+		this.boss.setScaleY(.75);
+
 		/* Generate Students */
 		Student student0 = new Student("Student0", "0", "back");
 		this.addChild(student0);
 		student0.setPosition(this.getWidth() * .5, this.getHeight() * .742);
 		this.studentList.add(student0);
 
-		this.player1.setPosition(this.getWidth() * .08, this.getHeight() * .742);
+		
 
-		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
-
-		this.boss.setPosition(this.getWidth() * .400, this.getHeight() * .003);
-		this.boss.setScaleX(.75);
-		this.boss.setScaleY(.75);
-
+		/* setting height and width of background 
+		 * must do this after setting position of all children items! */
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 		
@@ -134,8 +148,8 @@ public class Classroom extends DisplayObjectContainer {
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition(vp.getxPos(), vp.getyPos(), 1000);
-			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), 10000);
-			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 10000);
+			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), 30000);
+			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 30000);
 			this.vpList.add(vp);
 			this.addChild(vp);
 			this.hit = false;
@@ -153,8 +167,8 @@ public class Classroom extends DisplayObjectContainer {
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition(poison.getxPos(), poison.getyPos(), 1000);
-			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 10000);
-			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 10000);
+			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 30000);
+			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 30000);
 			this.poisonList.add(poison);
 			this.addChild(poison);
 		}
@@ -162,15 +176,18 @@ public class Classroom extends DisplayObjectContainer {
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
-			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() & pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
+			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() 
+					&& pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
 		//FIXME: Leandra, we talked about how using primary key won't work
 				//because there are other times primary key is used
 				//But the other times primary key is used (during store),
 				//vp will never collide since vp will not be spawning
 				//This works rn, but let me know what you think
+				//Oh Yay! it works :D This sounds good to me unless we run into problems!
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
-				vp.setPickedUp(true);
+				vp.setPickedUp(true); //FIXME: should move this to ProjectileManager
+				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player1));
 				this.vp1++;
 				vpCount = this.vp1 + this.vp2;
 				//FIXME: sound
@@ -180,10 +197,12 @@ public class Classroom extends DisplayObjectContainer {
 				//FIXME: connecting vpCount to vpCount of playerstat
 			}
 			
-			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() & pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
+			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() 
+					&& pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
+				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player2));
 				this.vp2++;
 				vpCount = this.vp1 + this.vp2;
 				System.out.println("Player 1's Number of VP: " + vp1);
@@ -199,6 +218,7 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				poison.setPickedUp(true);
+				this.player1.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player1));
 				this.health1--;
 				//FIXME: sound
 				System.out.println("Player 1's Health: " + health1);
@@ -213,22 +233,32 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				poison.setPickedUp(true);
-				this.health2--;
+				this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
+				
 				//FIXME: sound
 				System.out.println("Player 1's Health: " + health1);
 				System.out.println("Player 2's Health: " + health2);
 				//FIXME: connecting health1/2 to health1/2 of playerstat
-				if(health2 < 0) {
-					health2 = 0;
-				}
+				
 			}
-		}
+			if (player2.collidesWithGlobal(poison) && !poison.isPickedUp()) {
+					this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
+					poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
+					poison.setPickedUp(true);
+					this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
+					//FIXME: sound
+					System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
+					System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
+					//FIXME: connecting health1/2 to health1/2 of playerstat
+					
+			}
+				
 		
-		
-		if(health1 == 0 || health2 == 0) {
-			//FIXME: exit screen
-			System.out.println("DEAD!");
-			System.exit(0);
+			if(this.playerManager.getHealth(1) == 0 || this.playerManager.getHealth(2) == 0) {
+				//FIXME: exit screen
+				System.out.println("DEAD!");
+				System.exit(0);
+			}
 		}
 	}
 	

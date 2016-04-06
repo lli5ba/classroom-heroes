@@ -124,6 +124,9 @@ public class PlayerManager implements IEventListener {
 	}
 
 	public void setHealth(int newHealth, int numPlayer) {
+		if(newHealth < 0) {
+			newHealth = 0; //Cannot be less than 0!
+		}
 		switch (numPlayer) {
 		case 1:
 			this.health1 = newHealth;
@@ -166,6 +169,32 @@ public class PlayerManager implements IEventListener {
 			return -1; // error
 		}
 	}
+	
+	public int getLevel(int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			return calcLevel(experience1);
+		case 2:
+			return calcLevel(experience2);
+		default:
+			return -1; // error
+		}
+		
+	}
+	
+	public static int calcLevel(int exp) {
+		//FIXME: different level corresponds to different experience range
+		if (isBetween(exp, 0, 200)) {
+			return 1;
+		} else if (isBetween(exp, 201, 400)) {
+			return 2;
+		} else {
+			return 3;
+		}
+	}
+	public static boolean isBetween(int x, int lower, int upper) {
+		  return lower <= x && x <= upper;
+		}
 
 	public void setExperience(int newExperience, int numPlayer) {
 		switch (numPlayer) {
@@ -378,10 +407,6 @@ public class PlayerManager implements IEventListener {
 																		// health
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.setVpCount(this.vpCount + 1);
-		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
-			
-			//FIXME: getnumplayer
-			//this.setHealth(this.poisonCount-1, this.getNumPlayer());
 		}
 
 	}

@@ -2,6 +2,8 @@ package edu.virginia.game.managers;
 
 import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
+import edu.virginia.game.objects.EventTypes;
+import edu.virginia.game.objects.Player;
 
 /*
  * Singleton class that handles all the current level (time, what level, etc) 
@@ -92,7 +94,17 @@ public class LevelManager implements IEventListener {
 
 	@Override
 	public void handleEvent(GameEvent event) {
-		// TODO Auto-generated method stub
+		if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
+			//should be dispatched by player
+			Player player = (Player) event.getSource();
+			int id = player.getNumPlayer();
+			this.setPoisonCollected(this.getVPCollected(id) + 1, id);
+		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
+			//should be dispatched by player
+			Player player = (Player) event.getSource();
+			int id = player.getNumPlayer();
+			this.setPoisonCollected(this.getVPCollected(id) + 1, id);
+		}
 
 	}
 }
