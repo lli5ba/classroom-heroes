@@ -9,6 +9,7 @@ import edu.virginia.engine.util.Position;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
+import edu.virginia.game.managers.SoundManager;
 
 public class Boss extends AnimatedSprite {
 

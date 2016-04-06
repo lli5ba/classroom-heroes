@@ -58,6 +58,12 @@ public class Classroom extends DisplayObjectContainer {
 	public Classroom(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
 
+		try {
+			this.soundManager = SoundManager.getInstance();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+		
 		/* GameClocks */
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
@@ -97,8 +103,7 @@ public class Classroom extends DisplayObjectContainer {
 
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
-
-		soundManager = new SoundManager();
+		
 		soundManager.LoadMusic("bg", "theme.wav");
 		//mySoundManager.PlayMusic("bg");
 	}
@@ -186,6 +191,43 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 	
+	private void checkPoisonCollisions(ArrayList<String> pressedKeys) {
+		for (PickedUpItem poison : poisonList) {
+			if (player1.collidesWithGlobal(poison) && !poison.isPickedUp()) {
+				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
+				poison.setPickedUp(true);
+				this.health1--;
+				//FIXME: sound
+				System.out.println("Player 1's Health: " + health1);
+				System.out.println("Player 2's Health: " + health2);
+				//FIXME: connecting health1/2 to health1/2 of playerstat
+				if(health1 < 0) {
+					health1 = 0;
+				}
+			}
+			
+			if (player2.collidesWithGlobal(poison) && !poison.isPickedUp()) {
+				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
+				poison.setPickedUp(true);
+				this.health2--;
+				//FIXME: sound
+				System.out.println("Player 1's Health: " + health1);
+				System.out.println("Player 2's Health: " + health2);
+				//FIXME: connecting health1/2 to health1/2 of playerstat
+				if(health2 < 0) {
+					health2 = 0;
+				}
+			}
+		}
+		
+		
+		if(health1 == 0 || health2 == 0) {
+			//FIXME: exit screen
+			System.out.println("DEAD!");
+			System.exit(0);
+		}
+	}
+	
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
 			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
@@ -216,6 +258,7 @@ public class Classroom extends DisplayObjectContainer {
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		this.checkVPCollisions(pressedKeys);
+		this.checkPoisonCollisions(pressedKeys);
 
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
