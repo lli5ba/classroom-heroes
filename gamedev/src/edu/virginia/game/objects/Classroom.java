@@ -44,7 +44,7 @@ public class Classroom extends DisplayObjectContainer {
 	private GameClock poisonClock;
 	private GameClock vpClock;
 	public static final double VP_SPAWN_INTERVAL = 1500;
-	public static final double POISON_SPAWN_INTERVAL = 3000;
+	public static final double POISON_SPAWN_INTERVAL = 1000;
 	private static boolean hit = false;
 	public static int vp1 = 0;
 	public static int vp2 = 0;
@@ -107,8 +107,10 @@ public class Classroom extends DisplayObjectContainer {
 
 		/* Generate Students */
 		Student student0 = new Student("Student0", "0", "back");
+		student0.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
+		student0.addEventListener(studentManager, EventTypes.CURE_STUDENT.toString());
 		this.addChild(student0);
-		student0.setPosition(this.getWidth() * .5, this.getHeight() * .742);
+		student0.setPosition(this.getWidth() * .5, this.getHeight() * .5);
 		this.studentList.add(student0);
 
 		
@@ -186,15 +188,12 @@ public class Classroom extends DisplayObjectContainer {
 				//Oh Yay! it works :D This sounds good to me unless we run into problems!
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
-				vp.setPickedUp(true); //FIXME: should move this to ProjectileManager
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player1));
-				this.vp1++;
-				vpCount = this.vp1 + this.vp2;
+
 				//FIXME: sound
-				System.out.println("Player 1's Number of VP: " + vp1);
-				System.out.println("Player 2's Number of VP: " + vp2);
-				System.out.println("Total number of VP: " + vpCount);
-				//FIXME: connecting vpCount to vpCount of playerstat
+				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
+				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
+				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 			
 			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() 
@@ -203,11 +202,9 @@ public class Classroom extends DisplayObjectContainer {
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player2));
-				this.vp2++;
-				vpCount = this.vp1 + this.vp2;
-				System.out.println("Player 1's Number of VP: " + vp1);
-				System.out.println("Player 2's Number of VP: " + vp2);
-				System.out.println("Total number of VP: " + this.vpCount);
+				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
+				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
+				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 		}
 	}
@@ -217,39 +214,31 @@ public class Classroom extends DisplayObjectContainer {
 			if (player1.collidesWithGlobal(poison) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
-				poison.setPickedUp(true);
 				this.player1.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player1));
-				this.health1--;
-				System.out.println("Player 1's Health: " + health1);
-				System.out.println("Player 2's Health: " + health2);
-				//FIXME: connecting health1/2 to health1/2 of playerstat
-				if(health1 < 0) {
-					health1 = 0;
-				}
+				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
+				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
+				
 			}
 			
 			if (player2.collidesWithGlobal(poison) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
-				poison.setPickedUp(true);
 				this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
 				
 				//FIXME: sound
-				System.out.println("Player 1's Health: " + health1);
-				System.out.println("Player 2's Health: " + health2);
-				//FIXME: connecting health1/2 to health1/2 of playerstat
+				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
+				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
 				
 			}
-			if (player2.collidesWithGlobal(poison) && !poison.isPickedUp()) {
-					this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
-					poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
-					poison.setPickedUp(true);
-					this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
-					//FIXME: sound
-					System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
-					System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
-					//FIXME: connecting health1/2 to health1/2 of playerstat
-					
+			//Check all poison collisions with each student
+			for (Student student : studentList) {
+				if (student.collidesWithGlobal(poison) && !poison.isPickedUp()) {
+						student.dispatchEvent(new GameEvent(EventTypes.POISON_STUDENT.toString(), student));
+						this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
+						poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
+						//FIXME: sound
+						System.out.println("Student's Health: " + student.getCurrentHealth());
+				}
 			}
 				
 		

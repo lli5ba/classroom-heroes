@@ -105,8 +105,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.speed1 = newSpeed;
+			break;
 		case 2:
 			this.speed2 = newSpeed;
+			break;
 		default:
 			// error
 		}
@@ -130,8 +132,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.health1 = newHealth;
+			break;
 		case 2:
 			this.health2 = newHealth;
+			break;
 		default:
 			// error
 		}
@@ -152,8 +156,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.maxHealth1 = newMaxHealth;
+			break;
 		case 2:
 			this.maxHealth2 = newMaxHealth;
+			break;
 		default:
 			// error
 		}
@@ -200,8 +206,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.experience1 = newExperience;
+			break;
 		case 2:
 			this.experience2 = newExperience;
+			break;
 		default:
 			// error
 		}
@@ -222,8 +230,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.swingSpeed1 = newSwingSpeed;
+			break;
 		case 2:
 			this.swingSpeed2 = newSwingSpeed;
+			break;
 		default:
 			// error
 		}
@@ -246,8 +256,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.primaryKey1 = newPrimaryKey;
+			break;
 		case 2:
 			this.primaryKey2 = newPrimaryKey;
+			break;
 		default:
 			// error
 		}
@@ -268,8 +280,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.secondaryKey1 = newSecondaryKey;
+			break;
 		case 2:
 			this.secondaryKey2 = newSecondaryKey;
+			break;
 		default:
 			// error
 		}
@@ -290,8 +304,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.upKey1 = newUpKey;
+			break;
 		case 2:
 			this.upKey2 = newUpKey;
+			break;
 		default:
 			// error
 		}
@@ -312,8 +328,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.downKey1 = newDownKey;
+			break;
 		case 2:
 			this.downKey2 = newDownKey;
+			break;
 		default:
 			// error
 		}
@@ -334,8 +352,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.rightKey1 = newRightKey;
+			break;
 		case 2:
 			this.rightKey2 = newRightKey;
+			break;
 		default:
 			// error
 		}
@@ -356,8 +376,10 @@ public class PlayerManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.leftKey1 = newLeftKey;
+			break;
 		case 2:
 			this.leftKey2 = newLeftKey;
+			break;
 		default:
 			// error
 		}
@@ -401,9 +423,11 @@ public class PlayerManager implements IEventListener {
 		if (event.getEventType().equals(EventTypes.POISON_PLAYER.toString())) {
 			// should be dispatched by the player
 			Player player = (Player) event.getSource();
+			int playerNum = player.getNumPlayer();
+			System.out.println(playerNum);
 			// player.getPoisonBubbles.animateOnce("poison"); //play animation
-			int currentHealth = this.getHealth(player.getNumPlayer());
-			this.setHealth(currentHealth - 1, player.getNumPlayer()); // decrease
+			int currentHealth = this.getHealth(playerNum);
+			this.setHealth(currentHealth - 1, playerNum); // decrease
 																		// health
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.setVpCount(this.vpCount + 1);

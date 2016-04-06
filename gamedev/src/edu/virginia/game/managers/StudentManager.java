@@ -34,6 +34,7 @@ public class StudentManager implements IEventListener {
 			// should be dispatched by the student
 			Student student = (Student) event.getSource();
 			// play animation to show student floating back up
+			
 			student.setDead(false);
 			student.setPoisoned(false);
 		}
