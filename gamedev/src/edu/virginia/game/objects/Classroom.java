@@ -152,14 +152,19 @@ public class Classroom extends DisplayObjectContainer {
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
-			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
+			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() & pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
+		//FIXME: Leandra, we talked about how using primary key won't work
+				//because there are other times primary key is used
+				//But the other times primary key is used (during store),
+				//vp will never collide since vp will not be spawning
+				//This works rn, but let me know what you think
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp1++;
 				System.out.println("Player 1's Number of VP: " + vp1);
 			}
 			
-			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()) {
+			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp() & pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				vp.setPickedUp(true);
 				this.vp2++;
