@@ -95,7 +95,7 @@ public class Classroom extends DisplayObjectContainer {
 
 		mySoundManager = new SoundManager();
 		mySoundManager.LoadMusic("bg", "theme.wav");
-		mySoundManager.PlayMusic("bg");
+		//mySoundManager.PlayMusic("bg");
 	}
 
 	

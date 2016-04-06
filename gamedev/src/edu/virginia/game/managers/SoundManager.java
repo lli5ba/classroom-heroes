@@ -14,7 +14,7 @@ import edu.virginia.engine.events.IEventListener;
 import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
 
-public class SoundManager implements IEventListener{
+public class SoundManager implements IEventListener {
 	HashMap<String, String> soundeffects;
 	HashMap<String, String> music;
 	AudioInputStream audioIn;
@@ -29,6 +29,7 @@ public class SoundManager implements IEventListener{
 		}
 		return instance;
 	}
+
 	// sound effects are short and don't loop
 	public void LoadSoundEffect(String id, String filename) {
 		soundeffects.put(id, filename);
@@ -43,7 +44,7 @@ public class SoundManager implements IEventListener{
 			clipPlayingSoundEffect = AudioSystem.getClip();
 			clipPlayingSoundEffect.open(audioInSoundEffect);
 			clipPlayingSoundEffect.start();
-			
+
 		} else {
 			return;
 		}
@@ -77,15 +78,22 @@ public class SoundManager implements IEventListener{
 	}
 
 	@Override
-	public void handleEvent(GameEvent event) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+	public void handleEvent(GameEvent event)
+			throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		if (event.getEventType().equals(EventTypes.SWING_NET.toString())) {
-			this.netSound();
+			this.LoadSoundEffect("net", "net.wav");
+			this.PlaySoundEffect("net");
+		} else if (event.getEventType().equals(EventTypes.WALK.toString())) {
+			this.LoadSoundEffect("walk", "walk.wav");
+			this.PlaySoundEffect("walk");
+			// FIXME: Walk occurs at end of key press
+		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
+			this.LoadSoundEffect("vp", "vp.wav");
+			this.PlaySoundEffect("vp");
+		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
+			this.LoadSoundEffect("poison", "poison.wav");
+			this.PlaySoundEffect("poison");
 		}
-		
 	}
-	
-	public void netSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-		this.LoadSoundEffect("net", "net.wav");
-		this.PlaySoundEffect("net");
-	}
+
 }

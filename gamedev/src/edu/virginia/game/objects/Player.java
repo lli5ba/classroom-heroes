@@ -38,6 +38,7 @@ public class Player extends AnimatedSprite {
 			e.printStackTrace();
 		}
 		this.addEventListener(soundManager, EventTypes.SWING_NET.toString());
+		this.addEventListener(soundManager, EventTypes.WALK.toString());
 		this.numPlayer = numPlayer;
 		this.active = true;
 
@@ -115,6 +116,7 @@ public class Player extends AnimatedSprite {
 					this.animate("up");
 				}
 				this.setDirection("up");
+				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 				this.moveNet("up");
 
 			}
@@ -126,6 +128,7 @@ public class Player extends AnimatedSprite {
 					this.animate("down");
 				}
 				this.setDirection("down");
+				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 				moveNet("down");
 			}
 			if (pressedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
@@ -136,6 +139,7 @@ public class Player extends AnimatedSprite {
 					this.animate("left");
 				}
 				this.setDirection("left");
+				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 				moveNet("left");
 			}
 			if (pressedKeys.contains(this.playerManager.getRightKey(this.numPlayer))) {
@@ -147,6 +151,7 @@ public class Player extends AnimatedSprite {
 					this.animate("right");
 				}
 				this.setDirection("right");
+				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 				moveNet("right");
 			}
 			if (pressedKeys.contains(this.playerManager.getPrimaryKey(this.numPlayer))) {
