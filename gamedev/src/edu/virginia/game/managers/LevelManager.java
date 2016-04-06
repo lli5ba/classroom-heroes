@@ -32,6 +32,20 @@ public class LevelManager implements IEventListener {
 
 	/****************** Constructors ********************/
 
+	public calcEXP(ArrayList<Student> s, double currentHP, double maxHP, boolean flask) {
+		/*
+		double exp = 0;
+		for (Student stud: s)
+		{
+			exp += stud.getHealth();   //Health should be a max of 25000
+		}
+		exp += currentHP/maxHP*50000;
+		
+		if(flask)
+			exp*=1.2;
+		*/
+	}
+
 	public static LevelManager getInstance() {
 		if (instance == null) {
 			instance = new LevelManager();
