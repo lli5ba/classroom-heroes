@@ -87,6 +87,12 @@ public class PlayerManager implements IEventListener {
 		downKey2 = KeyEvent.getKeyText(KeyEvent.VK_S);
 		rightKey2 = KeyEvent.getKeyText(KeyEvent.VK_D);
 		leftKey2 = KeyEvent.getKeyText(KeyEvent.VK_A);
+		
+		/* Shared Items */
+		vpCount = 0;
+		poisonCount = 0;
+		numGingerAle = 3;
+		numCheesePuffs = 3;
 	}
 
 	/*-------------Player Stats Getters and Setters---------------------*/

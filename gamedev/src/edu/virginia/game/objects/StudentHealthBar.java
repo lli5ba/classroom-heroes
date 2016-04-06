@@ -20,7 +20,8 @@ public class StudentHealthBar extends Sprite {
 	}
 
 	public void setHealthBar(double currHealth, double maxHealth) {
-		this.greenBar.setScaleX(currHealth / maxHealth);
+		
+			this.greenBar.setScaleX(currHealth/maxHealth);
 	}
 
 	@Override

@@ -45,6 +45,7 @@ public class Classroom extends DisplayObjectContainer {
 	private GameClock vpClock;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1000;
+	public static final double GAME_TIME = 60000; 
 	private static boolean hit = false;
 	public static int vp1 = 0;
 	public static int vp2 = 0;
@@ -69,8 +70,11 @@ public class Classroom extends DisplayObjectContainer {
 		this.poisonClock = new GameClock();
 		this.vpClock = new GameClock();
 		
+		/* Game Event Listener */
 		this.addEventListener(soundManager, EventTypes.PICKUP_VP.toString());
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
+		this.addEventListener(levelManager, EventTypes.WIN_LEVEL.toString());
+		this.addEventListener(levelManager, EventTypes.LOSE_LEVEL.toString());
 		
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", 
@@ -110,9 +114,8 @@ public class Classroom extends DisplayObjectContainer {
 		student0.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
 		student0.addEventListener(studentManager, EventTypes.CURE_STUDENT.toString());
 		this.addChild(student0);
-		student0.setPosition(this.getWidth() * .5, this.getHeight() * .5);
+		student0.setPosition(this.getWidth() * .5, this.getHeight() * .2);
 		this.studentList.add(student0);
-
 		
 
 		/* setting height and width of background 
@@ -200,7 +203,6 @@ public class Classroom extends DisplayObjectContainer {
 					&& pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
-				vp.setPickedUp(true);
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player2));
 				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
 				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
@@ -209,7 +211,7 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 	
-	private void checkPoisonCollisions(ArrayList<String> pressedKeys) {
+	private void checkPoisonHitCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem poison : poisonList) {
 			if (player1.collidesWithGlobal(poison) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
@@ -233,23 +235,46 @@ public class Classroom extends DisplayObjectContainer {
 			//Check all poison collisions with each student
 			for (Student student : studentList) {
 				if (student.collidesWithGlobal(poison) && !poison.isPickedUp()) {
-						student.dispatchEvent(new GameEvent(EventTypes.POISON_STUDENT.toString(), student));
+						if (!student.isPoisoned()) {
+							student.dispatchEvent(new GameEvent(EventTypes.POISON_STUDENT.toString(), student));
+						}
 						this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 						poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 						//FIXME: sound
 						System.out.println("Student's Health: " + student.getCurrentHealth());
 				}
 			}
-				
-		
+			//Check all poison collisions with each student's net
+			if (player1.getNet().collidesWithGlobal(poison) && !poison.isPickedUp() 
+					&& pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
+				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
+				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player1));
+
+				//FIXME: sound
+				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
+				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
+			}
+			
+			if (player2.getNet().collidesWithGlobal(poison) && !poison.isPickedUp() 
+					&& pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
+				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
+				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player2));
+				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
+				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
+			}
 			if(this.playerManager.getHealth(1) == 0 || this.playerManager.getHealth(2) == 0) {
 				//FIXME: exit screen
 				System.out.println("DEAD!");
+				this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
 				System.exit(0);
 			}
 
 		}
 	}
+	
+	
 	
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
@@ -274,14 +299,21 @@ public class Classroom extends DisplayObjectContainer {
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		spawnProjectiles();
-
+	}
+	
+	public void keepTime() {
+		if (this.gameClock != null) {
+			if (this.gameClock.getElapsedTime() > GAME_TIME) {
+				this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
+			}
+		}
 	}
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		this.checkVPCollisions(pressedKeys);
-		this.checkPoisonCollisions(pressedKeys);
+		this.checkPoisonHitCollisions(pressedKeys);
 
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();

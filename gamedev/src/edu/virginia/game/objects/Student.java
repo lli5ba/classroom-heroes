@@ -32,17 +32,17 @@ public class Student extends AnimatedSprite {
 	private boolean poisoned;
 	private boolean dead;
 	private StudentHealthBar healthBar;
-	private String direction; // for falling and floating animations, "back",
+	private String animDir; // for falling and floating animations, "back",
 								// "left" or "right"
 
 	public Student(String id, String styleCode, String fallDir) {
-		/*
-		 * super(id, "student/student-default-" + styleCode + ".png",
-		 * "student/student-spritesheet-" + styleCode + ".png",
-		 * "recources/student/student-spritesheet-specs-" + styleCode + ".txt");
-		 */
-		super(id, "student/student-default-" + styleCode + ".png");
-		this.direction = fallDir;
+		
+		super(id, "student/student-default-" + styleCode + ".png",
+				"student/student-spritesheet-" + styleCode + ".png",
+				"resources/student/student-spritesheet-" + styleCode + "-frameInfo.txt");
+		 
+		/*super(id, "student/student-default-" + styleCode + ".png"); */
+		this.animDir = fallDir;
 		this.maxHealth = 20; // FIXME: should depend on what level we are on
 		this.currentHealth = maxHealth;
 		this.healthBar = new StudentHealthBar(id + "-healthBar");
@@ -77,7 +77,7 @@ public class Student extends AnimatedSprite {
 	public void setCurrentHealth(double currHealth) {
 		if (currHealth < 0) {
 			currHealth = 0; // cannot be less than 0
-		} else if (currHealth > this.maxHealth) {
+		} else if (currHealth > this.maxHealth) { //cannot be greater than max
 			currHealth = this.maxHealth;
 		}
 		this.healthBar.setHealthBar(currHealth, this.maxHealth);
@@ -94,6 +94,11 @@ public class Student extends AnimatedSprite {
 		}
 		this.poisoned = poisoned;
 	}
+	
+	public String getAnimDir() {
+		return animDir;
+	}
+
 
 	private void drainHealthIfPoisoned(ArrayList<String> pressedKeys) {
 		double percentToDrain = 0.2; // FIXME: should depend on what level we
@@ -103,7 +108,7 @@ public class Student extends AnimatedSprite {
 				double newHealth = this.currentHealth - percentToDrain * this.maxHealth;
 				if (newHealth < 0) {
 					this.currentHealth = 0;
-					// FIXME: this.animateOnce("fall" + Dir);
+					this.animateOnce("fall" + this.animDir, 3);
 					this.dead = true;
 				} else {
 					this.currentHealth = newHealth;
@@ -124,4 +129,6 @@ public class Student extends AnimatedSprite {
 		super.update(pressedKeys); // updates children
 		this.drainHealthIfPoisoned(pressedKeys);
 	}
+
+	
 }

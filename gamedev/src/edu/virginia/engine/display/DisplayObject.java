@@ -115,8 +115,8 @@ public class DisplayObject extends EventDispatcher {
 		Rectangle newHitbox = new Rectangle();
 		newHitbox.setBounds((int) (this.getxPos() + this.getOriginalHitbox().getX()),
 				(int) (this.getyPos() + this.getOriginalHitbox().getY()),
-				(int) (this.getOriginalHitbox().getWidth() * this.scaleX),
-				(int) (this.getOriginalHitbox().getHeight() * this.scaleY));
+				(int) (this.getOriginalHitbox().getWidth() * this.getScaleX()),
+				(int) (this.getOriginalHitbox().getHeight() * this.getScaleY()));
 		this.setHitbox(newHitbox);
 	}
 
@@ -249,6 +249,9 @@ public class DisplayObject extends EventDispatcher {
 	}
 
 	public void setScaleX(double scaleX) {
+		if (scaleX == 0) {
+			scaleX = 0.001;
+		}
 		this.scaleX = scaleX;
 	}
 
@@ -257,6 +260,9 @@ public class DisplayObject extends EventDispatcher {
 	}
 
 	public void setScaleY(double scaleY) {
+		if (scaleY == 0) {
+			scaleY = 0.001;
+		}
 		this.scaleY = scaleY;
 	}
 
@@ -410,6 +416,7 @@ public class DisplayObject extends EventDispatcher {
 	 * object
 	 */
 	protected void reverseTransformations(Graphics2D g2d) {
+		
 		g2d.scale((1 / this.getScaleX()), (1 / this.getScaleY()));
 		g2d.rotate(-this.getRotation(), this.pivotPoint.getX(), this.pivotPoint.getY());
 		g2d.translate(-(this.getxPos() - this.getOriginalHitbox().getX()),

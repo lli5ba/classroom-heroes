@@ -63,8 +63,10 @@ public class LevelManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.vpCollected1 = newVPCollected;
+			break;
 		case 2:
 			this.vpCollected2 = newVPCollected;
+			break;
 		default:
 			// error
 		}
@@ -85,8 +87,10 @@ public class LevelManager implements IEventListener {
 		switch (numPlayer) {
 		case 1:
 			this.poisonCollected1 = newPoisonCollected;
+			break;
 		case 2:
 			this.poisonCollected2 = newPoisonCollected;
+			break;
 		default:
 			// error
 		}
