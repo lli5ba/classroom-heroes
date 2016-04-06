@@ -105,7 +105,7 @@ public class Classroom extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 		
 		soundManager.LoadMusic("bg", "theme.wav");
-		//mySoundManager.PlayMusic("bg");
+		soundManager.PlayMusic("bg");
 	}
 
 	
@@ -200,7 +200,6 @@ public class Classroom extends DisplayObjectContainer {
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				poison.setPickedUp(true);
 				this.health1--;
-				//FIXME: sound
 				System.out.println("Player 1's Health: " + health1);
 				System.out.println("Player 2's Health: " + health2);
 				//FIXME: connecting health1/2 to health1/2 of playerstat
@@ -226,7 +225,7 @@ public class Classroom extends DisplayObjectContainer {
 		
 		
 		if(health1 == 0 || health2 == 0) {
-			//FIXME: exit screen
+			//FIXME: exit screen here
 			System.out.println("DEAD!");
 			System.exit(0);
 		}
