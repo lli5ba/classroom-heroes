@@ -3,6 +3,7 @@ package edu.virginia.game.objects;
 import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -30,7 +31,7 @@ import edu.virginia.game.managers.StudentManager;
 //This class represents a game screen object to be used for levels and hallway scenes.
 //This way you can instantiate a GameScreen and add game elements as children.
 public class Classroom extends DisplayObjectContainer {
-
+	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
@@ -49,11 +50,6 @@ public class Classroom extends DisplayObjectContainer {
 	public static final double POISON_SPAWN_INTERVAL = 1000;
 	public static final double GAME_TIME = 60000;
 	private static boolean hit = false;
-	public static int vp1 = 0;
-	public static int vp2 = 0;
-	public static int vpCount;
-	public static int health1 = 5;
-	public static int health2 = 5;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -284,9 +280,15 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	private void checkStudentCollisions(ArrayList<String> pressedKeys) {
+		int distToCure = 25; //how close you need to be to the student
 		for (Student student : studentList) {
+<<<<<<< HEAD
 			// Check whether players are in range of student
 			if (player1.inRangeGlobal(student, 200) && student.isPoisoned() && this.playerManager.getNumGingerAle() > 0
+=======
+			//Check whether players are in range of student
+			if (player1.inRangeGlobal(student, distToCure) && student.isPoisoned() && this.playerManager.getNumGingerAle() > 0
+>>>>>>> 70c2f440f6e7a409771850277610d68a857917b5
 					&& pressedKeys.contains(this.playerManager.getSecondaryKey(1))) {
 				// this.dispatchEvent(new
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
@@ -296,8 +298,12 @@ public class Classroom extends DisplayObjectContainer {
 				// FIXME: sound
 				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
 				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
+<<<<<<< HEAD
 			} else if (player2.inRangeGlobal(student, 10) && student.isDead()
 					&& this.playerManager.getNumGingerAle() > 0
+=======
+			} else if (player2.inRangeGlobal(student, distToCure) && student.isDead() && this.playerManager.getNumGingerAle() > 0
+>>>>>>> 70c2f440f6e7a409771850277610d68a857917b5
 					&& pressedKeys.contains(this.playerManager.getSecondaryKey(2))) {
 				// this.dispatchEvent(new
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
@@ -378,12 +384,129 @@ public class Classroom extends DisplayObjectContainer {
 		this.checkVPCollisions(pressedKeys);
 		this.garbagePoisonCollect();
 		this.garbageVPCollect();
+<<<<<<< HEAD
 		this.checkPoisonCollisions(pressedKeys);
 		this.checkStudentCollisions(pressedKeys);
+=======
+		this.checkPoisonCollisions(pressedKeys);
+		this.checkStudentCollisions(pressedKeys);
+		this.updatePlayer(pressedKeys, this.player1);
+		this.updatePlayer(pressedKeys, this.player2);
+>>>>>>> 70c2f440f6e7a409771850277610d68a857917b5
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
 
 	}
+	
+	/* collision detection and movement for players */
+	
+	public void updatePlayer(ArrayList<String> pressedKeys, Player player){
+		if (player != null && player.getNet() != null) {
+			if (player.isActive()) {
+				this.moveSpriteCartesianAnimate(pressedKeys, player);
+			}
+			// if there are no keys being pressed, and sprite is walking, then
+			// stop the animation
+			if (pressedKeys.isEmpty() && player.isPlaying()
+					&& Arrays.asList(CARDINAL_DIRS).contains(player.getCurrentAnimation())) {
+				player.stopAnimation();
+			}
 
+		}
+	}
+	
+	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {
+		double speed = this.playerManager.getSpeed(player.getNumPlayer());
+		/*
+		 * Make sure this is not null. Sometimes Swing can auto cause an extra
+		 * frame to go before everything is initialized
+		 */
+		if (player != null && player.getNet() != null) {
+			/*
+			 * update mario's position if a key is pressed, check bounds of
+			 * canvas
+			 */
+			if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))) {
+				if (player.getyPos() > 0) {
+					/*Position newPosition = new Position(player.getxPos(), player.getyPos() - speed);
+					 if (!playerCollision(newPosition, player)) {
+						player.setyPos(player.getyPos() - speed);
+						player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+					} else {
+						//don't move the player
+					} */
+					player.setyPos(player.getyPos() - speed);
+				}
+				if (!player.isPlaying() || player.getCurrentAnimation() != "up") {
+					player.animate("up");
+				}
+				player.setDirection("up");
+				player.moveNet("up");
+
+			}
+			if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))) {
+				if (player.getyPos() < this.gameManager.getGameHeight() - player.getHeight()) {
+					/* Position newPosition = new Position(player.getxPos(), player.getyPos() - speed);
+					 * if (!playerCollision(newPosition, player)) {
+						player.setyPos(player.getyPos() + speed);
+						player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+					} else {
+						//don't move the player
+					} */
+					player.setyPos(player.getyPos() + speed);
+				}
+				if (!player.isPlaying() || player.getCurrentAnimation() != "down") {
+					player.animate("down");
+				}
+				player.setDirection("down");
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
+				player.moveNet("down");
+			}
+			if (pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
+				if (player.getxPos() > 0) {
+					player.setxPos(player.getxPos() - speed);
+				}
+				if (!player.isPlaying() || player.getCurrentAnimation() != "left") {
+					player.animate("left");
+				}
+				player.setDirection("left");
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
+				player.moveNet("left");
+			}
+			if (pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
+
+				if (player.getxPos() < this.gameManager.getGameWidth() - player.getWidth()) {
+					player.setxPos(player.getxPos() + speed);
+				}
+				if (!player.isPlaying() || player.getCurrentAnimation() != "right") {
+					player.animate("right");
+				}
+				player.setDirection("right");
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
+				player.moveNet("right");
+			}
+			if (pressedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
+				String currentDir = player.getDirection();
+				// Until we have combined net and walking animation, net
+				// animation overrides walking animation
+
+				if (player.isPlaying() && !player.getCurrentAnimation().contains("net")) {
+					// System.out.println("STOPPING\n");
+					player.stopAnimation();
+				}
+
+				player.animateOnce("net" + currentDir, 5);
+				player.dispatchEvent(new GameEvent(EventTypes.SWING_NET.toString(), player));
+			}
+		}
+	}
+	private boolean playerCollision(Position newPosition, Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
+
+
+
+	
