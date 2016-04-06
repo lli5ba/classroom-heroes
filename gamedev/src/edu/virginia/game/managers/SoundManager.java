@@ -81,7 +81,6 @@ public class SoundManager implements IEventListener {
 	public void handleEvent(GameEvent event)
 			throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		if (event.getEventType().equals(EventTypes.SWING_NET.toString())) {
-			
 			this.LoadSoundEffect("net", "net.wav");
 			this.PlaySoundEffect("net");
 		} else if (event.getEventType().equals(EventTypes.WALK.toString())) {
