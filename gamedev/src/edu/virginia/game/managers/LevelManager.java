@@ -1,9 +1,12 @@
 package edu.virginia.game.managers;
 
+import java.util.ArrayList;
+
 import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
 import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
+import edu.virginia.game.objects.Student;
 
 /*
  * Singleton class that handles all the current level (time, what level, etc) 
@@ -30,9 +33,10 @@ public class LevelManager implements IEventListener {
 	int poisonCollected2;
 	int studentsCured2;
 
-	/****************** Constructors ********************/
+	/****************** Constructors 
+	 * @return ********************/
 
-	public calcEXP(ArrayList<Student> s, double currentHP, double maxHP, boolean flask) {
+	public void calcEXP(ArrayList<Student> s, double currentHP, double maxHP, boolean flask) {
 		/*
 		double exp = 0;
 		for (Student stud: s)

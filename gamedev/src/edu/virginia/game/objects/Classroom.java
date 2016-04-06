@@ -105,9 +105,9 @@ public class Classroom extends DisplayObjectContainer {
 		/* Boss constructor */
 		boss = new Boss("Boss", "Mario.png");
 		this.addChild(boss);
-		this.boss.setPosition(this.getWidth() * .400, this.getHeight() * .003);
-		this.boss.setScaleX(.75);
-		this.boss.setScaleY(.75);
+		this.boss.setPosition(this.getWidth() * .43, this.getHeight() * .1);
+		this.boss.setScaleX(.6);
+		this.boss.setScaleY(.6);
 
 		/* Generate Students */
 		Student student0 = new Student("Student0", "0", "back");
@@ -161,7 +161,6 @@ public class Classroom extends DisplayObjectContainer {
 			this.vpList.add(vp);
 			this.addChild(vp);
 			this.hit = false;
-			// FIXME: hit sometimes gives 2 vp; i think due to hitbox??
 		}
 	}
 
@@ -186,19 +185,9 @@ public class Classroom extends DisplayObjectContainer {
 		for (PickedUpItem vp : vpList) {
 			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()
 					&& pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
-				// FIXME: Leandra, we talked about how using primary key won't
-				// work
-				// because there are other times primary key is used
-				// But the other times primary key is used (during store),
-				// vp will never collide since vp will not be spawning
-				// This works rn, but let me know what you think
-				// Oh Yay! it works :D This sounds good to me unless we run into
-				// problems!
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player1));
-
-				// FIXME: sound
 				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
 				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
 				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
@@ -231,8 +220,6 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
-
-				// FIXME: sound
 				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
 				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
 
@@ -245,7 +232,6 @@ public class Classroom extends DisplayObjectContainer {
 					}
 					this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 					poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
-					// FIXME: sound
 					System.out.println("Student's Health: " + student.getCurrentHealth());
 				}
 			}
@@ -255,8 +241,6 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player1));
-
-				// FIXME: sound
 				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
 				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
 			}
@@ -282,13 +266,8 @@ public class Classroom extends DisplayObjectContainer {
 	private void checkStudentCollisions(ArrayList<String> pressedKeys) {
 		int distToCure = 25; //how close you need to be to the student
 		for (Student student : studentList) {
-<<<<<<< HEAD
-			// Check whether players are in range of student
-			if (player1.inRangeGlobal(student, 200) && student.isPoisoned() && this.playerManager.getNumGingerAle() > 0
-=======
-			//Check whether players are in range of student
+
 			if (player1.inRangeGlobal(student, distToCure) && student.isPoisoned() && this.playerManager.getNumGingerAle() > 0
->>>>>>> 70c2f440f6e7a409771850277610d68a857917b5
 					&& pressedKeys.contains(this.playerManager.getSecondaryKey(1))) {
 				// this.dispatchEvent(new
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
@@ -298,12 +277,8 @@ public class Classroom extends DisplayObjectContainer {
 				// FIXME: sound
 				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
 				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
-<<<<<<< HEAD
-			} else if (player2.inRangeGlobal(student, 10) && student.isDead()
-					&& this.playerManager.getNumGingerAle() > 0
-=======
 			} else if (player2.inRangeGlobal(student, distToCure) && student.isDead() && this.playerManager.getNumGingerAle() > 0
->>>>>>> 70c2f440f6e7a409771850277610d68a857917b5
+
 					&& pressedKeys.contains(this.playerManager.getSecondaryKey(2))) {
 				// this.dispatchEvent(new
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
@@ -316,13 +291,8 @@ public class Classroom extends DisplayObjectContainer {
 			}
 
 		}
-<<<<<<< HEAD
-	}
 
-=======
 	}	
-	
->>>>>>> cb2c57b17a378103b7f21101951e518c00a518e6
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
 			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
@@ -384,15 +354,10 @@ public class Classroom extends DisplayObjectContainer {
 		this.checkVPCollisions(pressedKeys);
 		this.garbagePoisonCollect();
 		this.garbageVPCollect();
-<<<<<<< HEAD
-		this.checkPoisonCollisions(pressedKeys);
-		this.checkStudentCollisions(pressedKeys);
-=======
 		this.checkPoisonCollisions(pressedKeys);
 		this.checkStudentCollisions(pressedKeys);
 		this.updatePlayer(pressedKeys, this.player1);
 		this.updatePlayer(pressedKeys, this.player2);
->>>>>>> 70c2f440f6e7a409771850277610d68a857917b5
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
