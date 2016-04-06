@@ -73,7 +73,9 @@ public class Classroom extends DisplayObjectContainer {
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
 		this.addEventListener(levelManager, EventTypes.WIN_LEVEL.toString());
 		this.addEventListener(levelManager, EventTypes.LOSE_LEVEL.toString());
-
+		this.addEventListener(soundManager, EventTypes.CURE_STUDENT.toString());
+		this.addEventListener(soundManager,  EventTypes.POISON_STUDENT.toString());
+		
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
 				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
@@ -234,6 +236,9 @@ public class Classroom extends DisplayObjectContainer {
 					poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 					System.out.println("Student's Health: " + student.getCurrentHealth());
 				}
+				if(student.isDead()) {
+					this.dispatchEvent(new GameEvent(EventTypes.POISON_STUDENT.toString(), this));
+				}
 			}
 			// Check all poison collisions with each player's net
 			if (player1.getNet().collidesWithGlobal(poison) && !poison.isPickedUp()
@@ -273,8 +278,7 @@ public class Classroom extends DisplayObjectContainer {
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player1));
-
-				// FIXME: sound
+				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));	
 				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
 				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
 			} else if (player2.inRangeGlobal(student, distToCure) && student.isDead() && this.playerManager.getNumGingerAle() > 0
@@ -283,9 +287,8 @@ public class Classroom extends DisplayObjectContainer {
 				// this.dispatchEvent(new
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
+				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
-
-				// FIXME: sound
 				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
 				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
 			}
