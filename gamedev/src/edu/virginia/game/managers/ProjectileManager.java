@@ -25,6 +25,8 @@ public class ProjectileManager implements IEventListener {
 	public void handleEvent(Event event) {
 		if(event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
 			
+		} else if(event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
+			
 		}
 
 	}

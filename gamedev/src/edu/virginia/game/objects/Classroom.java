@@ -94,13 +94,8 @@ public class Classroom extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 
 		mySoundManager = new SoundManager();
-<<<<<<< HEAD
-		//mySoundManager.LoadMusic("bg", "theme.wav");
-		//mySoundManager.PlayMusic("bg");
-=======
 		mySoundManager.LoadMusic("bg", "theme.wav");
-		mySoundManager.PlayMusic("bg");
->>>>>>> db8190e0a697c9eb1af5717e94e2d3ec54bebce9
+		//mySoundManager.PlayMusic("bg");
 	}
 
 	
