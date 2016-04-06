@@ -60,6 +60,19 @@ public class LevelManager implements IEventListener {
 			return -1; // error
 		}
 	}
+	
+	public void setVPCollected(int newVPCollected, int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			this.vpCollected1 = newVPCollected;
+			break;
+		case 2:
+			this.vpCollected2 = newVPCollected;
+			break;
+		default:
+			// error
+		}
+	}
 
 	public void setSpeed(int newVPCollected, int numPlayer) {
 		switch (numPlayer) {
@@ -128,7 +141,7 @@ public class LevelManager implements IEventListener {
 			//should be dispatched by player
 			Player player = (Player) event.getSource();
 			int id = player.getNumPlayer();
-			this.setPoisonCollected(this.getVPCollected(id) + 1, id);
+			this.setVPCollected(this.getVPCollected(id) + 1, id);
 		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
 			//should be dispatched by player
 			Player player = (Player) event.getSource();

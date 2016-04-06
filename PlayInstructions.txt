@@ -22,3 +22,7 @@ Try to catch VP (circular red/blue/yellow things)
 will print in the console.
 - When players are hit by poison (green blobs), players'
 health will also be displayed in the console.
+
+** If you want to stop background music, comment out
+	soundManager.PlayMusic("bg");
+from Classroom.java
