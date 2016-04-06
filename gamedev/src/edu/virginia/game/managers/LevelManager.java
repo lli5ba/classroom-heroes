@@ -23,10 +23,12 @@ public class LevelManager implements IEventListener {
 	// Player One
 	int vpCollected1;
 	int poisonCollected1;
+	int studentsCured1;
 
 	// Player Two
 	int vpCollected2;
 	int poisonCollected2;
+	int studentsCured2;
 
 	/****************** Constructors ********************/
 
@@ -95,6 +97,30 @@ public class LevelManager implements IEventListener {
 			// error
 		}
 	}
+	
+	public int getStudentsCured(int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			return this.studentsCured1;
+		case 2:
+			return this.studentsCured2;
+		default:
+			return -1; // error
+		}
+	}
+
+	public void setStudentsCured(int newStudentsCured, int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			this.studentsCured1 = newStudentsCured;
+			break;
+		case 2:
+			this.studentsCured1 = newStudentsCured;
+			break;
+		default:
+			// error
+		}
+	}
 
 	@Override
 	public void handleEvent(GameEvent event) {
@@ -108,6 +134,10 @@ public class LevelManager implements IEventListener {
 			Player player = (Player) event.getSource();
 			int id = player.getNumPlayer();
 			this.setPoisonCollected(this.getVPCollected(id) + 1, id);
+		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
+			Player player = (Player) event.getSource();
+			int id = player.getNumPlayer();
+			this.setStudentsCured(this.getStudentsCured(id) + 1, id);
 		}
 
 	}

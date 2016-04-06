@@ -35,7 +35,9 @@ public class ProjectileManager implements IEventListener {
 			if (poison.isVisible()) { // has faded out already
 				poison.setVisible(false);
 			}
-		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
+		}
+		
+		else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			// should be dispatched by the vp
 			VP vp = (VP) event.getSource();
 			vp.setPickedUp(true);
@@ -43,5 +45,6 @@ public class ProjectileManager implements IEventListener {
 				vp.setVisible(false);
 			}
 		}
+		
 	}
 }

@@ -113,12 +113,15 @@ public class Student extends AnimatedSprite {
 				} else {
 					this.currentHealth = newHealth;
 				}
-				this.healthBar.setHealthBar(this.currentHealth, this.maxHealth);
+				this.updateHealthBar();
 				this.healthDrainClock.resetGameClock();
 			}
 		}
 	}
 
+	public void updateHealthBar() {
+		this.healthBar.setHealthBar(this.currentHealth, this.maxHealth);
+	}
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children

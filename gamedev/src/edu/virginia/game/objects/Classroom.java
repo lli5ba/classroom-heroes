@@ -3,6 +3,7 @@ package edu.virginia.game.objects;
 import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -52,7 +53,7 @@ public class Classroom extends DisplayObjectContainer {
 	public static int vpCount;
 	public static int health1 = 5;
 	public static int health2 = 5;
-	ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
+	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
 
@@ -84,11 +85,13 @@ public class Classroom extends DisplayObjectContainer {
 		
 		this.player1.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
 		this.player1.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
-		this.player1.addEventListener(levelManager, EventTypes.PICKUP_POISON.toString());
+		this.player1.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
+		this.player1.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
 		
 		this.player2.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
 		this.player2.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
-		this.player2.addEventListener(levelManager, EventTypes.PICKUP_POISON.toString());
+		this.player2.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
+		this.player2.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
 
 		if(this.gameManager.getNumPlayers() == 1) {
 			//set player2 inactive and invisible
@@ -114,7 +117,7 @@ public class Classroom extends DisplayObjectContainer {
 		student0.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
 		student0.addEventListener(studentManager, EventTypes.CURE_STUDENT.toString());
 		this.addChild(student0);
-		student0.setPosition(this.getWidth() * .5, this.getHeight() * .2);
+		student0.setPosition(this.getWidth() * .5, this.getHeight() * .742);
 		this.studentList.add(student0);
 		
 
@@ -211,7 +214,7 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 	
-	private void checkPoisonHitCollisions(ArrayList<String> pressedKeys) {
+	private void checkPoisonCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem poison : poisonList) {
 			if (player1.collidesWithGlobal(poison) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
@@ -244,7 +247,7 @@ public class Classroom extends DisplayObjectContainer {
 						System.out.println("Student's Health: " + student.getCurrentHealth());
 				}
 			}
-			//Check all poison collisions with each student's net
+			//Check all poison collisions with each player's net
 			if (player1.getNet().collidesWithGlobal(poison) && !poison.isPickedUp() 
 					&& pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
@@ -273,6 +276,35 @@ public class Classroom extends DisplayObjectContainer {
 
 		}
 	}
+	
+	private void checkStudentCollisions(ArrayList<String> pressedKeys) {
+		for (Student student : studentList) {
+			//Check whether players are in range of student
+			if (player1.inRangeGlobal(student, 200) && student.isPoisoned() && this.playerManager.getNumGingerAle() > 0
+					&& pressedKeys.contains(this.playerManager.getSecondaryKey(1))) {
+				//this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this));
+				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
+				this.player1.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player1));
+
+				//FIXME: sound
+				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
+				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
+			} else if (player2.inRangeGlobal(student, 10) && student.isDead() && this.playerManager.getNumGingerAle() > 0
+					&& pressedKeys.contains(this.playerManager.getSecondaryKey(2))) {
+				//this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this));
+				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
+				this.player2.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
+
+				//FIXME: sound
+				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
+				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
+			}
+			
+
+		}
+	}
+	
+	
 	
 	
 	
@@ -308,13 +340,47 @@ public class Classroom extends DisplayObjectContainer {
 			}
 		}
 	}
+	
+	private void garbageVPCollect()
+	{
+		for(Iterator<PickedUpItem> it = vpList.iterator(); it.hasNext();)
+		{
+			PickedUpItem garbage = it.next();
+			if(garbage.isPickedUp())
+			{
+				it.remove();
+			}
+			else if(!garbage.collidesWithGlobal(this))
+			{
+				it.remove();
+			}
+		}
+	}
+	
+	private void garbagePoisonCollect()
+	{
+		for(Iterator<PickedUpItem> it = poisonList.iterator(); it.hasNext();)
+		{
+			PickedUpItem garbage = it.next();
+			if(garbage.isPickedUp())
+			{
+				it.remove();
+			}
+			else if(!garbage.collidesWithGlobal(this))
+			{
+				it.remove();
+			}
+		}
+	}
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		this.checkVPCollisions(pressedKeys);
-		this.checkPoisonHitCollisions(pressedKeys);
-
+		this.garbagePoisonCollect();
+		this.garbageVPCollect();
+		this.checkPoisonCollisions(pressedKeys);
+		this.checkStudentCollisions(pressedKeys);
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
