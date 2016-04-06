@@ -302,11 +302,7 @@ public class Classroom extends DisplayObjectContainer {
 			
 
 		}
-	}
-	
-	
-	
-	
+	}	
 	
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
