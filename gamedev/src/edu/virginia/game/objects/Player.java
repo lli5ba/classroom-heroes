@@ -161,13 +161,6 @@ public class Player extends AnimatedSprite {
 
 				this.animateOnce("net" + currentDir, 5);
 				this.dispatchEvent(new GameEvent(EventTypes.SWING_NET.toString(), this));
-				/*
-				 * Move this to Classroom class for(PickedUpItem vp : vpList) {
-				 * if (net.collidesWithGlobal(vp) && !vp.isPickedUp()) {
-				 * vp.dispatchEvent(new
-				 * PickedUpEvent(PickedUpEvent.KEY_PICKED_UP, vp));
-				 * vp.setPickedUp(true); } }
-				 */
 			}
 		}
 	}
