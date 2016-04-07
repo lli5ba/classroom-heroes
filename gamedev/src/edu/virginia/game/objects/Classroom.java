@@ -1,6 +1,7 @@
 package edu.virginia.game.objects;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +53,7 @@ public class Classroom extends DisplayObjectContainer {
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
+	private DisplayObjectContainer playArea;
 
 	public Classroom(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
@@ -116,7 +118,13 @@ public class Classroom extends DisplayObjectContainer {
 		student0.setPosition(this.getWidth() * .5, this.getHeight() * .742);
 		this.studentList.add(student0);
 		
-
+		/* set play area bounds */
+		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); //random png file
+		this.playArea.setVisible(false);
+		this.playArea.setWidth(this.getWidth());
+		this.playArea.setHeight(this.getHeight() * .8);
+		this.addChild(playArea);
+		this.playArea.setPosition(0, this.getHeight() * .2);
 		/* setting height and width of background 
 		 * must do this after setting position of all children items! */
 		this.setHeight(gameManager.getGameHeight());
@@ -267,7 +275,7 @@ public class Classroom extends DisplayObjectContainer {
 				//FIXME: exit screen
 				System.out.println("DEAD!");
 				this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
-				System.exit(0);
+				//System.exit(0);
 			}
 
 		}
@@ -320,11 +328,7 @@ public class Classroom extends DisplayObjectContainer {
 		//TODO: Leandra
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		super.draw(g); // draws children
-		spawnProjectiles();
-	}
+	
 	
 	public void keepTime() {
 		if (this.gameClock != null) {
@@ -367,15 +371,24 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	@Override
+	public void draw(Graphics g) {
+		super.draw(g); // draws children
+		/* if(this.playArea != null){
+			this.playArea.drawHitboxGlobal(g);
+		} debugging */
+	}
+	
+	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
+		this.spawnProjectiles();
 		this.checkVPCollisions(pressedKeys);
 		this.garbagePoisonCollect();
 		this.garbageVPCollect();
 		this.checkPoisonCollisions(pressedKeys);
 		this.checkStudentCollisions(pressedKeys);
 		this.updatePlayer(pressedKeys, this.player1);
-		this.updatePlayer(pressedKeys, this.player2);
+		//this.updatePlayer(pressedKeys, this.player2);
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
@@ -405,22 +418,19 @@ public class Classroom extends DisplayObjectContainer {
 		 * Make sure this is not null. Sometimes Swing can auto cause an extra
 		 * frame to go before everything is initialized
 		 */
+		Position originalPos = new Position(player.getxPos(), player.getyPos());
 		if (player != null && player.getNet() != null) {
 			/*
 			 * update mario's position if a key is pressed, check bounds of
 			 * canvas
 			 */
+			
+			
 			if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))) {
-				if (player.getyPos() > 0) {
-					/*Position newPosition = new Position(player.getxPos(), player.getyPos() - speed);
-					 if (!playerCollision(newPosition, player)) {
-						player.setyPos(player.getyPos() - speed);
-						player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
-					} else {
-						//don't move the player
-					} */
-					player.setyPos(player.getyPos() - speed);
-				}
+				
+				player.setyPos(player.getyPos() - speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+				
 				if (!player.isPlaying() || player.getCurrentAnimation() != "up") {
 					player.animate("up");
 				}
@@ -429,16 +439,9 @@ public class Classroom extends DisplayObjectContainer {
 
 			}
 			if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))) {
-				if (player.getyPos() < this.gameManager.getGameHeight() - player.getHeight()) {
-					/* Position newPosition = new Position(player.getxPos(), player.getyPos() - speed);
-					 * if (!playerCollision(newPosition, player)) {
-						player.setyPos(player.getyPos() + speed);
-						player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
-					} else {
-						//don't move the player
-					} */
-					player.setyPos(player.getyPos() + speed);
-				}
+				
+				player.setyPos(player.getyPos() + speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 				if (!player.isPlaying() || player.getCurrentAnimation() != "down") {
 					player.animate("down");
 				}
@@ -447,9 +450,9 @@ public class Classroom extends DisplayObjectContainer {
 				player.moveNet("down");
 			}
 			if (pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
-				if (player.getxPos() > 0) {
-					player.setxPos(player.getxPos() - speed);
-				}
+				player.setxPos(player.getxPos() - speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+				
 				if (!player.isPlaying() || player.getCurrentAnimation() != "left") {
 					player.animate("left");
 				}
@@ -459,9 +462,10 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			if (pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 
-				if (player.getxPos() < this.gameManager.getGameWidth() - player.getWidth()) {
-					player.setxPos(player.getxPos() + speed);
-				}
+				player.setxPos(player.getxPos() + speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+			
+					
 				if (!player.isPlaying() || player.getCurrentAnimation() != "right") {
 					player.animate("right");
 				}
@@ -479,13 +483,49 @@ public class Classroom extends DisplayObjectContainer {
 					player.stopAnimation();
 				}
 
-				player.animateOnce("net" + currentDir, 5);
+				player.animateOnce("net" + currentDir, this.playerManager.getSwingSpeed(player.getNumPlayer()));
 				player.dispatchEvent(new GameEvent(EventTypes.SWING_NET.toString(), player));
 			}
+			
+		}
+		if (playerCollision(player.getHitboxGlobal(), player.getNumPlayer())) {
+			player.setPosition(originalPos);//move the player back
+		} else {
+			//don't move the player
 		}
 	}
-	private boolean playerCollision(Position newPosition, Player player) {
-		// TODO Auto-generated method stub
+	private boolean playerCollision(Rectangle r, int numPlayer) {
+		/* Check collisions with students */
+		for(Student student: studentList) {
+			if(r.intersects(student.getHitboxGlobal())) {
+				return true;
+			}
+		}
+		/* Check collisions with the other player */
+		switch (numPlayer) {
+			case 1:
+				if(r.intersects(this.player2.getHitboxGlobal())) {
+					return true;
+				}
+				break;
+			case 2:
+				if(r.intersects(this.player2.getHitboxGlobal())) {
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+		/* Check whether player is not inside of the play area */
+		if(!(this.playArea.getHitboxGlobal().contains(r))) {
+			return true;
+		}
+		/* Check whether player is too close to the boss */
+		Rectangle bossHitboxRange = this.boss.getHitboxGlobal();
+		bossHitboxRange.grow(20, 20);
+		if(r.intersects(bossHitboxRange)) {
+			return true;
+		} 
 		return false;
 	}
 }

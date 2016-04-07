@@ -61,7 +61,7 @@ public class PlayerManager implements IEventListener {
 		instance = this;
 
 		/* P1 Default Stats */
-		speed1 = 1;
+		speed1 = 5;
 		maxHealth1 = 5;
 		health1 = maxHealth1;
 		experience1 = 0;
