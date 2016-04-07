@@ -93,19 +93,6 @@ public class LevelManager implements IEventListener {
 		}
 	}
 
-	public void setSpeed(int newVPCollected, int numPlayer) {
-		switch (numPlayer) {
-		case 1:
-			this.vpCollected1 = newVPCollected;
-			break;
-		case 2:
-			this.vpCollected2 = newVPCollected;
-			break;
-		default:
-			// error
-		}
-	}
-
 	public int getPoisonCollected(int numPlayer) {
 		switch (numPlayer) {
 		case 1:
@@ -154,6 +141,14 @@ public class LevelManager implements IEventListener {
 		}
 	}
 
+	public void clearStats(){
+		this.setPoisonCollected(0, 1);
+		this.setVPCollected(0, 1);
+		this.setStudentsCured(0, 1);
+		this.setPoisonCollected(0, 2);
+		this.setVPCollected(0, 2);
+		this.setStudentsCured(0, 2);
+	}
 	@Override
 	public void handleEvent(GameEvent event) {
 		if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
@@ -170,6 +165,10 @@ public class LevelManager implements IEventListener {
 			Player player = (Player) event.getSource();
 			int id = player.getNumPlayer();
 			this.setStudentsCured(this.getStudentsCured(id) + 1, id);
+		} else if (event.getEventType().equals(EventTypes.LOSE_LEVEL.toString())) {
+			clearStats();
+		} else if (event.getEventType().equals(EventTypes.WIN_LEVEL.toString())) {
+			clearStats();
 		}
 
 	}

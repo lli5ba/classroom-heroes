@@ -101,14 +101,13 @@ public class Student extends AnimatedSprite {
 
 
 	private void drainHealthIfPoisoned(ArrayList<String> pressedKeys) {
-		double percentToDrain = 0.2; // FIXME: should depend on what level we
+		double percentToDrain = 0.05; // FIXME: should depend on what level we
 										// are on
 		if (this.healthDrainClock != null) {
 			if (this.healthDrainClock.getElapsedTime() > (DRAIN_INTERVAL) && this.isPoisoned() && !this.isDead()) {
 				double newHealth = this.currentHealth - percentToDrain * this.maxHealth;
 				if (newHealth < 0) {
 					this.currentHealth = 0;
-					this.animateOnce("fall" + this.animDir, 3);
 					this.dead = true;
 				} else {
 					this.currentHealth = newHealth;

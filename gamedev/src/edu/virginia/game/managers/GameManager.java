@@ -25,7 +25,7 @@ public class GameManager {
 		instance = this;
 		gameHeight = 700;
 		gameWidth = 1000;
-		numPlayers = 2;
+		numPlayers = 1;
 		numLevel = 1;
 	}
 

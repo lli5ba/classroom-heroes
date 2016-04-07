@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 
@@ -16,6 +17,7 @@ public class PlayerStatBox extends DisplayObjectContainer {
 	private int health2Stat;
 	private LevelManager levelManager = LevelManager.getInstance();
 	private PlayerManager playerManager = PlayerManager.getInstance();
+	private GameManager gameManager = GameManager.getInstance();
 
 	public PlayerStatBox(String id) {
 		super(id);
@@ -33,9 +35,11 @@ public class PlayerStatBox extends DisplayObjectContainer {
 
 		g.drawString("Player 1's Health: " + this.playerManager.getHealth(1), 120, 40);
 		g.drawString("Player 1's VP Collected: " + this.levelManager.getVPCollected(1), 110, 50);
-
-		g.drawString("Player 2's Health: " + this.playerManager.getHealth(2), 380, 40);
-		g.drawString("Player 2's VP Collected: " + this.levelManager.getVPCollected(2), 370, 50);
+		g.drawString("Antidotes: " + this.playerManager.getNumGingerAle(), 130, 60);
+		if (this.gameManager.getNumPlayers() == 2) {
+			g.drawString("Player 2's Health: " + this.playerManager.getHealth(2), 380, 40);
+			g.drawString("Player 2's VP Collected: " + this.levelManager.getVPCollected(2), 370, 50);
+		}
 	}
 
 	@Override

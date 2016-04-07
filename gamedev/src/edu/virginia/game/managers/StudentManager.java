@@ -29,12 +29,13 @@ public class StudentManager implements IEventListener {
 			// should be dispatched by the student
 			Student student = (Student) event.getSource();
 			// player.getPoisonBubbles.animateOnce("poison"); //play animation
+			student.animateOnce("fall" + student.getAnimDir(), 3);
 			student.setPoisoned(true);
 		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
 			// should be dispatched by the student
 			Student student = (Student) event.getSource();
 			// play animation to show student floating back up
-			student.animateOnce("floatdown", 5);
+			student.animateOnce("float" + student.getAnimDir(), 3);
 			student.setDead(false);
 			student.setPoisoned(false);
 			student.setCurrentHealth(student.getMaxHealth());

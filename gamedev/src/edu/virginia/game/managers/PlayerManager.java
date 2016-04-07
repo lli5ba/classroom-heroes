@@ -22,6 +22,7 @@ public class PlayerManager implements IEventListener {
 	private int maxHealth1;
 	private int experience1; // total for the entire game (can calculate level
 								// based on experience)
+	private int attrPoints1;
 	private int swingSpeed1;
 	private String primaryKey1;
 	private String secondaryKey1;
@@ -36,6 +37,7 @@ public class PlayerManager implements IEventListener {
 	private int maxHealth2;
 	private int experience2; // total for the entire game (can calculate level
 								// based on experience)
+	private int attrPoints2;
 	private int swingSpeed2;
 	private String primaryKey2;
 	private String secondaryKey2;
@@ -61,10 +63,11 @@ public class PlayerManager implements IEventListener {
 		instance = this;
 
 		/* P1 Default Stats */
-		speed1 = 1;
+		speed1 = 2;
 		maxHealth1 = 5;
 		health1 = maxHealth1;
 		experience1 = 0;
+		attrPoints1 = 0;
 		swingSpeed1 = 5;
 		/* P1 Default Key Mappings */
 		primaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_SPACE);
@@ -75,10 +78,11 @@ public class PlayerManager implements IEventListener {
 		leftKey1 = KeyEvent.getKeyText(KeyEvent.VK_LEFT);
 
 		/* P2 Default Stats */
-		speed2 = 1;
+		speed2 = 2;
 		maxHealth2 = 5;
 		health2 = maxHealth2;
 		experience2 = 0;
+		attrPoints2 = 0;
 		swingSpeed2 = 5;
 		/* P2 Default Key Mappings */
 		primaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_1);
@@ -171,6 +175,28 @@ public class PlayerManager implements IEventListener {
 		}
 	}
 
+	public int getAttrPoints(int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			return attrPoints1;
+		case 2:
+			return attrPoints2;
+		default:
+			return -1; // error
+		}
+	}
+	public void setAttrPoints(int newAttrPoints, int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			this.attrPoints1 = newAttrPoints;
+			break;
+		case 2:
+			this.attrPoints2 = newAttrPoints;
+			break;
+		default:
+			// error
+		}
+	}
 	public int getExperience(int numPlayer) {
 		switch (numPlayer) {
 		case 1:
@@ -179,6 +205,18 @@ public class PlayerManager implements IEventListener {
 			return experience2;
 		default:
 			return -1; // error
+		}
+	}
+	public void setExperience(int newExperience, int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			this.experience1 = newExperience;
+			break;
+		case 2:
+			this.experience2 = newExperience;
+			break;
+		default:
+			// error
 		}
 	}
 	
@@ -208,18 +246,7 @@ public class PlayerManager implements IEventListener {
 		  return lower <= x && x <= upper;
 		}
 
-	public void setExperience(int newExperience, int numPlayer) {
-		switch (numPlayer) {
-		case 1:
-			this.experience1 = newExperience;
-			break;
-		case 2:
-			this.experience2 = newExperience;
-			break;
-		default:
-			// error
-		}
-	}
+	
 
 	public int getSwingSpeed(int numPlayer) {
 		switch (numPlayer) {

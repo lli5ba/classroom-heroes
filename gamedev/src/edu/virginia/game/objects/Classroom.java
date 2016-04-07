@@ -1,5 +1,6 @@
 package edu.virginia.game.objects;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class Classroom extends DisplayObjectContainer {
 	private GameClock gameClock;
 	private GameClock poisonClock;
 	private GameClock vpClock;
+	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1000;
 	public static final double GAME_TIME = 60000;
@@ -114,12 +116,9 @@ public class Classroom extends DisplayObjectContainer {
 		this.boss.setScaleY(.6);
 
 		/* Generate Students */
-		Student student0 = new Student("Student0", "0", "back");
-		student0.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
-		student0.addEventListener(studentManager, EventTypes.CURE_STUDENT.toString());
-		this.addChild(student0);
-		student0.setPosition(this.getWidth() * .5, this.getHeight() * .742);
-		this.studentList.add(student0);
+		spawnStudent("Student0", "down", this.getWidth() * .5, this.getHeight() * .742);
+		spawnStudent("Student1", "left", this.getWidth() * .7, this.getHeight() * .65);
+		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .65);
 
 		
 		/* set play area bounds */
@@ -139,6 +138,8 @@ public class Classroom extends DisplayObjectContainer {
 		stat = new PlayerStatBox("stats");
 		this.addChild(stat);
 		
+		/* the game is in session (not on end screen) */
+		this.inPlay = true;
 		soundManager.LoadMusic("bg", "theme.wav");
 		soundManager.PlayMusic("bg");
 	}
@@ -157,6 +158,14 @@ public class Classroom extends DisplayObjectContainer {
 		return new Position(x, y);
 	}
 
+	public void spawnStudent(String id, String animDir, double xPos, double yPos) {
+		Student student1 = new Student(id, "0", animDir);
+		student1.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
+		student1.addEventListener(studentManager, EventTypes.CURE_STUDENT.toString());
+		this.addChild(student1);
+		student1.setPosition(xPos, yPos);
+		this.studentList.add(student1);
+	}
 	public void spawnVP() {
 		if (myTweenJuggler != null) {
 			VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
@@ -269,20 +278,19 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			if (this.playerManager.getHealth(1) == 0 || this.playerManager.getHealth(2) == 0) {
 				// FIXME: exit screen
-				System.out.println("DEAD!");
 				this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
-				//System.exit(0);
+				this.loseGame();
 			}
 
 		}
 	}
 
 	private void checkStudentCollisions(ArrayList<String> pressedKeys) {
-		int distToCure = 25; //how close you need to be to the student
+		int distToCure = 30; //how close you need to be to the student
+		boolean atLeastOneStudentAlive = false;
 		for (Student student : studentList) {
-
 			if (player1.inRangeGlobal(student, distToCure) && student.isPoisoned() && this.playerManager.getNumGingerAle() > 0
-					&& pressedKeys.contains(this.playerManager.getSecondaryKey(1))) {
+					&& !student.isDead() && pressedKeys.contains(this.playerManager.getSecondaryKey(1))) {
 				// this.dispatchEvent(new
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
@@ -290,9 +298,8 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));	
 				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
 				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
-			} else if (player2.inRangeGlobal(student, distToCure) && student.isDead() && this.playerManager.getNumGingerAle() > 0
-
-					&& pressedKeys.contains(this.playerManager.getSecondaryKey(2))) {
+			} else if (player2.inRangeGlobal(student, distToCure)&& student.isPoisoned() && this.playerManager.getNumGingerAle() > 0
+					&& !student.isDead() && pressedKeys.contains(this.playerManager.getSecondaryKey(2))) {
 				// this.dispatchEvent(new
 				// GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
@@ -301,7 +308,13 @@ public class Classroom extends DisplayObjectContainer {
 				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
 				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
 			}
-
+			if(!student.isDead()) {
+				atLeastOneStudentAlive = true;
+			}
+		} 
+		if (!atLeastOneStudentAlive) {
+			this.loseGame();
+			this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
 		}
 
 	}	
@@ -328,10 +341,31 @@ public class Classroom extends DisplayObjectContainer {
 		if (this.gameClock != null) {
 			if (this.gameClock.getElapsedTime() > GAME_TIME) {
 				this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
+				this.winGame();
 			}
 		}
 	}
 
+	public void calcExp(int numPlayer) {
+		double exp = 0;
+		for (Student student: studentList)
+		{
+			exp += student.getCurrentHealth()/student.getMaxHealth() * 100;  //Health should be a max of 25000
+		}
+		exp += this.levelManager.getPoisonCollected(numPlayer) * 10;
+		exp += this.levelManager.getStudentsCured(numPlayer) * 50;
+		exp += this.levelManager.getVPCollected(numPlayer) * 10;
+		exp += this.playerManager.getHealth(numPlayer)/this.playerManager.getMaxHealth(numPlayer) * 100;
+		this.playerManager.setExperience(this.playerManager.getExperience(numPlayer) + (int)exp, numPlayer);
+		this.playerManager.setAttrPoints(this.playerManager.getAttrPoints(numPlayer) + (int)2, numPlayer);
+		
+	}
+	public void winGame() {
+		this.inPlay = false;
+	}
+	public void loseGame() {
+		this.inPlay = false;
+	}
 
 	private void garbageVPCollect() {
 		for (Iterator<PickedUpItem> it = vpList.iterator(); it.hasNext();) {
@@ -358,6 +392,13 @@ public class Classroom extends DisplayObjectContainer {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
+		Font f = new Font("Dialog", Font.PLAIN, 20);
+		g.setFont(f);
+		int timeLeft = (int) (GAME_TIME - this.gameClock.getElapsedTime())/1000;
+		if (timeLeft < 0) {
+			timeLeft = 0;
+		}
+		g.drawString("Time Left: " + timeLeft, 0, 20);
 		/* if(this.playArea != null){
 			this.playArea.drawHitboxGlobal(g);
 		} debugging */
@@ -366,14 +407,18 @@ public class Classroom extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
-		this.spawnProjectiles();
-		this.checkVPCollisions(pressedKeys);
-		this.garbagePoisonCollect();
-		this.garbageVPCollect();
-		this.checkPoisonCollisions(pressedKeys);
-		this.checkStudentCollisions(pressedKeys);
-		this.updatePlayer(pressedKeys, this.player1);
-		//this.updatePlayer(pressedKeys, this.player2);
+		if (this.inPlay) {
+			this.spawnProjectiles();
+			this.checkVPCollisions(pressedKeys);
+			this.garbagePoisonCollect();
+			this.garbageVPCollect();
+			this.checkPoisonCollisions(pressedKeys);
+			this.checkStudentCollisions(pressedKeys);
+			this.updatePlayer(pressedKeys, this.player1);
+			if(this.gameManager.getNumPlayers() == 2) {
+				this.updatePlayer(pressedKeys, this.player2);
+			}
+		}
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
