@@ -41,6 +41,7 @@ import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 import edu.virginia.game.managers.SoundManager;
+import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.ItemDetail;
 import edu.virginia.game.objects.PickedUpItem;
@@ -59,6 +60,8 @@ public class ClassroomHeroes extends Game {
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private GameClock gameClock;
 	Hallway hallway0 = new Hallway("hallway0", "0");
+	Classroom classroom1 = new Classroom("classroom1");
+	Classroom classroom2;
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters
@@ -71,8 +74,6 @@ public class ClassroomHeroes extends Game {
 		super("Classroom Heroes", gameManager.getGameWidth(), gameManager.getGameHeight());
 		gameClock = new GameClock();
 
-		mySoundManager = new SoundManager();
-		mySoundManager.LoadMusic("thebestsong", "whatisthis.wav");
 
 	}
 
@@ -88,8 +89,22 @@ public class ClassroomHeroes extends Game {
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
 
-		if (this.hallway0 != null) {
+		if (this.hallway0 != null && this.gameManager.getActiveGameScene().equals("hallway0")) {
 			hallway0.update(pressedKeys);
+		}
+		if (this.classroom1 != null && this.gameManager.getActiveGameScene().equals("classroom1")) {
+			classroom1.update(pressedKeys);
+		}
+		if (this.classroom2 == null && this.gameManager.getActiveGameScene().equals("classroom2")) {
+			try {
+				classroom2 = new Classroom("classroom2");
+			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (this.classroom2 != null && this.gameManager.getActiveGameScene().equals("classroom2")) {
+			classroom2.update(pressedKeys);
 		}
 
 	}
@@ -103,10 +118,15 @@ public class ClassroomHeroes extends Game {
 	public void draw(Graphics g) {
 		super.draw(g);
 
-		if (hallway0 != null) {
+		if (hallway0 != null && this.gameManager.getActiveGameScene().equals("hallway0")) {
 			hallway0.draw(g);
 		}
-
+		if (this.classroom1 != null && this.gameManager.getActiveGameScene().equals("classroom1")) {
+			classroom1.draw(g);
+		}
+		if (this.classroom2 != null && this.gameManager.getActiveGameScene().equals("classroom2")) {
+			classroom2.draw(g);
+		}
 	}
 
 	/**

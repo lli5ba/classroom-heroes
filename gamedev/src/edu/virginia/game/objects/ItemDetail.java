@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.game.managers.PlayerManager;
 
 //This class represents an itemdetail to be displayed in the store
 public class ItemDetail extends DisplayObjectContainer {
-
 	private Sprite itemIcon;
 	private String description;
 	private int cost;

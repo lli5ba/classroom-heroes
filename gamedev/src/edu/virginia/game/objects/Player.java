@@ -97,7 +97,7 @@ public class Player extends AnimatedSprite {
 		}
 	}
 
-	public void moveSpriteCartesianAnimate2(ArrayList<String> pressedKeys) {
+	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys) {
 		double speed = this.playerManager.getSpeed(this.numPlayer);
 		/*
 		 * Make sure this is not null. Sometimes Swing can auto cause an extra

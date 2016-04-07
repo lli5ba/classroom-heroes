@@ -1,5 +1,6 @@
 package edu.virginia.game.objects;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -125,16 +126,18 @@ public class Store extends DisplayObjectContainer {
 		switch (item.getId()) { // switch statements b/c easy to add new items
 		case GINGER_ALE_ID:
 			this.itemToBuy = this.gingerAleDetail;
+			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle() + 1);
 			break;
 		case CHEESE_PUFFS_ID:
 			this.itemToBuy = this.cheesePuffsDetail;
+			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs() + 1);
 			break;
 		default:
 			System.out.println("Error in Store startBuy(). Should not happen.");
 			break;
 		}
 		System.out.println("You bought " + item.getId() + " for " + item.getCost() + " VP");
-
+		this.playerManager.setVpCount(this.playerManager.getVpCount()-this.itemToBuy.getCost());
 		this.stopBuy();
 
 	}
@@ -211,6 +214,15 @@ public class Store extends DisplayObjectContainer {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
+		if (this.isVisible()) {
+			Font f = new Font("Dialog", Font.PLAIN, 8);
+			g.setFont(f);
+			g.setColor(Color.WHITE);
+			g.drawString("VP Remaining: " + this.playerManager.getVpCount(), 415, 60);
+			g.drawString("Ginger Ale: " + this.playerManager.getNumGingerAle(), 415, 70);
+			g.drawString("Da Bombs: " + this.playerManager.getNumCheesePuffs(), 415, 80);
+			g.setColor(Color.BLACK);
+		}
 	}
 
 	@Override

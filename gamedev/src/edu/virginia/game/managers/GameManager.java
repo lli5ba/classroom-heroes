@@ -11,6 +11,8 @@ public class GameManager {
 
 	private int gameWidth;
 	private int numPlayers;
+	
+	private String activeGameScene;
 
 	/****************** Constructors ********************/
 
@@ -27,6 +29,8 @@ public class GameManager {
 		gameWidth = 1000;
 		numPlayers = 1;
 		numLevel = 1;
+		setActiveGameScene("classroom1");
+		
 	}
 
 	/*********** Game Details Getters and Setters *********/
@@ -63,5 +67,13 @@ public class GameManager {
 
 	public void setNumLevel(int numLevel) {
 		this.numLevel = numLevel;
+	}
+
+	public String getActiveGameScene() {
+		return activeGameScene;
+	}
+
+	public void setActiveGameScene(String activeGameScene) {
+		this.activeGameScene = activeGameScene;
 	}
 }

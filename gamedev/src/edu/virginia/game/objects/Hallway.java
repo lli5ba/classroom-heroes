@@ -2,6 +2,7 @@ package edu.virginia.game.objects;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.DisplayObjectContainer;
@@ -33,7 +34,6 @@ public class Hallway extends DisplayObjectContainer {
 				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
 		if (this.gameManager.getNumPlayers() == 1) {
 			// set player2 inactive and invisible
-			System.out.println("making player 2 invisible ");
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
@@ -165,6 +165,27 @@ public class Hallway extends DisplayObjectContainer {
 		// FIXME: check between players, sprites, and walls of background
 	}
 
+	public void movePlayer(ArrayList<String> pressedKeys, Player player){
+		if (player != null && player.getNet() != null) {
+			if (player.isActive()) {
+				player.moveSpriteCartesianAnimate(pressedKeys);
+			}
+			// if there are no keys being pressed, and sprite is walking, then
+			// stop the animation
+			if (pressedKeys.isEmpty() && player.isPlaying()
+					&& Arrays.asList(player.CARDINAL_DIRS).contains(player.getCurrentAnimation())) {
+				player.stopAnimation();
+			}
+
+		}
+	}
+	
+	public void switchScenes() {
+		if(this.player1 != null && 
+				this.player1.getxPosGlobal() > this.gameManager.getGameWidth()) {
+			this.gameManager.setActiveGameScene("classroom2");
+		}
+	}
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
@@ -181,5 +202,10 @@ public class Hallway extends DisplayObjectContainer {
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		this.navigateStore(pressedKeys);
+		this.movePlayer(pressedKeys, this.player1);
+		if (this.gameManager.getNumPlayers() == 2) {
+			this.movePlayer(pressedKeys, this.player2);
+		}
+		this.switchScenes();
 	}
 }

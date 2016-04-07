@@ -59,6 +59,14 @@ public class SoundManager implements IEventListener {
 		return;
 	}
 
+	public boolean isPlayingMusic() {
+		return clipPlaying.isRunning();
+	}
+	public void stopMusic() {
+		clipPlaying.stop();
+		clipPlaying.close();
+		
+	}
 	public void PlayMusic(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		clipPlaying.stop();
 		if (music.containsKey(id)) {
@@ -128,6 +136,14 @@ public class SoundManager implements IEventListener {
 
 	public boolean isPlayingSoundEffect1() {
 		return this.clipPlayingSoundEffect.isRunning();
+	}
+
+	public void stopAll() {
+		this.clipPlaying.close();
+		this.clipPlayingSoundEffect.close();
+		this.clipPlaying.stop();
+		this.clipPlayingSoundEffect.stop();
+		
 	}
 
 

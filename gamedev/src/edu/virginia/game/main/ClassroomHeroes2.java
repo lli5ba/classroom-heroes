@@ -78,9 +78,6 @@ public class ClassroomHeroes2 extends Game {
 		super("Classroom Heroes", gameManager.getGameWidth(), gameManager.getGameHeight());
 		gameClock = new GameClock();
 
-		mySoundManager = new SoundManager();
-		mySoundManager.LoadMusic("thebestsong", "whatisthis.wav");
-
 	}
 
 	public void changeScreens() {
