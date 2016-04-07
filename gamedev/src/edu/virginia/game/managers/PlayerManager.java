@@ -61,11 +61,11 @@ public class PlayerManager implements IEventListener {
 		instance = this;
 
 		/* P1 Default Stats */
-		speed1 = 5;
+		speed1 = 1;
 		maxHealth1 = 5;
 		health1 = maxHealth1;
 		experience1 = 0;
-		swingSpeed1 = 1;
+		swingSpeed1 = 5;
 		/* P1 Default Key Mappings */
 		primaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_SPACE);
 		secondaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_B);
@@ -79,7 +79,7 @@ public class PlayerManager implements IEventListener {
 		maxHealth2 = 5;
 		health2 = maxHealth2;
 		experience2 = 0;
-		swingSpeed2 = 1;
+		swingSpeed2 = 5;
 		/* P2 Default Key Mappings */
 		primaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_1);
 		secondaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_2);

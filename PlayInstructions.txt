@@ -1,4 +1,4 @@
-Christine Kim (cjk4wr), Leandra Irvine (lli5ba), Nakkul Sreenivas (na3kb)
+Christine Kim (cjk4wr), Leandra Irvine (lli5ba), Nakkul Sreenivas (ns3kb)
 Classroom Heroes
 
 Instructions for Store:
@@ -22,3 +22,9 @@ Try to catch VP (circular red/blue/yellow things)
 will print in the console.
 - When players are hit by poison (green blobs), players'
 health will also be displayed in the console.
+- If a nonplayable student (the one sitting in the desk) dies,
+cure him by pressing B as Player1 or 2 as Player2 while near him.
+
+** If you want to stop background music, comment out
+	soundManager.PlayMusic("bg");
+from Classroom.java

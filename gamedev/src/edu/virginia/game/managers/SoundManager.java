@@ -105,6 +105,16 @@ public class SoundManager implements IEventListener {
 				this.LoadSoundEffect("poison", "poison.wav");
 				this.PlaySoundEffect("poison");
 			}
+		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
+			if(!this.isPlayingSoundEffect1()) {
+				this.LoadSoundEffect("cured", "cured.wav");
+				this.PlaySoundEffect("cured");
+			}
+		} else if (event.getEventType().equals(EventTypes.POISON_STUDENT.toString())) {
+			if(!this.isPlayingSoundEffect1()) {
+				this.LoadSoundEffect("dead", "dead.wav");
+				this.PlaySoundEffect("dead");
+			}
 		}
 	}
 	
