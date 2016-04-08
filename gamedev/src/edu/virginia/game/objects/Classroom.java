@@ -182,8 +182,7 @@ public class Classroom extends DisplayObjectContainer {
 	}
 	public void spawnVP() {
 		if (myTweenJuggler != null) {
-			VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
-					"resources/projectiles/vpsheetspecs.txt");
+			VP vp = new VP("VP");
 			vp.setCenterPos(this.boss.getCenterPos());
 			vp.addEventListener(projectileManager, EventTypes.PICKUP_VP.toString());
 			vp.addEventListener(playerManager, EventTypes.PICKUP_VP.toString());
@@ -201,7 +200,7 @@ public class Classroom extends DisplayObjectContainer {
 	public void spawnPoison() {
 		if (myTweenJuggler != null) {
 			// FIXME: sprite sheet not implemented
-			Poison poison = new Poison("Poison", "projectiles/poison.png");
+			Poison poison = new Poison("Poison");
 			poison.setCenterPos(this.boss.getCenterPos());
 			poison.addEventListener(projectileManager, EventTypes.PICKUP_POISON.toString());
 			poison.addEventListener(playerManager, EventTypes.PICKUP_POISON.toString());

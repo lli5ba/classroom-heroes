@@ -1,0 +1,5 @@
+poison 0 = 38 0 16 16
+poison 1 = 0 0 18 18
+poison 2 = 0 19 16 16
+poison 3 = 19 0 18 18
+poison 4 = 17 19 16 16

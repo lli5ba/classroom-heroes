@@ -32,6 +32,7 @@ public class Student extends AnimatedSprite {
 	private boolean poisoned;
 	private boolean dead;
 	private StudentHealthBar healthBar;
+	private AnimatedSprite poisonBubbles;
 	private String animDir; // for falling and floating animations, "back",
 								// "left" or "right"
 
@@ -51,9 +52,17 @@ public class Student extends AnimatedSprite {
 		this.dead = false;
 		this.poisoned = false;
 		healthDrainClock = new GameClock();
+		
+		poisonBubbles = new AnimatedSprite("bubbles", "bubbles/bubble-default.png", 
+				"bubbles/bubble-spritesheet.png", "resources/bubbles/bubble-spritesheet.txt");
+		this.addChild(poisonBubbles);
+		this.poisonBubbles.setCenterPos(this.getWidth()*.75, -this.getHeight()*0.05);
 
 	}
 
+	public void animateBubbles() {
+		this.poisonBubbles.animateOnce("bubble");
+	}
 	public boolean isDead() {
 		return dead;
 	}
@@ -102,10 +111,11 @@ public class Student extends AnimatedSprite {
 
 	private void drainHealthIfPoisoned(ArrayList<String> pressedKeys) {
 		double percentToDrain = 0.05; // FIXME: should depend on what level we
-										// are on
+										// are on?
 		if (this.healthDrainClock != null) {
 			if (this.healthDrainClock.getElapsedTime() > (DRAIN_INTERVAL) && this.isPoisoned() && !this.isDead()) {
 				double newHealth = this.currentHealth - percentToDrain * this.maxHealth;
+				this.animateBubbles();
 				if (newHealth < 0) {
 					this.currentHealth = 0;
 					this.dead = true;

@@ -2,12 +2,11 @@ package edu.virginia.game.objects;
 
 public class Poison extends PickedUpItem {
 
-	public Poison(String id, String imageFileName) {
-		super(id, imageFileName);
-	}
 
-	public Poison(String id, String imageFileName, String spriteSheetFileName, String spriteSheetSpecsFileName) {
-		super(id, imageFileName, spriteSheetFileName, spriteSheetSpecsFileName);
+	public Poison(String id) {
+		super(id, "projectiles/poison.png", 
+				"projectiles/poison-spritesheet.png", "resources/projectiles/poison-spritesheet.txt");
+		this.animate("poison");
 	}
 
 }
