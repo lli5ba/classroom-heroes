@@ -1,0 +1,61 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+ForkandBeard
+</name>
+</assembly>
+<members>
+<member name="M:ForkandBeard.Loci.#ctor">
+	<summary>
+ Default constructor creates an empty Loci.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:ForkandBeard.Loci.GetLocusIntersection(ForkandBeard.Loci)">
+	<returns>Returns the loci which describes the intersection. WARNING: Where points are concerned it is assumed the point does intersect so the point simply gets returned. This is to prevent multiple calls to DoesLocusIntersect.</returns>
+</member><member name="M:ForkandBeard.TrigHelper.GetRelativeDistanceBetweenPoints(System.Drawing.PointF,System.Drawing.PointF)">
+	<summary>
+ Just a fast way of getting distance to compare two distances.
+ </summary>
+	<param name="pobjPointA"></param>
+	<param name="pobjPointB"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:ForkandBeard.Hashcodes.ToHashcode(System.String)">
+	<summary>
+ This Hashcode will clash quite a lot but adequete for certain situations.
+ </summary>
+</member><member name="M:ForkandBeard.IntersectionHelpers.DoLinesIntersect(ForkandBeard.Line,ForkandBeard.Line,System.Drawing.PointF@)">
+	<summary>
+ This is based off an explanation and expanded math presented by Paul Bourke:
+ 
+ It takes two lines as inputs and returns true if they intersect, false if they 
+ don't.
+ If they do, ptIntersection returns the point where the two lines intersect.  
+ </summary>
+	<param name="L1">The first line</param>
+	<param name="L2">The second line</param>
+	<param name="ptIntersection">The point where both lines intersect (if they do).</param>
+	<returns></returns>
+	<remarks>See http:'local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/</remarks>
+</member><member name="P:ForkandBeard.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:ForkandBeard.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:ForkandBeard.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="F:ForkandBeard.CSVReader.PresentRowIndex">
+	<summary>
+ Non zero-indexed index.
+ </summary>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

@@ -290,11 +290,13 @@ public class Classroom extends DisplayObjectContainer {
 				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
 			}
 			if (this.playerManager.getHealth(1) == 0 || this.playerManager.getHealth(2) == 0) {
+				/* OUT OF HEALTH LOGIC */
 				this.stopLevel();
 				this.endLevelScreen.setDialog(endLevelScreen.LOSE_NO_HEALTH);
 				this.endLevelScreen.setExperience((int) this.calcExp(1));
 				this.endLevelScreen.setNumPlayer(1);
 				this.endLevelScreen.setVisible(true);
+				/* Reset stats for next level */
 				this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
 				this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
 			}
@@ -330,11 +332,13 @@ public class Classroom extends DisplayObjectContainer {
 			}
 		} 
 		if (!atLeastOneStudentAlive) {
+			/* ALL STUDENTS DIED logic */
 			this.stopLevel();
 			this.endLevelScreen.setDialog(endLevelScreen.LOSE_STUDENTS);
 			this.endLevelScreen.setExperience((int) this.calcExp(1));
 			this.endLevelScreen.setNumPlayer(1);
 			this.endLevelScreen.setVisible(true);
+			/* reset stats */
 			this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
 			this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
 		}
@@ -362,12 +366,13 @@ public class Classroom extends DisplayObjectContainer {
 	public void keepTime() {
 		if (this.gameClock != null) {
 			if (this.gameClock.getElapsedTime() > GAME_TIME) {
-				System.out.println("level over");
+				/* WIN LEVEL logic */
 				this.stopLevel();
 				this.endLevelScreen.setDialog(endLevelScreen.WIN);
 				this.endLevelScreen.setExperience((int) this.calcExp(1));
 				this.endLevelScreen.setNumPlayer(1);
 				this.endLevelScreen.setVisible(true);
+				/* Reset stats */
 				this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
 				this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
 			}
@@ -555,6 +560,7 @@ public class Classroom extends DisplayObjectContainer {
 			//don't move the player
 		}
 	}
+	// Rectangle r is the players global hitbox
 	private boolean playerCollision(Rectangle r, int numPlayer) {
 		/* Check collisions with students */
 		for(Student student: studentList) {
@@ -570,7 +576,7 @@ public class Classroom extends DisplayObjectContainer {
 				}
 				break;
 			case 2:
-				if(r.intersects(this.player2.getHitboxGlobal())) {
+				if(r.intersects(this.player1.getHitboxGlobal())) {
 					return true;
 				}
 				break;

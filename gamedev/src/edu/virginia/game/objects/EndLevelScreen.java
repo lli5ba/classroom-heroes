@@ -61,7 +61,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 				
 			} else if (releasedKeys.contains(this.playerManager.getSecondaryKey(this.numPlayer))) {
 				//exit
-				this.gameManager.setActiveGameScene("hallway0");
+				this.gameManager.setActiveGameScene("hallway0"); //FIXME: incorporate "numLevel" to decide which to load
 			} else if (releasedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
 				//buy movement speed
 				if(this.playerManager.getAttrPoints(numPlayer) > 0) {
@@ -122,6 +122,8 @@ public class EndLevelScreen extends DisplayObjectContainer {
 						" to Continue)", 340, 255);
 			} else {
 				g.drawString("Close Game and Restart ", 140, 120);
+				//FIXME... should be able to 
+				//"Replay level" keep temporary stats in LevelManager, so we can easily reset them after a level
 			}
 		}
 	}
