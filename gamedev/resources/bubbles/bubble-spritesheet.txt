@@ -1,0 +1,8 @@
+bubble 00 = 0 0 22 38
+bubble 01 = 23 0 22 38
+bubble 02 = 46 0 22 38
+bubble 03 = 69 0 22 38
+bubble 04 = 92 0 22 38
+bubble 05 = 0 39 22 38
+bubble 06 = 23 39 22 38
+bubble 07 = 0 0 22 38

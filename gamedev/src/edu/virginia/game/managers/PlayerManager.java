@@ -458,7 +458,7 @@ public class PlayerManager implements IEventListener {
 			Player player = (Player) event.getSource();
 			int playerNum = player.getNumPlayer();
 			System.out.println(playerNum);
-			// player.getPoisonBubbles.animateOnce("poison"); //play animation
+			player.animateBubbles(); //play animation
 			int currentHealth = this.getHealth(playerNum);
 			this.setHealth(currentHealth - 1, playerNum); // decrease
 																		// health

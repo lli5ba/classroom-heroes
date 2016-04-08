@@ -29,6 +29,7 @@ public class Player extends AnimatedSprite {
 	private int numPlayer;
 	private boolean active; // whether movement works
 	private int vpCount;
+	private AnimatedSprite poisonBubbles;
 
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
@@ -42,10 +43,18 @@ public class Player extends AnimatedSprite {
 		this.numPlayer = numPlayer;
 		this.active = true;
 
+		poisonBubbles = new AnimatedSprite("bubbles", "bubbles/bubble-default.png", 
+				"bubbles/bubble-spritesheet.png", "resources/bubbles/bubble-spritesheet.txt");
+		this.addChild(poisonBubbles);
+		this.poisonBubbles.setCenterPos(this.getWidth()*.75, -this.getHeight()*0.05);
 		net = new Sprite("net", imageFileName);
 		this.addChild(net);
 		net.setAlpha(0);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
+	}
+	
+	public void animateBubbles(){
+		this.poisonBubbles.animateOnce("bubble");
 	}
 
 	public int getNumPlayer() {
