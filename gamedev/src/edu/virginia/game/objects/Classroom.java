@@ -390,6 +390,7 @@ public class Classroom extends DisplayObjectContainer {
 		exp += this.levelManager.getVPCollected(numPlayer) * 10;
 		exp += this.playerManager.getHealth(numPlayer)/this.playerManager.getMaxHealth(numPlayer) * 100;
 		this.playerManager.setExperience(this.playerManager.getExperience(numPlayer) + (int)exp, numPlayer);
+		// FIXME: Attributes should be based on how much experience was earned?
 		this.playerManager.setAttrPoints(this.playerManager.getAttrPoints(numPlayer) + (int)2, numPlayer);
 		return exp;
 		
