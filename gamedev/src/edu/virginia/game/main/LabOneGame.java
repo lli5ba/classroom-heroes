@@ -291,8 +291,8 @@ public class LabOneGame extends Game {
 
 		if (this.gameClock != null) {
 			if (this.gameClock.getElapsedTime() > (SPAWN_INTERVAL)) {
-				spawnVP();
-				spawnPoison();
+	//			spawnVP();
+	//			spawnPoison();
 				// FIXME: may need to spawn poison at different intervals
 				this.gameClock.resetGameClock();
 			}
@@ -362,12 +362,11 @@ public class LabOneGame extends Game {
 			myTweenJuggler.nextFrame();
 		}
 	}
-
+/**
 	public void spawnVP() {
 		if (myTweenJuggler != null) {
-			VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
+		/**	VP vp = new VP("VP", "projectiles/vp0.png", "projectiles/vpsheet.png",
 					"resources/projectiles/vpsheetspecs.txt");
-
 			vp.addEventListener(myQuestManager, PickedUpEvent.KEY_PICKED_UP);
 			vp.addEventListener(myQuestManager, CollisionEvent.COLLISION);
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
@@ -395,7 +394,7 @@ public class LabOneGame extends Game {
 			this.poisonList.add(poison);
 		}
 	}
-
+**/
 	/**
 	 * Engine automatically invokes draw() every frame as well. If we want to
 	 * make sure mario gets drawn to the screen, we need to make sure to

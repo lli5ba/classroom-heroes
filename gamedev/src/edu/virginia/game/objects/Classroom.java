@@ -110,17 +110,16 @@ public class Classroom extends DisplayObjectContainer {
 		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
 
 		/* Boss constructor */
-		boss = new Boss("Boss", "Mario.png");
+		boss = new Boss("Boss", "floryan/floryan-default.png");
 		this.addChild(boss);
-		this.boss.setPosition(this.getWidth() * .43, this.getHeight() * .1);
-		this.boss.setScaleX(.6);
-		this.boss.setScaleY(.6);
+		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .14);
+		this.boss.setScaleX(.7);
+		this.boss.setScaleY(.7);
 
 		/* Generate Students */
 		spawnStudent("Student0", "down", this.getWidth() * .5, this.getHeight() * .742);
 		spawnStudent("Student1", "left", this.getWidth() * .7, this.getHeight() * .65);
 		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .65);
-
 		
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); //random png file

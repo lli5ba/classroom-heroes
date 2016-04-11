@@ -25,8 +25,8 @@ public class GameManager {
 
 	public GameManager() {
 		instance = this;
-		gameHeight = 700;
-		gameWidth = 1000;
+		gameHeight = 725;
+		gameWidth = 1365;
 		numPlayers = 1;
 		numLevel = 1;
 		setActiveGameScene("classroom1");
