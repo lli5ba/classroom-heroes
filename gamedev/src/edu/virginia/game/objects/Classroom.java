@@ -189,8 +189,8 @@ public class Classroom extends DisplayObjectContainer {
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition(vp.getxPos(), vp.getyPos(), 1000);
-			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), 30000);
-			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 30000);
+			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), 20000);
+			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 20000);
 			this.vpList.add(vp);
 			this.addChild(vp);
 			this.hit = false;
@@ -207,8 +207,8 @@ public class Classroom extends DisplayObjectContainer {
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition(poison.getxPos(), poison.getyPos(), 1000);
-			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 30000);
-			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 30000);
+			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 25000);
+			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 25000);
 			this.poisonList.add(poison);
 			this.addChild(poison);
 		}
@@ -260,15 +260,14 @@ public class Classroom extends DisplayObjectContainer {
 			// Check all poison collisions with each student
 			for (Student student : studentList) {
 				if (student.collidesWithGlobal(poison) && !poison.isPickedUp()) {
-					if (!student.isPoisoned()) {
+					//Note: right now poison does not stack
+					if (!student.isPoisoned() && !student.isDead()) {
 						student.dispatchEvent(new GameEvent(EventTypes.POISON_STUDENT.toString(), student));
+					
+						this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
+						poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
+						System.out.println("Student's Health: " + student.getCurrentHealth());
 					}
-					this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
-					poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
-					System.out.println("Student's Health: " + student.getCurrentHealth());
-				}
-				if(student.isDead()) {
-					this.dispatchEvent(new GameEvent(EventTypes.POISON_STUDENT.toString(), this));
 				}
 			}
 			// Check all poison collisions with each player's net
