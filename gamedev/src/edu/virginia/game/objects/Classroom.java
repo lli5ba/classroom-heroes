@@ -404,8 +404,6 @@ public class Classroom extends DisplayObjectContainer {
 			PickedUpItem garbage = it.next();
 			if (garbage.isPickedUp()) {
 				it.remove();
-			} else if (!garbage.collidesWithGlobal(this)) {
-				it.remove();
 			}
 		}
 	}

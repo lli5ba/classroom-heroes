@@ -11,26 +11,26 @@ import edu.virginia.game.managers.PlayerManager;
 
 public class PlayerStatBox extends DisplayObjectContainer {
 
-	private int vp1Stat;
-	private int vp2Stat;
-	private int health1Stat;
-	private int health2Stat;
+
 	private LevelManager levelManager = LevelManager.getInstance();
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
-
+	private DisplayObjectContainer antidote;
+	
 	public PlayerStatBox(String id) {
 		super(id);
-		this.vp1Stat = vp1Stat;
-		this.vp2Stat = vp2Stat;
-		this.health1Stat = health1Stat;
-		this.health2Stat = health2Stat;
+		
+		this.antidote = new DisplayObjectContainer("antidote", "store/ginger-ale.png");
+		this.antidote.setWidth(this.getWidth());
+		this.antidote.setHeight(this.getHeight());
+		this.addChild(antidote);
+		this.antidote.setPosition(130, 60);
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-		Font f = new Font("Dialog", Font.PLAIN, 8);
+		Font f = new Font("Dialog", Font.BOLD, 9);
 		g.setFont(f);
 
 		g.drawString("Player 1's Health: " + this.playerManager.getHealth(1), 120, 40);
