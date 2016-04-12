@@ -15,11 +15,14 @@ import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
 
 public class SoundManager implements IEventListener {
+	//HashMap<String, AudioClip> soundeffects;
 	HashMap<String, String> soundeffects;
 	HashMap<String, String> music;
-	AudioInputStream audioIn;
+	
+	AudioInputStream audioIn; //for music
+	Clip clipPlaying; // for music
+	
 	AudioInputStream audioInSoundEffect;
-	Clip clipPlaying;
 	Clip clipPlayingSoundEffect;
 	private static volatile SoundManager instance;
 	private String soundEffect1;
