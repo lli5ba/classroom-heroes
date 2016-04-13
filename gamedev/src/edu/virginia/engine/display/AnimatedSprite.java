@@ -161,6 +161,20 @@ public class AnimatedSprite extends Sprite {
 			this.gameClockAnimation.resetGameClock();
 		}
 	}
+	
+	public void animateOnceLock(String animationName, int speed) {
+		if (spriteMap.containsKey(animationName)) {
+			if(loop == true) {
+				currentAnimation = animationName;
+				isPlaying = true;
+				currentFrame = 0;
+				animationSpeed = speed;
+				loop = false;
+				timesLooped = 0;
+				this.gameClockAnimation.resetGameClock();
+			}
+		}
+	}
 
 	public boolean isLooping() {
 		return loop;

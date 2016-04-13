@@ -570,7 +570,7 @@ public class Classroom extends DisplayObjectContainer {
 					player.stopAnimation();
 				}
 
-				player.animateOnce("net" + currentDir, this.playerManager.getSwingSpeed(player.getNumPlayer()));
+				player.animateOnceLock("net" + currentDir, this.playerManager.getSwingSpeed(player.getNumPlayer()));
 				player.dispatchEvent(new GameEvent(EventTypes.SWING_NET.toString(), player));
 			}
 
