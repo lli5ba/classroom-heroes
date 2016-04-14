@@ -71,4 +71,4 @@ floatright 10 = 342 156 28 74
 floatright 11 = 123 159 32 66
 floatright 12 = 116 226 28 52
 floatright 13 = 278 235 28 46
-sit 0 = 232 282 28 46
+default 0 = 232 282 28 46

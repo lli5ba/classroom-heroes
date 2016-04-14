@@ -76,6 +76,13 @@ public class AnimatedSprite extends Sprite {
 		timesLooped = 0;
 		prevAnimation = null;
 		direction = "down";
+		if (spriteMap.containsKey("default")) {
+			this.setDefault();
+		}
+	}
+	
+	public void setDefault(){
+		this.setOriginalHitbox(spriteMap.get("default").get(0).getHitbox());
 	}
 
 	public String getDirection() {

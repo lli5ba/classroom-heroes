@@ -41,7 +41,6 @@ public class Student extends AnimatedSprite {
 		super(id, "student/student-default-" + styleCode + ".png",
 				"student/student-spritesheet-" + styleCode + ".png",
 				"resources/student/student-spritesheet-" + styleCode + "-frameInfo.txt");
-		 
 		/*super(id, "student/student-default-" + styleCode + ".png"); */
 		this.animDir = fallDir;
 		this.maxHealth = 20; // FIXME: should depend on what level we are on
