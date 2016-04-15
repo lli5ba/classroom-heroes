@@ -165,13 +165,16 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	/** Generates random position on semi-circle for spawning poison/VP **/
-	public Position generatePosition(double centerx, double centery, double radius) {
+	public Position generatePosition(String vpOrPoison, double centerx, double centery, double radius) {
 		double ang_min = (0);
 		double ang_max = (Math.PI);
 		Random rand1 = new Random();
 		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
 		System.out.println("d: " + d);
-
+		//if vp is thrown, give boss right direction to turn
+		if (vpOrPoison.equals("vp")) {
+			this.boss.setLastThrownDegrees(Math.toDegrees(d));
+		}
 		double x = centerx + radius * Math.cos(d);
 		double y = centery + radius * Math.sin(d);
 		return new Position(x, y);
@@ -194,7 +197,7 @@ public class Classroom extends DisplayObjectContainer {
 			vp.addEventListener(playerManager, EventTypes.PICKUP_VP.toString());
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			Position pos = generatePosition(vp.getxPos(), vp.getyPos(), 1000);
+			Position pos = generatePosition("vp", vp.getxPos(), vp.getyPos(), 1000);
 			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), 20000);
 			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 20000);
 			this.vpList.add(vp);
@@ -212,7 +215,7 @@ public class Classroom extends DisplayObjectContainer {
 			poison.addEventListener(playerManager, EventTypes.PICKUP_POISON.toString());
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			Position pos = generatePosition(poison.getxPos(), poison.getyPos(), 1000);
+			Position pos = generatePosition("posion", poison.getxPos(), poison.getyPos(), 1000);
 			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 25000);
 			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 25000);
 			this.poisonList.add(poison);
