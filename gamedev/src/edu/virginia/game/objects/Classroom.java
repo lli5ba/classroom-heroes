@@ -100,7 +100,7 @@ public class Classroom extends DisplayObjectContainer {
 		this.player2.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
 		this.player2.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player2.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
-
+		
 		if (this.gameManager.getNumPlayers() == 1) {
 			// set player2 inactive and invisible
 			player2.setActive(false);
@@ -468,10 +468,13 @@ public class Classroom extends DisplayObjectContainer {
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		this.drawTimeLeft(g);
-		/*
-		 * if(this.playArea != null){ this.playArea.drawHitboxGlobal(g); }
-		 * debugging
-		 */
+		
+		for (Student s: this.studentList) {
+		 if(s != null){ 
+			 s.drawHitboxGlobal(g); 
+		 }
+		}
+		 
 	}
 
 	@Override
@@ -597,6 +600,7 @@ public class Classroom extends DisplayObjectContainer {
 					!player.getCurrentAnimation().contains(player.getDirection())) {
 				player.setCurrentAnimation("net" + player.getDirection());
 			}
+			System.out.println("position: " + player.getHitboxGlobal().getX() + ", " + player.getHitboxGlobal().getY());
 			
 			//FIXME: check for collisions
 			if (playerCollision(player.getHitboxGlobal(), player.getNumPlayer())) {

@@ -148,10 +148,14 @@ public class DisplayObjectContainer extends DisplayObject {
 	// fix hitbox methods to work globally
 	public Rectangle getHitboxGlobal() {
 		Rectangle globalHitbox = new Rectangle();
-		globalHitbox.setBounds((int) (this.getxPosGlobal() + this.getOriginalHitbox().getX()),
+		/*globalHitbox.setBounds((int) (this.getxPosGlobal() + this.getOriginalHitbox().getX()),
 				(int) (this.getyPosGlobal() + this.getOriginalHitbox().getY()),
 				(int) (this.getOriginalHitbox().getWidth() * this.getScaleXGlobal()),
-				(int) (this.getOriginalHitbox().getHeight() * this.getScaleYGlobal()));
+				(int) (this.getOriginalHitbox().getHeight() * this.getScaleYGlobal())); */
+		globalHitbox.setBounds((int) (this.getxPosGlobal() ),
+				(int) (this.getyPosGlobal() ),
+				(int) (this.getOriginalHitbox().getWidth() * this.getScaleXGlobal()),
+				(int) (this.getOriginalHitbox().getHeight() * this.getScaleYGlobal())); 
 		return globalHitbox;
 	}
 

@@ -129,8 +129,7 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 				mapper.setWaitingForClick(true);
 				int xPos = 0;
 				int yPos = 0;
-				width = mapper.getCurrentSprite().getUnscaledWidth();
-				height = mapper.getCurrentSprite().getUnscaledHeight();
+				
 				System.out.println(imageFileName + " Click 1");
 				while (mapper.isWaitingForClick()) {
 					System.out.print(""); // stall until position is set
