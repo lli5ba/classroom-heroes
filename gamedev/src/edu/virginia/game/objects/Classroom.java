@@ -87,9 +87,9 @@ public class Classroom extends DisplayObjectContainer {
 
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
+				"resources/player/player-spritesheet-1-frameInfo-sameHitbox.txt", 1);
 		player2 = new Player("Player2", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
+				"resources/player/player-spritesheet-1-frameInfo-sameHitbox.txt", 2);
 
 		this.player1.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
 		this.player1.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());

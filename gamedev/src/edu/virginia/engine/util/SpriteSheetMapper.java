@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -36,7 +37,7 @@ import edu.virginia.engine.display.Sprite;
 public class SpriteSheetMapper extends Game implements MouseListener {
 
 	private static String currentDirectory = "spritesheetmapper/";
-	private static String textFileName = "resources/spritesheetmapper/student-spritesheet-0";
+	private static String textFileName = "resources/spritesheetmapper/player-spritesheet-1";
 	private Sprite currentSprite;
 	private boolean waitingForClick;
 	private Position currPosition;
@@ -100,6 +101,11 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 	 * @throws LineUnavailableException
 	 */
 	public static void main(String[] args) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+		sameHitboxSizes();
+	}
+
+	
+	public static void sameHitboxSizes() throws FileNotFoundException, UnsupportedEncodingException {
 		SpriteSheetMapper mapper = new SpriteSheetMapper();
 		mapper.start();
 
@@ -111,6 +117,69 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
+			int count = 0;
+			int width = 0;
+			int height = 0;
+			while ((strLine = br.readLine()) != null) {
+
+				String[] tokens = strLine.split(" ");
+				String imageFileName = tokens[0] + " " + tokens[1];
+				mapper.setCurrentSprite(new Sprite(imageFileName, currentDirectory + imageFileName + ".png"));
+
+				mapper.setWaitingForClick(true);
+				int xPos = 0;
+				int yPos = 0;
+				width = mapper.getCurrentSprite().getUnscaledWidth();
+				height = mapper.getCurrentSprite().getUnscaledHeight();
+				System.out.println(imageFileName + " Click 1");
+				while (mapper.isWaitingForClick()) {
+					System.out.print(""); // stall until position is set
+				}
+				;
+
+				Position p1 = mapper.getCurrPosition();
+				xPos = (int) p1.getX();
+				yPos = (int) p1.getY();
+				if (count == 0) {
+					mapper.setWaitingForClick(true);
+					System.out.println(imageFileName + " Click 2");
+					while (mapper.isWaitingForClick()) {
+						System.out.print(""); // stall until position is set
+					}
+					;
+	
+					Position p2 = mapper.getCurrPosition();
+					width = (int) calcWidth(p1, p2);
+					height = (int) calcHeight(p1, p2);
+				}
+				System.out.println(xPos + " " + yPos + " " + width + " " + height);
+				writer.println(strLine + " " + xPos + " " + yPos + " " + width + " " + height);
+				writerOnly.println(xPos + " " + yPos + " " + width + " " + height);
+				count++;
+			}
+			in.close();
+		} catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
+		}
+
+		writer.close();
+		writerOnly.close();
+		System.out.println("Done");
+	}
+	public static void differentHitboxSizes() throws FileNotFoundException, UnsupportedEncodingException{
+		SpriteSheetMapper mapper = new SpriteSheetMapper();
+		mapper.start();
+
+		PrintWriter writer = new PrintWriter(textFileName + "-frameInfo.txt", "UTF-8");
+		PrintWriter writerOnly = new PrintWriter(textFileName + "-frameInfo-only.txt", "UTF-8");
+
+		try {
+			FileInputStream fstream = new FileInputStream(textFileName + ".txt");
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			int count = 0;
+			
 			while ((strLine = br.readLine()) != null) {
 
 				String[] tokens = strLine.split(" ");
@@ -131,7 +200,7 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 				Position p1 = mapper.getCurrPosition();
 				xPos = (int) p1.getX();
 				yPos = (int) p1.getY();
-
+				
 				mapper.setWaitingForClick(true);
 				System.out.println(imageFileName + " Click 2");
 				while (mapper.isWaitingForClick()) {
@@ -145,6 +214,7 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 				System.out.println(xPos + " " + yPos + " " + width + " " + height);
 				writer.println(strLine + " " + xPos + " " + yPos + " " + width + " " + height);
 				writerOnly.println(xPos + " " + yPos + " " + width + " " + height);
+				count++;
 			}
 			in.close();
 		} catch (Exception e) {
@@ -155,7 +225,6 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 		writerOnly.close();
 		System.out.println("Done");
 	}
-
 	public static int calcHeight(Position p1, Position p2) {
 		int y2 = (int) p2.getY();
 		int y1 = (int) p1.getY();
