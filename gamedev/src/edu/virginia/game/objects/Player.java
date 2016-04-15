@@ -180,6 +180,30 @@ public class Player extends AnimatedSprite {
 	}
 
 	@Override
+	public void updateAnimation(){
+		if (this.isPlaying()) {
+			// Stop if done looping
+			// System.out.println("playing animation");
+			// System.out.println("Current frame: " + currentFrame);
+			if (!this.isLooping() && this.getTimesLooped() == 1) {
+				this.stopAnimation();
+			}
+			// Update sprite to next frame if enough time has passed
+			if (this.getGameClockAnimation().getElapsedTime() > (AVE_DRAW / (this.getAnimationSpeed() * .1))) {
+				if (getSpriteMap().containsKey(getCurrentAnimation())
+						&& getSpriteMap().get(getCurrentAnimation()).size() >= (this.getCurrentFrame() + 1)) {
+
+					this.setImage(getSpriteMap().get(getCurrentAnimation()).get(this.getCurrentFrame()).getImage());
+					this.setOriginalHitbox(getSpriteMap().get(getCurrentAnimation()).get(this.getCurrentFrame()).getHitbox());
+
+				}
+				this.increaseFrame();
+				this.getGameClockAnimation().resetGameClock();
+			}
+		}
+	}
+	
+	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
 		/*

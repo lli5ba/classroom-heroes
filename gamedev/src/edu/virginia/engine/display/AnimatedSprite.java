@@ -40,10 +40,10 @@ public class AnimatedSprite extends Sprite {
 		spriteMap = new HashMap<String, ArrayList<FrameInfo>>();
 		isPlaying = false;
 		currentAnimation = null;
-		animationSpeed = 1;
-		gameClockAnimation = new GameClock();
+		setAnimationSpeed(1);
+		setGameClockAnimation(new GameClock());
 		loop = true;
-		timesLooped = 0;
+		setTimesLooped(0);
 		prevAnimation = null;
 		direction = "down";
 
@@ -55,10 +55,10 @@ public class AnimatedSprite extends Sprite {
 		spriteMap = new HashMap<String, ArrayList<FrameInfo>>();
 		isPlaying = false;
 		currentAnimation = null;
-		animationSpeed = 1;
-		gameClockAnimation = new GameClock();
+		setAnimationSpeed(1);
+		setGameClockAnimation(new GameClock());
 		loop = true;
-		timesLooped = 0;
+		setTimesLooped(0);
 		prevAnimation = null;
 		direction = "down";
 	}
@@ -70,10 +70,10 @@ public class AnimatedSprite extends Sprite {
 		loadSprites(specsFileName, spriteSheetFileName);
 		isPlaying = false;
 		currentAnimation = null;
-		animationSpeed = 1;
-		gameClockAnimation = new GameClock();
+		setAnimationSpeed(1);
+		setGameClockAnimation(new GameClock());
 		loop = true;
-		timesLooped = 0;
+		setTimesLooped(0);
 		prevAnimation = null;
 		direction = "down";
 		if (spriteMap.containsKey("default")) {
@@ -101,8 +101,8 @@ public class AnimatedSprite extends Sprite {
 				isPlaying = true;
 				currentFrame = 0;
 				loop = true;
-				timesLooped = 0;
-				this.gameClockAnimation.resetGameClock();
+				setTimesLooped(0);
+				this.getGameClockAnimation().resetGameClock();
 			}
 		}
 	}
@@ -111,6 +111,7 @@ public class AnimatedSprite extends Sprite {
 		/*
 		 * set frame to display the previous default frame if animateOnce was
 		 * last called Otherwise, set it to current default frame
+		 * Also, if animateOnce was last called, don't reset the previous animation
 		 */
 		if (loop == false) {
 			if (prevAnimation != null) {
@@ -119,16 +120,12 @@ public class AnimatedSprite extends Sprite {
 			}
 		} else {
 			this.setDefaultImage(currentAnimation);
+			prevAnimation = currentAnimation; 
 		}
 		isPlaying = false;
 		currentFrame = 0;
-		timesLooped = 0;
-		animationSpeed = 1;
-		prevAnimation = currentAnimation;
-		/*
-		 * if (prevAnimation != currentAnimation) { prevAnimation =
-		 * currentAnimation; }
-		 */
+		setTimesLooped(0);
+		setAnimationSpeed(1);		
 	}
 
 	public void animate(String animationName, int speed) {
@@ -138,10 +135,10 @@ public class AnimatedSprite extends Sprite {
 				currentAnimation = animationName;
 				isPlaying = true;
 				currentFrame = 0;
-				animationSpeed = speed;
+				setAnimationSpeed(speed);
 				loop = true;
-				timesLooped = 0;
-				this.gameClockAnimation.resetGameClock();
+				setTimesLooped(0);
+				this.getGameClockAnimation().resetGameClock();
 			}
 		}
 	}
@@ -152,8 +149,8 @@ public class AnimatedSprite extends Sprite {
 			isPlaying = true;
 			currentFrame = 0;
 			loop = false;
-			timesLooped = 0;
-			this.gameClockAnimation.resetGameClock();
+			setTimesLooped(0);
+			this.getGameClockAnimation().resetGameClock();
 		}
 	}
 
@@ -162,10 +159,10 @@ public class AnimatedSprite extends Sprite {
 			currentAnimation = animationName;
 			isPlaying = true;
 			currentFrame = 0;
-			animationSpeed = speed;
+			setAnimationSpeed(speed);
 			loop = false;
-			timesLooped = 0;
-			this.gameClockAnimation.resetGameClock();
+			setTimesLooped(0);
+			this.getGameClockAnimation().resetGameClock();
 		}
 	}
 	
@@ -175,10 +172,10 @@ public class AnimatedSprite extends Sprite {
 				currentAnimation = animationName;
 				isPlaying = true;
 				currentFrame = 0;
-				animationSpeed = speed;
+				setAnimationSpeed(speed);
 				loop = false;
-				timesLooped = 0;
-				this.gameClockAnimation.resetGameClock();
+				setTimesLooped(0);
+				this.getGameClockAnimation().resetGameClock();
 			}
 		}
 	}
@@ -189,6 +186,26 @@ public class AnimatedSprite extends Sprite {
 
 	public String getCurrentAnimation() {
 		return currentAnimation;
+	}
+
+	public GameClock getGameClockAnimation() {
+		return gameClockAnimation;
+	}
+
+	public void setGameClockAnimation(GameClock gameClockAnimation) {
+		this.gameClockAnimation = gameClockAnimation;
+	}
+
+	public int getAnimationSpeed() {
+		return animationSpeed;
+	}
+
+	public int getTimesLooped() {
+		return timesLooped;
+	}
+
+	public void setTimesLooped(int timesLooped) {
+		this.timesLooped = timesLooped;
 	}
 
 	public Set<String> getAnimations() {
@@ -211,15 +228,19 @@ public class AnimatedSprite extends Sprite {
 	public void update(ArrayList<String> pressedKeys) {
 
 		super.update(pressedKeys);
+		updateAnimation();
+	}
+	
+	public void updateAnimation() {
 		if (this.isPlaying) {
 			// Stop if done looping
 			// System.out.println("playing animation");
 			// System.out.println("Current frame: " + currentFrame);
-			if (!this.isLooping() && this.timesLooped == 1) {
+			if (!this.isLooping() && this.getTimesLooped() == 1) {
 				this.stopAnimation();
 			}
 			// Update sprite to next frame if enough time has passed
-			if (this.gameClockAnimation.getElapsedTime() > (AVE_DRAW / (this.animationSpeed * .1))) {
+			if (this.getGameClockAnimation().getElapsedTime() > (AVE_DRAW / (this.getAnimationSpeed() * .1))) {
 				if (spriteMap.containsKey(currentAnimation)
 						&& spriteMap.get(currentAnimation).size() >= (this.currentFrame + 1)) {
 
@@ -228,7 +249,7 @@ public class AnimatedSprite extends Sprite {
 
 				}
 				this.increaseFrame();
-				this.gameClockAnimation.resetGameClock();
+				this.getGameClockAnimation().resetGameClock();
 			}
 		}
 	}
@@ -251,7 +272,7 @@ public class AnimatedSprite extends Sprite {
 																					// to
 																					// first
 																					// frame
-				this.timesLooped += 1;
+				this.setTimesLooped(this.getTimesLooped() + 1);
 			}
 			this.currentFrame = (this.currentFrame + 1) % getTotalFrames(this.currentAnimation);
 		}
