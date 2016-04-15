@@ -17,6 +17,8 @@ public class Boss extends AnimatedSprite {
 	private LevelManager levelManager = LevelManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
 
+	private double lastThrownDegrees;
+	
 	public Boss(String id, String imageFileName) {
 		super(id, imageFileName);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
@@ -30,6 +32,20 @@ public class Boss extends AnimatedSprite {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
+		this.rotateBoss();
+	}
+	
+	public void rotateBoss(){
+		
+	}
+	
+
+	public double getLastThrownDegrees() {
+		return lastThrownDegrees;
+	}
+
+	public void setLastThrownDegrees(double lastThrownDegrees) {
+		this.lastThrownDegrees = lastThrownDegrees;
 	}
 
 }
