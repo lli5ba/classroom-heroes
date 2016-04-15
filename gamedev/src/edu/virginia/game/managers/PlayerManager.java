@@ -456,12 +456,14 @@ public class PlayerManager implements IEventListener {
 		if (event.getEventType().equals(EventTypes.POISON_PLAYER.toString())) {
 			// should be dispatched by the player
 			Player player = (Player) event.getSource();
-			int playerNum = player.getNumPlayer();
-			System.out.println(playerNum);
-			player.animateBubbles(); //play animation
-			int currentHealth = this.getHealth(playerNum);
-			this.setHealth(currentHealth - 1, playerNum); // decrease
+			if (player.isActive()) {
+				int playerNum = player.getNumPlayer();
+				System.out.println(playerNum);
+				player.animateBubbles(); //play animation
+				int currentHealth = this.getHealth(playerNum);
+				this.setHealth(currentHealth - 1, playerNum); // decrease
 																		// health
+			}
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.setVpCount(this.vpCount + 1);
 		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
