@@ -172,16 +172,23 @@ public class Classroom extends DisplayObjectContainer {
 		double ang_max = (Math.PI);
 		Random rand1 = new Random();
 		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
-<<<<<<< HEAD
 		//System.out.println("d: " + d);
-
-=======
-		System.out.println("d: " + d);
 		//if vp is thrown, give boss right direction to turn
+		//FIXME
 		if (vpOrPoison.equals("vp")) {
 			this.boss.setLastThrownDegrees(Math.toDegrees(d));
+			System.out.println("Degrees: " + this.boss.getLastThrownDegrees());
+			if(this.boss.getLastThrownDegrees() > 0 && this.boss.getLastThrownDegrees() < 60) {
+				boss.animate("tossdownright");
+				System.out.println("tossdownright");
+			} else if(this.boss.getLastThrownDegrees() > 60 && this.boss.getLastThrownDegrees() < 120) {
+				boss.animate("tossdown");
+				System.out.println("tossdown");
+			} else if(this.boss.getLastThrownDegrees() > 120 && this.boss.getLastThrownDegrees() <180) {
+				boss.animate("tossdownleft");
+				System.out.println("tossdownleft");
+			}
 		}
->>>>>>> c9b4a0a7c6d2b7d64d2232f63b4512ea6b5509f1
 		double x = centerx + radius * Math.cos(d);
 		double y = centery + radius * Math.sin(d);
 		return new Position(x, y);
@@ -197,15 +204,15 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	public void floryan(VP vp) {
-		System.out.println("vp pos: " + vp.getxPos());
+		//System.out.println("vp pos: " + vp.getxPos());
 		if (vp.getxPos() > -1000 & vp.getxPos() < -400) {
-			System.out.println("tossdownleft");
+			//System.out.println("tossdownleft");
 			boss.animate("tossdownleft");
 		} else if (vp.getxPos() > -400 & vp.getxPos() < 200) {
-			System.out.println("tossdown");
+			//System.out.println("tossdown");
 			boss.animate("tossdown");
 		} else if (vp.getxPos() > 200 & vp.getxPos() < 1000) {
-			System.out.println("tossdownright");
+			//System.out.println("tossdownright");
 			boss.animate("tossdownright");
 		}
 	}
