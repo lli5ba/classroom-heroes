@@ -58,6 +58,7 @@ public class Classroom extends DisplayObjectContainer {
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
 	private DisplayObjectContainer playArea;
+	private ArrayList<String> prevPressedKeys;
 
 	public Classroom(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
@@ -68,6 +69,9 @@ public class Classroom extends DisplayObjectContainer {
 			e.printStackTrace();
 		}
 
+		/* PrevPressedKeys to find ReleasedKeys */
+		prevPressedKeys = new ArrayList<String>();
+		
 		/* GameClocks */
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
@@ -397,6 +401,7 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	public double calcExp(int numPlayer) {
+		//FIXME: want to display these stats on the endLevelScreen
 		double exp = 0;
 		for (Student student : studentList) {
 			exp += student.getCurrentHealth() / student.getMaxHealth() * 100; // Health
@@ -444,9 +449,8 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		super.draw(g); // draws children
+	
+	public void drawTimeLeft(Graphics g) {
 		if (this.inPlay) {
 			Font f = new Font("Dialog", Font.PLAIN, 20);
 			g.setFont(f);
@@ -456,6 +460,11 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			g.drawString("Time Left: " + timeLeft, 0, 20);
 		}
+	}
+	@Override
+	public void draw(Graphics g) {
+		super.draw(g); // draws children
+		this.drawTimeLeft(g);
 		/*
 		 * if(this.playArea != null){ this.playArea.drawHitboxGlobal(g); }
 		 * debugging
@@ -481,6 +490,10 @@ public class Classroom extends DisplayObjectContainer {
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
+		
+		/* to calculate releasedKeys for use in moving player */
+		this.prevPressedKeys.clear();
+		this.prevPressedKeys.addAll(pressedKeys);
 
 	}
 
@@ -502,16 +515,18 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {
+		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
+		releasedKeys.removeAll(pressedKeys);
 		double speed = this.playerManager.getSpeed(player.getNumPlayer());
 		/*
 		 * Make sure this is not null. Sometimes Swing can auto cause an extra
 		 * frame to go before everything is initialized
 		 */
 		Position originalPos = new Position(player.getxPos(), player.getyPos());
+		
 		if (player != null && player.getNet() != null) {
 			/*
-			 * update mario's position if a key is pressed, check bounds of
-			 * canvas
+			 * update player's position depending on key pressed
 			 */
 
 			if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))) {
@@ -560,11 +575,10 @@ public class Classroom extends DisplayObjectContainer {
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
 				player.moveNet("right");
 			}
-			if (pressedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
+			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
 				String currentDir = player.getDirection();
 				// Until we have combined net and walking animation, net
 				// animation overrides walking animation
-
 				if (player.isPlaying() && !player.getCurrentAnimation().contains("net")) {
 					// System.out.println("STOPPING\n");
 					player.stopAnimation();
@@ -574,11 +588,19 @@ public class Classroom extends DisplayObjectContainer {
 				player.dispatchEvent(new GameEvent(EventTypes.SWING_NET.toString(), player));
 			}
 
-		}
-		if (playerCollision(player.getHitboxGlobal(), player.getNumPlayer())) {
-			player.setPosition(originalPos);// move the player back
-		} else {
-			// don't move the player
+			// this revises the net animation mid-swing
+			//if direction changes and animateOnce net sequence is playing
+			if(player.isPlaying() && player.getCurrentAnimation().contains("net") && 
+					!player.getCurrentAnimation().contains(player.getDirection())) {
+				player.setCurrentAnimation("net" + player.getDirection());
+			}
+			
+			//FIXME: check for collisions
+			if (playerCollision(player.getHitboxGlobal(), player.getNumPlayer())) {
+				player.setPosition(originalPos);// move the player back
+			} else {
+				// don't move the player
+			}
 		}
 	}
 

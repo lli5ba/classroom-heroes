@@ -187,6 +187,10 @@ public class AnimatedSprite extends Sprite {
 	public String getCurrentAnimation() {
 		return currentAnimation;
 	}
+	
+	public void setCurrentAnimation(String currAnim) {
+		this.currentAnimation = currAnim;
+	}
 
 	public GameClock getGameClockAnimation() {
 		return gameClockAnimation;
