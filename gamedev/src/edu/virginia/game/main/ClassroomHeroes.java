@@ -59,9 +59,7 @@ public class ClassroomHeroes extends Game {
 	SoundManager mySoundManager;
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private GameClock gameClock;
-	Hallway hallway0 = new Hallway("hallway0", "0");
-	Classroom classroom1 = new Classroom("classroom1");
-	Classroom classroom2;
+
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters
@@ -88,23 +86,36 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
-
-		if (this.hallway0 != null && this.gameManager.getActiveGameScene().equals("hallway0")) {
-			hallway0.update(pressedKeys);
-		}
-		if (this.classroom1 != null && this.gameManager.getActiveGameScene().equals("classroom1")) {
-			classroom1.update(pressedKeys);
-		}
-		if (this.classroom2 == null && this.gameManager.getActiveGameScene().equals("classroom2")) {
-			try {
-				classroom2 = new Classroom("classroom2");
-			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		//this updates the corresponding active game scene!!
+		this.gameManager.update(pressedKeys);
+		
+		/*** create an asset and add it to the gameManager if it does not exist **/
+		
+		//assumes active game scene is either "hallway[0-3]" or classroom[1-5]
+		//creates the current scene if it does not yet exist
+		if (!this.gameManager.activeGameSceneIsCreated()) {
+			String sceneName = this.gameManager.getActiveGameScene();
+			if(sceneName.contains("hallway")) {
+				//create a hallway
+				//get last character in styleCode
+				String styleCode = sceneName.substring(sceneName.length() - 1);
+				Hallway hallway = null;
+				
+				hallway = new Hallway(sceneName, styleCode);
+				//add scene to gameManager
+				this.gameManager.addGameScene(sceneName, hallway);
+			} else if (sceneName.contains("classroom")) {
+				//create a classroom
+				Classroom classroom = null;
+				try {
+					classroom = new Classroom(sceneName);
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//add scene to gameManager
+				this.gameManager.addGameScene(sceneName, classroom);
 			}
-		}
-		if (this.classroom2 != null && this.gameManager.getActiveGameScene().equals("classroom2")) {
-			classroom2.update(pressedKeys);
 		}
 
 	}
@@ -117,16 +128,7 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-
-		if (hallway0 != null && this.gameManager.getActiveGameScene().equals("hallway0")) {
-			hallway0.draw(g);
-		}
-		if (this.classroom1 != null && this.gameManager.getActiveGameScene().equals("classroom1")) {
-			classroom1.draw(g);
-		}
-		if (this.classroom2 != null && this.gameManager.getActiveGameScene().equals("classroom2")) {
-			classroom2.draw(g);
-		}
+		this.gameManager.draw(g);
 	}
 
 	/**

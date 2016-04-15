@@ -1,5 +1,15 @@
 package edu.virginia.game.managers;
 
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.engine.tween.Tween;
+import edu.virginia.game.objects.Classroom;
+import edu.virginia.game.objects.Hallway;
+
 /*
  * Singleton class that handles all game details
 */
@@ -12,6 +22,8 @@ public class GameManager {
 	private int gameWidth;
 	private int numPlayers;
 	
+	private HashMap<String, DisplayObjectContainer> gameScenes;
+	private ArrayList<String> toRemoveQueue;
 	private String activeGameScene;
 
 	/****************** Constructors ********************/
@@ -30,6 +42,8 @@ public class GameManager {
 		numPlayers = 1;
 		numLevel = 1;
 		setActiveGameScene("classroom1");
+		gameScenes = new HashMap<String, DisplayObjectContainer>();
+		toRemoveQueue = new ArrayList<String>();
 		
 	}
 
@@ -75,5 +89,59 @@ public class GameManager {
 
 	public void setActiveGameScene(String activeGameScene) {
 		this.activeGameScene = activeGameScene;
+	}
+
+	public void addGameScene(String name, DisplayObjectContainer scene) {
+		this.gameScenes.put(name,  scene);
+	}
+
+	public void removeGameScene(String name) {
+		this.toRemoveQueue.add(name);
+	}
+	
+	public boolean activeGameSceneIsCreated() {
+		return this.gameScenes.containsKey(this.getActiveGameScene());
+	}
+	
+	/********* Update Frame ********/
+	
+	public void update(ArrayList<String> pressedKeys){
+		//update the active game scene
+		if (this.gameScenes.containsKey(this.activeGameScene)) {
+			if(this.activeGameScene.contains("hallway")) {
+				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
+				if(hallway != null) {
+					hallway.update(pressedKeys);
+				}
+			} else if(this.activeGameScene.contains("classroom")) {
+				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
+				if(classroom != null) {
+					classroom.update(pressedKeys);
+				}
+			}
+			
+		}
+		// garbage collection
+		for (String name : this.toRemoveQueue) {
+			this.gameScenes.remove(name);
+		}
+	}
+	
+	public void draw(Graphics g) {
+		//update the active game scene
+		if (this.gameScenes.containsKey(this.activeGameScene)) {
+			if(this.activeGameScene.contains("hallway")) {
+				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
+				if(hallway != null) {
+					hallway.draw(g);
+				}
+			} else if(this.activeGameScene.contains("classroom")) {
+				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
+				if(classroom != null) {
+					classroom.draw(g);
+				}
+			}
+			
+		}
 	}
 }
