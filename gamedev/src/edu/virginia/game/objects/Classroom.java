@@ -34,6 +34,8 @@ import edu.virginia.game.managers.StudentManager;
 //This way you can instantiate a GameScreen and add game elements as children.
 public class Classroom extends DisplayObjectContainer {
 	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
+	public static final String[] FLORYAN_DIR = new String[] { "tossdown", "tossdownleft", "tossdownright", "tossleft",
+			"tossright", "tossup", "tossupleft", "tossupright" };
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
@@ -170,10 +172,22 @@ public class Classroom extends DisplayObjectContainer {
 		double ang_max = (Math.PI);
 		Random rand1 = new Random();
 		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
-		System.out.println("d: " + d);
+		//System.out.println("d: " + d);
 		//if vp is thrown, give boss right direction to turn
+		//FIXME
 		if (vpOrPoison.equals("vp")) {
 			this.boss.setLastThrownDegrees(Math.toDegrees(d));
+			System.out.println("Degrees: " + this.boss.getLastThrownDegrees());
+			if(this.boss.getLastThrownDegrees() > 0 && this.boss.getLastThrownDegrees() < 60) {
+				boss.animate("tossdownright");
+				System.out.println("tossdownright");
+			} else if(this.boss.getLastThrownDegrees() > 60 && this.boss.getLastThrownDegrees() < 120) {
+				boss.animate("tossdown");
+				System.out.println("tossdown");
+			} else if(this.boss.getLastThrownDegrees() > 120 && this.boss.getLastThrownDegrees() <180) {
+				boss.animate("tossdownleft");
+				System.out.println("tossdownleft");
+			}
 		}
 		double x = centerx + radius * Math.cos(d);
 		double y = centery + radius * Math.sin(d);
@@ -189,6 +203,20 @@ public class Classroom extends DisplayObjectContainer {
 		this.studentList.add(student1);
 	}
 
+	public void floryan(VP vp) {
+		//System.out.println("vp pos: " + vp.getxPos());
+		if (vp.getxPos() > -1000 & vp.getxPos() < -400) {
+			//System.out.println("tossdownleft");
+			boss.animate("tossdownleft");
+		} else if (vp.getxPos() > -400 & vp.getxPos() < 200) {
+			//System.out.println("tossdown");
+			boss.animate("tossdown");
+		} else if (vp.getxPos() > 200 & vp.getxPos() < 1000) {
+			//System.out.println("tossdownright");
+			boss.animate("tossdownright");
+		}
+	}
+	
 	public void spawnVP() {
 		if (myTweenJuggler != null) {
 			VP vp = new VP("VP");
@@ -202,6 +230,7 @@ public class Classroom extends DisplayObjectContainer {
 			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 20000);
 			this.vpList.add(vp);
 			this.addChild(vp);
+			floryan(vp);
 			this.hit = false;
 		}
 	}
@@ -222,19 +251,6 @@ public class Classroom extends DisplayObjectContainer {
 			this.addChild(poison);
 		}
 	}
-
-/**	public void floryan(Position p) {
-		if (p.getX() > -1000 & p.getX() < -400) {
-			boss = new Boss("floryan", "floryan/tossdownleft 0.png", "floryan/floryan-spritesheet.png",
-					"resources/floryan/floryan-spritesheet.txt");
-		} else if(p.getX() > -400 & p.getX() < 200) {
-			boss = new Boss("floryan", "floryan/tossdown 0.png", "floryan/floryan-spritesheet.png",
-					"resources/floryan/floryan-spritesheet.txt");
-		} else if(p.getX() > 200 & p.getX() < 1000) {
-			boss = new Boss("floryan", "floryan/tossdownright 0.png", "floryan/floryan-spritesheet.png",
-					"resources/floryan/floryan-spritesheet.txt");
-		}
-	}**/
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
