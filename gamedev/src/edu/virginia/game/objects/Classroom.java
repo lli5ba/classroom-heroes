@@ -469,11 +469,7 @@ public class Classroom extends DisplayObjectContainer {
 		super.draw(g); // draws children
 		this.drawTimeLeft(g);
 		
-		for (Student s: this.studentList) {
-		 if(s != null){ 
-			 s.drawHitboxGlobal(g); 
-		 }
-		}
+		
 		 
 	}
 
