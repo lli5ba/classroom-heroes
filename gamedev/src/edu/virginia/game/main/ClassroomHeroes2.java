@@ -77,9 +77,9 @@ public class ClassroomHeroes2 extends Game {
 	public ClassroomHeroes2() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super("Classroom Heroes", gameManager.getGameWidth(), gameManager.getGameHeight());
 		gameClock = new GameClock();
-
 	}
 
+	
 	public void changeScreens() {
 		// TODO: Leandra
 	}
