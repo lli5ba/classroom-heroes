@@ -73,7 +73,7 @@ public class Classroom extends DisplayObjectContainer {
 
 		/* PrevPressedKeys to find ReleasedKeys */
 		prevPressedKeys = new ArrayList<String>();
-		
+
 		/* GameClocks */
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
@@ -102,7 +102,7 @@ public class Classroom extends DisplayObjectContainer {
 		this.player2.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
 		this.player2.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player2.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
-		
+
 		if (this.gameManager.getNumPlayers() == 1) {
 			// set player2 inactive and invisible
 			player2.setActive(false);
@@ -172,19 +172,22 @@ public class Classroom extends DisplayObjectContainer {
 		double ang_max = (Math.PI);
 		Random rand1 = new Random();
 		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
-		//System.out.println("d: " + d);
-		//if vp is thrown, give boss right direction to turn
-		//FIXME
+		// System.out.println("d: " + d);
+		// if vp is thrown, give boss right direction to turn
+		// FIXME
 		if (vpOrPoison.equals("vp")) {
 			this.boss.setLastThrownDegrees(Math.toDegrees(d));
 			System.out.println("Degrees: " + this.boss.getLastThrownDegrees());
-			if(this.boss.getLastThrownDegrees() > 0 && this.boss.getLastThrownDegrees() < 60) {
+			if (this.boss.getLastThrownDegrees() > 0 && this.boss.getLastThrownDegrees() < 60) {
+	//			floryan("tossdownright");
 				boss.animate("tossdownright");
 				System.out.println("tossdownright");
-			} else if(this.boss.getLastThrownDegrees() > 60 && this.boss.getLastThrownDegrees() < 120) {
+			} else if (this.boss.getLastThrownDegrees() > 60 && this.boss.getLastThrownDegrees() < 120) {
+		//		floryan("tossdown");
 				boss.animate("tossdown");
 				System.out.println("tossdown");
-			} else if(this.boss.getLastThrownDegrees() > 120 && this.boss.getLastThrownDegrees() <180) {
+			} else if (this.boss.getLastThrownDegrees() > 120 && this.boss.getLastThrownDegrees() < 180) {
+			//	floryan("tossdownleft");
 				boss.animate("tossdownleft");
 				System.out.println("tossdownleft");
 			}
@@ -194,6 +197,34 @@ public class Classroom extends DisplayObjectContainer {
 		return new Position(x, y);
 	}
 
+	/**
+	public void floryan(String position) {
+		if (boss != null) {
+			if (position.equals("tossdown")) {
+				boss.setyPos(this.getHeight());
+				boss.setxPos(-(this.getWidth() / 4.0));
+				boss.setWidth(this.getHeight());
+				boss.setHeight(this.getWidth());
+				boss.animate("tossdown");
+				boss.setAnimation("tossdown");
+			} else if (position.equals("tossdownright")) {
+				boss.setxPos((this.getUnscaledWidth() * this.getScaleX()));
+				boss.setyPos(0);
+				boss.setWidth(this.getWidth());
+				boss.setHeight(this.getHeight());
+				boss.animate("tossdownright");
+				boss.setAnimation("tossdownright");
+			} else if (position.equals("tossdownleft")) {
+				boss.setxPos(-(this.getUnscaledWidth() * this.getScaleX()));
+				boss.setyPos(0);
+				boss.setWidth(this.getWidth());
+				boss.setHeight(this.getHeight());
+				boss.animate("tossdownleft");
+				boss.setAnimation("tossdownleft");
+			}
+		}
+	}
+**/
 	public void spawnStudent(String id, String animDir, double xPos, double yPos) {
 		Student student1 = new Student(id, "0", animDir);
 		student1.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
@@ -203,20 +234,6 @@ public class Classroom extends DisplayObjectContainer {
 		this.studentList.add(student1);
 	}
 
-	public void floryan(VP vp) {
-		//System.out.println("vp pos: " + vp.getxPos());
-		if (vp.getxPos() > -1000 & vp.getxPos() < -400) {
-			//System.out.println("tossdownleft");
-			boss.animate("tossdownleft");
-		} else if (vp.getxPos() > -400 & vp.getxPos() < 200) {
-			//System.out.println("tossdown");
-			boss.animate("tossdown");
-		} else if (vp.getxPos() > 200 & vp.getxPos() < 1000) {
-			//System.out.println("tossdownright");
-			boss.animate("tossdownright");
-		}
-	}
-	
 	public void spawnVP() {
 		if (myTweenJuggler != null) {
 			VP vp = new VP("VP");
@@ -230,7 +247,6 @@ public class Classroom extends DisplayObjectContainer {
 			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 20000);
 			this.vpList.add(vp);
 			this.addChild(vp);
-			floryan(vp);
 			this.hit = false;
 		}
 	}
@@ -420,7 +436,7 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	public double calcExp(int numPlayer) {
-		//FIXME: want to display these stats on the endLevelScreen
+		// FIXME: want to display these stats on the endLevelScreen
 		double exp = 0;
 		for (Student student : studentList) {
 			exp += student.getCurrentHealth() / student.getMaxHealth() * 100; // Health
@@ -468,7 +484,6 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 
-	
 	public void drawTimeLeft(Graphics g) {
 		if (this.inPlay) {
 			Font f = new Font("Dialog", Font.PLAIN, 20);
@@ -480,13 +495,12 @@ public class Classroom extends DisplayObjectContainer {
 			g.drawString("Time Left: " + timeLeft, 0, 20);
 		}
 	}
+
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		this.drawTimeLeft(g);
-		
-		
-		 
+
 	}
 
 	@Override
@@ -501,6 +515,7 @@ public class Classroom extends DisplayObjectContainer {
 			this.checkPoisonCollisions(pressedKeys);
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
+		//	this.floryan(boss.getAnimation());
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
 			}
@@ -508,7 +523,7 @@ public class Classroom extends DisplayObjectContainer {
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
-		
+
 		/* to calculate releasedKeys for use in moving player */
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
@@ -541,7 +556,7 @@ public class Classroom extends DisplayObjectContainer {
 		 * frame to go before everything is initialized
 		 */
 		Position originalPos = new Position(player.getxPos(), player.getyPos());
-		
+
 		if (player != null && player.getNet() != null) {
 			/*
 			 * update player's position depending on key pressed
@@ -607,14 +622,15 @@ public class Classroom extends DisplayObjectContainer {
 			}
 
 			// this revises the net animation mid-swing
-			//if direction changes and animateOnce net sequence is playing
-			if(player.isPlaying() && player.getCurrentAnimation().contains("net") && 
-					!player.getCurrentAnimation().contains(player.getDirection())) {
+			// if direction changes and animateOnce net sequence is playing
+			if (player.isPlaying() && player.getCurrentAnimation().contains("net")
+					&& !player.getCurrentAnimation().contains(player.getDirection())) {
 				player.setCurrentAnimation("net" + player.getDirection());
 			}
-			System.out.println("position: " + player.getHitboxGlobal().getX() + ", " + player.getHitboxGlobal().getY());
-			
-			//FIXME: check for collisions
+			// System.out.println("position: " + player.getHitboxGlobal().getX()
+			// + ", " + player.getHitboxGlobal().getY());
+
+			// FIXME: check for collisions
 			if (playerCollision(player.getHitboxGlobal(), player.getNumPlayer())) {
 				player.setPosition(originalPos);// move the player back
 			} else {

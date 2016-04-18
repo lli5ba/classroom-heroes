@@ -18,6 +18,7 @@ public class Boss extends AnimatedSprite {
 	private GameManager gameManager = GameManager.getInstance();
 
 	private double lastThrownDegrees;
+	private String animation;
 	
 	public Boss(String id, String imageFileName) {
 		super(id, imageFileName);
@@ -46,6 +47,14 @@ public class Boss extends AnimatedSprite {
 
 	public void setLastThrownDegrees(double lastThrownDegrees) {
 		this.lastThrownDegrees = lastThrownDegrees;
+	}
+
+	public String getAnimation() {
+		return animation;
+	}
+
+	public void setAnimation(String animation) {
+		this.animation = animation;
 	}
 
 }
