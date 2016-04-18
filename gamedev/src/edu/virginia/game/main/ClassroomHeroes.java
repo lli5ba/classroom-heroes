@@ -47,6 +47,7 @@ import edu.virginia.game.objects.ItemDetail;
 import edu.virginia.game.objects.PickedUpItem;
 import edu.virginia.game.objects.Poison;
 import edu.virginia.game.objects.Store;
+import edu.virginia.game.objects.TitleScreen;
 import edu.virginia.game.objects.VP;
 
 /**
@@ -95,7 +96,12 @@ public class ClassroomHeroes extends Game {
 		//creates the current scene if it does not yet exist
 		if (!this.gameManager.activeGameSceneIsCreated()) {
 			String sceneName = this.gameManager.getActiveGameScene();
-			if(sceneName.contains("hallway")) {
+			if (sceneName.contains("title")) {
+				//create the title screen
+				TitleScreen title = new TitleScreen(sceneName);
+				//add scene to gameManager
+				this.gameManager.addGameScene(sceneName, title);
+			} else if(sceneName.contains("hallway")) {
 				//create a hallway
 				//get last character in styleCode
 				String styleCode = sceneName.substring(sceneName.length() - 1);
@@ -115,7 +121,7 @@ public class ClassroomHeroes extends Game {
 				}
 				//add scene to gameManager
 				this.gameManager.addGameScene(sceneName, classroom);
-			}
+			} 
 		}
 
 	}
