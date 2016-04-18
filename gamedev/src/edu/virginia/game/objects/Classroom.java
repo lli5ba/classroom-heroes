@@ -254,7 +254,7 @@ public class Classroom extends DisplayObjectContainer {
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
-			if (player1.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()
+			if ((player1.getNet().collidesWithGlobal(vp) || player1.collidesWithGlobal(vp)) && !vp.isPickedUp()
 					&& pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
@@ -264,7 +264,7 @@ public class Classroom extends DisplayObjectContainer {
 				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 
-			if (player2.getNet().collidesWithGlobal(vp) && !vp.isPickedUp()
+			if ((player2.getNet().collidesWithGlobal(vp) || player2.collidesWithGlobal(vp)) && !vp.isPickedUp()
 					&& pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
