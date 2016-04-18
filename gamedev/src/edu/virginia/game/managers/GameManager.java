@@ -9,6 +9,7 @@ import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Hallway;
+import edu.virginia.game.objects.TitleScreen;
 
 /*
  * Singleton class that handles all game details
@@ -41,7 +42,7 @@ public class GameManager {
 		gameWidth = 1365;
 		numPlayers = 1;
 		numLevel = 1;
-		setActiveGameScene("classroom1");
+		setActiveGameScene("title");
 		gameScenes = new HashMap<String, DisplayObjectContainer>();
 		toRemoveQueue = new ArrayList<String>();
 		
@@ -108,7 +109,12 @@ public class GameManager {
 	public void update(ArrayList<String> pressedKeys){
 		//update the active game scene
 		if (this.gameScenes.containsKey(this.activeGameScene)) {
-			if(this.activeGameScene.contains("hallway")) {
+			if(this.activeGameScene.contains("title")) {
+				TitleScreen title = (TitleScreen) this.gameScenes.get(this.activeGameScene);
+				if(title != null) {
+					title.update(pressedKeys);
+				}
+			} else if(this.activeGameScene.contains("hallway")) {
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
 				if(hallway != null) {
 					hallway.update(pressedKeys);
@@ -122,6 +128,11 @@ public class GameManager {
 			
 		}
 		// garbage collection
+		for (String name : this.gameScenes.keySet()) {
+			if(!name.equals(this.activeGameScene)) {
+				this.removeGameScene(name);
+			}
+		}
 		for (String name : this.toRemoveQueue) {
 			this.gameScenes.remove(name);
 		}
@@ -130,7 +141,12 @@ public class GameManager {
 	public void draw(Graphics g) {
 		//update the active game scene
 		if (this.gameScenes.containsKey(this.activeGameScene)) {
-			if(this.activeGameScene.contains("hallway")) {
+			if(this.activeGameScene.contains("title")) {
+				TitleScreen title = (TitleScreen) this.gameScenes.get(this.activeGameScene);
+				if(title != null) {
+					title.draw(g);
+				}
+			} else if(this.activeGameScene.contains("hallway")) {
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
 				if(hallway != null) {
 					hallway.draw(g);
