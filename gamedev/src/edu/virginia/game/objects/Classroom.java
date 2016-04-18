@@ -46,6 +46,9 @@ public class Classroom extends DisplayObjectContainer {
 	private Player player1;
 	private Player player2;
 	private Boss boss;
+	private Sprite table1;
+	private Sprite table2;
+	private Sprite table3;
 	private PlayerStatBox stat;
 	private EndLevelScreen endLevelScreen;
 	private GameClock gameClock;
@@ -59,6 +62,7 @@ public class Classroom extends DisplayObjectContainer {
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
+	ArrayList<Sprite> furniture = new ArrayList<Sprite>();
 	private DisplayObjectContainer playArea;
 	private ArrayList<String> prevPressedKeys;
 
@@ -108,6 +112,33 @@ public class Classroom extends DisplayObjectContainer {
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
+		
+		table1 = new Sprite("Table1", "table/Table.png");
+		table1.setScaleX(.4);
+		table1.setScaleY(.6);
+		this.addChild(table1);
+		table1.setOriginalHitbox(new Rectangle((int) table1.getOriginalHitbox().getX(),(int) table1.getOriginalHitbox().getY() - 2,(int) table1.getOriginalHitbox().getWidth(),(int) (table1.getOriginalHitbox().getHeight()*.8)));
+		this.table1.setPosition(this.getWidth() * .446, this.getHeight() * .592);
+		
+		table2 = new Sprite("Table2", "table/Table.png");
+		table2.setScaleX(.4);
+		table2.setScaleY(.6);
+		
+		this.addChild(table2);
+		table2.setOriginalHitbox(new Rectangle((int) table2.getOriginalHitbox().getX(),(int) table2.getOriginalHitbox().getY() - 2,(int) table2.getOriginalHitbox().getWidth(),(int) (table2.getOriginalHitbox().getHeight()*.8)));
+		this.table2.setPosition(this.getWidth() * .746, this.getHeight() * .5);
+		
+		table3 = new Sprite("Table2", "table/Table.png");
+		table3.setScaleX(.4);
+		table3.setScaleY(.6);
+		
+		this.addChild(table3);
+		table3.setOriginalHitbox(new Rectangle((int) table3.getOriginalHitbox().getX(),(int) table3.getOriginalHitbox().getY() - 2,(int) table3.getOriginalHitbox().getWidth(),(int) (table3.getOriginalHitbox().getHeight()*.8)));
+		this.table3.setPosition(this.getWidth() * .146, this.getHeight() * .5);
+		
+		this.furniture.add(table1);
+		this.furniture.add(table2);
+		this.furniture.add(table3);
 
 		this.addChild(player1);
 		this.addChild(player2);
@@ -122,10 +153,14 @@ public class Classroom extends DisplayObjectContainer {
 		this.boss.setScaleX(.7);
 		this.boss.setScaleY(.7);
 
+		
+		
 		/* Generate Students */
 		spawnStudent("Student0", "down", this.getWidth() * .5, this.getHeight() * .742);
-		spawnStudent("Student1", "left", this.getWidth() * .7, this.getHeight() * .65);
+		spawnStudent("Student1", "left", this.getWidth() * .8, this.getHeight() * .65);
 		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .65);
+		
+		
 
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
@@ -644,6 +679,12 @@ public class Classroom extends DisplayObjectContainer {
 		/* Check collisions with students */
 		for (Student student : studentList) {
 			if (r.intersects(student.getHitboxGlobal())) {
+				return true;
+			}
+		}
+		
+		for (Sprite stuff : furniture) {
+			if (r.intersects(stuff.getHitboxGlobal())) {
 				return true;
 			}
 		}
