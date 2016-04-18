@@ -47,6 +47,7 @@ public class Classroom extends DisplayObjectContainer {
 	private Player player2;
 	private Boss boss;
 	private PlayerStatBox stat;
+	private PlayerStat pstat;
 	private EndLevelScreen endLevelScreen;
 	private GameClock gameClock;
 	private GameClock poisonClock;
@@ -141,6 +142,10 @@ public class Classroom extends DisplayObjectContainer {
 		stat = new PlayerStatBox("stats");
 		this.addChild(stat);
 
+		/* Printing out Player stats */
+		pstat = new PlayerStat("pstats");
+		this.addChild(pstat);
+		
 		/* End Level Screen */
 		endLevelScreen = new EndLevelScreen("endLevel");
 		this.endLevelScreen.setVisible(false);

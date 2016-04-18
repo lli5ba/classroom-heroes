@@ -15,8 +15,7 @@ import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
 
 public class SoundManager implements IEventListener {
-	//HashMap<String, AudioClip> soundeffects;
-	HashMap<String, String> soundeffects;
+	HashMap<String, AudioClip> soundeffect;
 	HashMap<String, String> music;
 	
 	AudioInputStream audioIn; //for music
@@ -35,20 +34,20 @@ public class SoundManager implements IEventListener {
 	}
 
 	// sound effects are short and don't loop
-	public void LoadSoundEffect(String id, String filename) {
-		soundeffects.put(id, filename);
+	public void LoadSoundEffect(String id, String filename) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+		if(!soundeffect.containsKey(id)) {
+			soundeffect.put(id, new AudioClip(filename));
+		}
 		return;
 	}
 
 	public void PlaySoundEffect(String id) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-		clipPlayingSoundEffect.stop();
-		if (soundeffects.containsKey(id)) {
-			soundEffect1 = id;
-			String filename = soundeffects.get(id);
-			audioInSoundEffect = AudioSystem.getAudioInputStream(SoundManager.class.getResource(filename));
-			clipPlayingSoundEffect = AudioSystem.getClip();
-			clipPlayingSoundEffect.open(audioInSoundEffect);
-			clipPlayingSoundEffect.start();
+		if (soundeffect.containsKey(id)) {
+			AudioClip clipToPlay = soundeffect.get(id);
+			if(!clipToPlay.getClip().isRunning()) {
+				System.out.println("playing " + id);
+				clipToPlay.startPlaying();
+			}
 		} else {
 			return;
 		}
@@ -84,7 +83,7 @@ public class SoundManager implements IEventListener {
 
 	public SoundManager() throws LineUnavailableException {
 		instance = this;
-		soundeffects = new HashMap<String, String>();
+		soundeffect = new HashMap<String, AudioClip>();
 		music = new HashMap<String, String>();
 		clipPlaying = AudioSystem.getClip();
 		clipPlayingSoundEffect = AudioSystem.getClip();

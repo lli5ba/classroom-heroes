@@ -23,5 +23,15 @@ public class AudioClip {
 	public Clip getClip() {
 		return this.clipPlaying;
 	}
+	
+	public void startPlaying() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+		//stops it before playing
+		
+	//	clipPlaying.stop();
+		audioIn = AudioSystem.getAudioInputStream(SoundManager.class.getResource(filename));
+		clipPlaying = AudioSystem.getClip();
+		clipPlaying.open(audioIn);
+		clipPlaying.start();
+	}
 
 }
