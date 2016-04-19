@@ -117,7 +117,8 @@ public class Classroom extends DisplayObjectContainer {
 		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
 
 		/* Boss constructor */
-		boss = new Boss("Boss", "floryan/floryan-default.png");
+		boss = new Boss("Boss", "floryan/floryan-default.png", "floryan/floryan-spritesheet.png",
+				"resources/floryan/floryan-spritesheet.txt");
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);
@@ -145,7 +146,7 @@ public class Classroom extends DisplayObjectContainer {
 		/* Printing out Player stats */
 		pstat = new PlayerStat("pstats");
 		this.addChild(pstat);
-		
+
 		/* End Level Screen */
 		endLevelScreen = new EndLevelScreen("endLevel");
 		this.endLevelScreen.setVisible(false);
@@ -180,19 +181,18 @@ public class Classroom extends DisplayObjectContainer {
 		// System.out.println("d: " + d);
 		// if vp is thrown, give boss right direction to turn
 		// FIXME
-		if (vpOrPoison.equals("vp")) {
+		if (vpOrPoison.equals("vp") && boss != null) {
 			this.boss.setLastThrownDegrees(Math.toDegrees(d));
 			System.out.println("Degrees: " + this.boss.getLastThrownDegrees());
 			if (this.boss.getLastThrownDegrees() > 0 && this.boss.getLastThrownDegrees() < 60) {
-	//			floryan("tossdownright");
 				boss.animate("tossdownright");
 				System.out.println("tossdownright");
 			} else if (this.boss.getLastThrownDegrees() > 60 && this.boss.getLastThrownDegrees() < 120) {
-		//		floryan("tossdown");
+
 				boss.animate("tossdown");
 				System.out.println("tossdown");
 			} else if (this.boss.getLastThrownDegrees() > 120 && this.boss.getLastThrownDegrees() < 180) {
-			//	floryan("tossdownleft");
+
 				boss.animate("tossdownleft");
 				System.out.println("tossdownleft");
 			}
@@ -202,34 +202,6 @@ public class Classroom extends DisplayObjectContainer {
 		return new Position(x, y);
 	}
 
-	/**
-	public void floryan(String position) {
-		if (boss != null) {
-			if (position.equals("tossdown")) {
-				boss.setyPos(this.getHeight());
-				boss.setxPos(-(this.getWidth() / 4.0));
-				boss.setWidth(this.getHeight());
-				boss.setHeight(this.getWidth());
-				boss.animate("tossdown");
-				boss.setAnimation("tossdown");
-			} else if (position.equals("tossdownright")) {
-				boss.setxPos((this.getUnscaledWidth() * this.getScaleX()));
-				boss.setyPos(0);
-				boss.setWidth(this.getWidth());
-				boss.setHeight(this.getHeight());
-				boss.animate("tossdownright");
-				boss.setAnimation("tossdownright");
-			} else if (position.equals("tossdownleft")) {
-				boss.setxPos(-(this.getUnscaledWidth() * this.getScaleX()));
-				boss.setyPos(0);
-				boss.setWidth(this.getWidth());
-				boss.setHeight(this.getHeight());
-				boss.animate("tossdownleft");
-				boss.setAnimation("tossdownleft");
-			}
-		}
-	}
-**/
 	public void spawnStudent(String id, String animDir, double xPos, double yPos) {
 		Student student1 = new Student(id, "0", animDir);
 		student1.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
@@ -258,7 +230,6 @@ public class Classroom extends DisplayObjectContainer {
 
 	public void spawnPoison() {
 		if (myTweenJuggler != null) {
-			// FIXME: sprite sheet not implemented
 			Poison poison = new Poison("Poison");
 			poison.setCenterPos(this.boss.getCenterPos());
 			poison.addEventListener(projectileManager, EventTypes.PICKUP_POISON.toString());
@@ -444,13 +415,8 @@ public class Classroom extends DisplayObjectContainer {
 		// FIXME: want to display these stats on the endLevelScreen
 		double exp = 0;
 		for (Student student : studentList) {
-			exp += student.getCurrentHealth() / student.getMaxHealth() * 100; // Health
-																				// should
-																				// be
-																				// a
-																				// max
-																				// of
-																				// 25000
+			exp += student.getCurrentHealth() / student.getMaxHealth() * 100;
+			// Health should be a max of 25000
 		}
 		exp += this.levelManager.getPoisonCollected(numPlayer) * 10;
 		exp += this.levelManager.getStudentsCured(numPlayer) * 50;
@@ -520,7 +486,6 @@ public class Classroom extends DisplayObjectContainer {
 			this.checkPoisonCollisions(pressedKeys);
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
-		//	this.floryan(boss.getAnimation());
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
 			}
