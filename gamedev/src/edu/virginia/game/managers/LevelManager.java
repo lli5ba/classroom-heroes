@@ -1,5 +1,6 @@
 package edu.virginia.game.managers;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -166,6 +167,10 @@ public class LevelManager implements IEventListener {
 				}
 			}
 		}
+	}
+	
+	public void drawBombs(Graphics g) {
+		
 	}
 
 	public void clearStats(){
