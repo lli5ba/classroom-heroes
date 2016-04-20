@@ -40,6 +40,8 @@ public class Player extends AnimatedSprite {
 	private int vpCount;
 	private AnimatedSprite poisonBubbles;
 	private Net net;
+	private Sprite smokebomb;
+	private String smokeBombDir;
 
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
@@ -54,6 +56,11 @@ public class Player extends AnimatedSprite {
 		this.numPlayer = numPlayer;
 		this.active = true;
 
+		/* add smokebomb */
+		smokebomb = new Sprite(id + "-bomb", "smokebomb/smokebomb-default.png");
+		this.addChild(smokebomb);
+		this.smokebomb.setVisible(false);
+		
 		/* add net */
 		net = new Net(id + "-net" , "resources/player/player-spritesheet-1-netFrameInfo.txt");
 		this.addChild(net);
@@ -276,6 +283,40 @@ public class Player extends AnimatedSprite {
 		int width = this.getNetHitboxGlobal().width;
 		int height = this.getNetHitboxGlobal().height;
 		g.fillRect(x, y, width, height);
+	}
+
+	public void moveSmokebomb(String dir) {
+		switch (dir) {
+		case "up":
+			this.smokebomb.setCenterPos(this.getWidth()*.5, -this.getHeight()*.1);
+			break;
+		case "down":
+			this.smokebomb.setCenterPos(this.getWidth()*.5, this.getHeight()*.75);
+			break;
+		case "left":
+			this.smokebomb.setCenterPos(0, this.getHeight()*.5);
+			break;
+		case "right":
+			this.smokebomb.setCenterPos(this.getWidth(), this.getHeight()*.5);
+			break;
+		case "upright":
+			this.smokebomb.setCenterPos(this.getWidth(), 0);
+			break;
+		case "upleft":
+			this.smokebomb.setCenterPos(0, 0);
+			break;
+		case "downright":
+			this.smokebomb.setCenterPos(this.getWidth(), this.getHeight()*.75);
+			break;
+		case "downleft":
+			this.smokebomb.setCenterPos(0, this.getHeight()*.75);
+			break;
+		}
+		this.smokebomb.setVisible(true);
+	}
+	
+	public void setSmokebombVisible(boolean visible) {
+		this.smokebomb.setVisible(visible);
 	}
 
 }

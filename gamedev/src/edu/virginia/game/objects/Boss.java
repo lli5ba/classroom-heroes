@@ -44,6 +44,7 @@ public class Boss extends AnimatedSprite {
 			this.poisonSpeed = 16000;
 			this.vpSpeed = 18000;
 		}
+		
 	}
 
 	@Override
@@ -129,21 +130,26 @@ public class Boss extends AnimatedSprite {
 		Random rand1 = new Random();
 		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
 		double angleDeg = Math.toDegrees(d);
-		if (this.levelManager.isSmokeBombActive()) {
-			int bombRangeDeg = 10; //range of bomb on either side
-			double bombXPos = this.levelManager.getSmokeBombPos().getX();
-			double bombYPos = this.levelManager.getSmokeBombPos().getY();
-			double centerAngleDeg = this.calcAngleFromCenterGlobal(bombXPos, bombYPos);
-			//if angle is in line of the bomb, then regenerate the angle
-			while (angleDeg > centerAngleDeg - bombRangeDeg && angleDeg < centerAngleDeg + bombRangeDeg) {
-				//calc a new position for VP
-				if (vpOrPoison.equals("v")) {
-					d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
-					angleDeg = Math.toDegrees(d);
-				} else { //return null and don't spawn a Poison
-					return null;
-				}
-				
+		
+		/* smokebomb logics */
+		if (this.levelManager.getSmokebombList() != null) {
+			for (Smokebomb bomb : this.levelManager.getSmokebombList())
+				if (bomb.isExploding()) {
+					int bombRangeDeg = 10; //range of bomb on either side
+					double bombXPos = bomb.getxPosGlobal();
+					double bombYPos = bomb.getyPosGlobal();
+					double centerAngleDeg = this.calcAngleFromCenterGlobal(bombXPos, bombYPos);
+					//if angle is in line of the bomb, then regenerate the angle
+					while (angleDeg > centerAngleDeg - bombRangeDeg && angleDeg < centerAngleDeg + bombRangeDeg) {
+						//calc a new position for VP
+						if (vpOrPoison.equals("vp")) {
+							d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
+							angleDeg = Math.toDegrees(d);
+						} else { //return null and don't spawn a Poison
+							return null;
+						}
+						
+					}
 			}
 		}
 		

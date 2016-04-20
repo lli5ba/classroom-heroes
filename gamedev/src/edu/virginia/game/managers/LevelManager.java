@@ -1,12 +1,15 @@
 package edu.virginia.game.managers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
+import edu.virginia.engine.tween.Tween;
 import edu.virginia.engine.util.Position;
 import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
+import edu.virginia.game.objects.Smokebomb;
 import edu.virginia.game.objects.Student;
 
 /*
@@ -36,8 +39,7 @@ public class LevelManager implements IEventListener {
 
 	
 	/* In-Level Details */
-	private boolean smokeBombActive;
-	private Position smokeBombPos;
+	private ArrayList<Smokebomb> smokebombList;
 	
 	/* Constructors */
 
@@ -146,20 +148,22 @@ public class LevelManager implements IEventListener {
 		}
 	}
 
-	public boolean isSmokeBombActive() {
-		return smokeBombActive;
+	public ArrayList<Smokebomb> getSmokebombList() {
+		return smokebombList;
 	}
 
-	public void setSmokeBombActive(boolean smokeBombActive) {
-		this.smokeBombActive = smokeBombActive;
+	public void addSmokebomb(Smokebomb bomb) {
+		this.smokebombList.add(bomb);
 	}
-
-	public Position getSmokeBombPos() {
-		return smokeBombPos;
-	}
-
-	public void setSmokeBombPos(Position smokeBombPos) {
-		this.smokeBombPos = smokeBombPos;
+	
+	public void removeCompleteBombs(ArrayList<String> pressedKeys) {
+		for (Iterator<Smokebomb> iterator = this.smokebombList.iterator(); iterator.hasNext();) {
+			Smokebomb bomb = iterator.next();
+			if (bomb.isComplete()) {
+				iterator.remove();
+				// toRemove.add(t);
+			}
+		}
 	}
 
 	public void clearStats(){
@@ -169,6 +173,7 @@ public class LevelManager implements IEventListener {
 		this.setPoisonCollected(0, 2);
 		this.setVPCollected(0, 2);
 		this.setStudentsCured(0, 2);
+		this.smokebombList.clear();
 	}
 	@Override
 	public void handleEvent(GameEvent event) {

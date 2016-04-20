@@ -82,7 +82,9 @@ public class AnimatedSprite extends Sprite {
 	}
 	
 	public void setDefault(){
-		this.setOriginalHitbox(spriteMap.get("default").get(0).getHitbox());
+		if (this.spriteMap.containsKey("default")) {
+			this.setOriginalHitbox(spriteMap.get("default").get(0).getHitbox());
+		}
 	}
 
 	public String getDirection() {
@@ -260,7 +262,7 @@ public class AnimatedSprite extends Sprite {
 		}
 	}
 
-	private void setDefaultImage(String animationName) {
+	public void setDefaultImage(String animationName) {
 		if (spriteMap.containsKey(animationName)) {
 			BufferedImage current = spriteMap.get(animationName).get(0).getImage();
 			this.setImage(current);

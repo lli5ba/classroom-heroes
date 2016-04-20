@@ -478,9 +478,11 @@ public class Classroom extends DisplayObjectContainer {
 			this.checkPoisonCollisions(pressedKeys);
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
+			this.aimThrowSmokeBomb(pressedKeys, this.player1);
 		//	this.floryan(boss.getAnimation());
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
+				this.aimThrowSmokeBomb(pressedKeys, this.player2);
 			}
 		}
 		if (myTweenJuggler != null) {
@@ -510,6 +512,87 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 
+	public void aimThrowSmokeBomb(ArrayList<String> pressedKeys, Player player) {
+		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
+		releasedKeys.removeAll(pressedKeys);
+		/*
+		 * Make sure this is not null. Sometimes Swing can auto cause an extra
+		 * frame to go before everything is initialized
+		 */
+		if (!pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))) {
+			player.setSmokebombVisible(false);
+		}
+		if (player != null && player.getNetHitbox() != null 
+				&& pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))) {
+			/*
+			 * update player's position depending on key pressed
+			 */
+			player.moveSmokebomb(player.getDirection());
+			String smokebombDir = player.getDirection();
+			System.out.println(pressedKeys.toString());
+			if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))
+					&& pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
+				String dir = "up"; //right
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir + "right");
+				smokebombDir = dir + "right";
+				
+			} else if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))
+					&& pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
+				String dir = "up"; //left
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir + "left");
+				smokebombDir = dir + "left";
+			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))
+					&& pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
+				String dir = "down"; //right
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir + "right");
+				smokebombDir = dir + "right";
+			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))
+					&& pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
+				String dir = "down"; //left
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir + "left");
+				smokebombDir = dir + "left";
+			} else if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))) {
+				String dir = "up";
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir);
+				smokebombDir = dir;
+			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))) {
+				String dir = "down";
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir);
+				smokebombDir = dir;
+			} else if (pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
+				String dir = "left";
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir);
+				smokebombDir = dir;
+			} else if (pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
+				String dir = "right";
+				player.setDirection(dir);
+				player.setDefaultImage(dir);
+				player.moveSmokebomb(dir);
+				smokebombDir = dir;
+			}
+			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
+				/* throw puffbag */
+			}
+		}
+	}
+	
+	public void throwSmokebomb() {
+		
+	}
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
@@ -520,7 +603,8 @@ public class Classroom extends DisplayObjectContainer {
 		 */
 		Position originalPos = new Position(player.getxPos(), player.getyPos());
 
-		if (player != null && player.getNetHitbox() != null) {
+		if (player != null && player.getNetHitbox() != null 
+				&& !pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))) {
 			/*
 			 * update player's position depending on key pressed
 			 */
