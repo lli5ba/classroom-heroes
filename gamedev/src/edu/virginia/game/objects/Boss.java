@@ -45,18 +45,13 @@ public class Boss extends AnimatedSprite {
 	}
 	
 	public void rotateBoss(double angle){
+		int throwSpeed = 6;
 		if (angle > 0 && angle < 60) {
-//			floryan("tossdownright");
-			this.animateOnceLock("tossdownright", 1);
-			System.out.println("tossdownright");
+			this.animateOnce("tossdownright", throwSpeed);
 		} else if (angle > 60 && angle < 120) {
-	//		floryan("tossdown");
-			this.animateOnceLock("tossdown", 1);
-			System.out.println("tossdown");
+			this.animateOnce("tossdown", throwSpeed);
 		} else if (angle > 120 && angle < 180) {
-		//	floryan("tossdownleft");
-			this.animateOnceLock("tossdownleft", 1);
-			System.out.println("tossdownleft");
+			this.animateOnce("tossdownleft", throwSpeed);
 		}
 	}
 	
@@ -121,9 +116,7 @@ public class Boss extends AnimatedSprite {
 		// System.out.println("d: " + d);
 		// if vp is thrown, give boss right direction to turn
 		// FIXME
-		if (vpOrPoison.equals("vp")) {
-			this.rotateBoss(Math.toDegrees(d));
-		}
+		this.rotateBoss(Math.toDegrees(d));
 		double x = centerx + radius * Math.cos(d);
 		double y = centery + radius * Math.sin(d);
 		return new Position(x, y);

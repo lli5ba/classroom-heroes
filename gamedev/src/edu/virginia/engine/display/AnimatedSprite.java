@@ -239,7 +239,9 @@ public class AnimatedSprite extends Sprite {
 		if (this.isPlaying) {
 			// Stop if done looping
 			// System.out.println("playing animation");
-			// System.out.println("Current frame: " + currentFrame);
+			if (this.getId().equals("floyran")) {
+			System.out.println("Current frame: " + currentFrame);
+			}
 			if (!this.isLooping() && this.getTimesLooped() == 1) {
 				this.stopAnimation();
 			}

@@ -45,7 +45,6 @@ public class SoundManager implements IEventListener {
 		if (soundeffect.containsKey(id)) {
 			AudioClip clipToPlay = soundeffect.get(id);
 			if(!clipToPlay.getClip().isRunning()) {
-				System.out.println("playing " + id);
 				clipToPlay.startPlaying();
 			}
 		} else {
