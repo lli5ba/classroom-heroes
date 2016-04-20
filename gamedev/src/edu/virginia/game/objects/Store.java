@@ -122,23 +122,28 @@ public class Store extends DisplayObjectContainer {
 		// TODO: Leandra
 		// check whether enough VP, if so, decrement VP, Increase Inventory, and
 		// stopBuy()
-		// if not enough VP then...?
-		switch (item.getId()) { // switch statements b/c easy to add new items
-		case GINGER_ALE_ID:
-			this.itemToBuy = this.gingerAleDetail;
-			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle() + 1);
-			break;
-		case CHEESE_PUFFS_ID:
-			this.itemToBuy = this.cheesePuffsDetail;
-			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs() + 1);
-			break;
-		default:
-			System.out.println("Error in Store startBuy(). Should not happen.");
-			break;
+		// Only buy if enough VP
+		if (this.playerManager.getVpCount() >= this.playerManager.getVpCount()-item.getCost()) {
+			switch (item.getId()) { // switch statements b/c easy to add new items
+			case GINGER_ALE_ID:
+				this.itemToBuy = this.gingerAleDetail;
+				this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle() + 1);
+				break;
+			case CHEESE_PUFFS_ID:
+				this.itemToBuy = this.cheesePuffsDetail;
+				this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs() + 1);
+				break;
+			default:
+				System.out.println("Error in Store startBuy(). Should not happen.");
+				break;
+			}
+			System.out.println("You bought " + item.getId() + " for " + item.getCost() + " VP");
+			this.playerManager.setVpCount(this.playerManager.getVpCount()-this.itemToBuy.getCost());
+			this.stopBuy();
+		} else {
+			//insufficient funds
+			this.stopBuy();
 		}
-		System.out.println("You bought " + item.getId() + " for " + item.getCost() + " VP");
-		this.playerManager.setVpCount(this.playerManager.getVpCount()-this.itemToBuy.getCost());
-		this.stopBuy();
 
 	}
 
