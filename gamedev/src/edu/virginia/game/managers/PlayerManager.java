@@ -64,7 +64,7 @@ public class PlayerManager implements IEventListener {
 
 		/* P1 Default Stats */
 		speed1 = 2;
-		maxHealth1 = 5;
+		maxHealth1 = 6;
 		health1 = maxHealth1;
 		experience1 = 0;
 		attrPoints1 = 0;
@@ -79,7 +79,7 @@ public class PlayerManager implements IEventListener {
 
 		/* P2 Default Stats */
 		speed2 = 2;
-		maxHealth2 = 5;
+		maxHealth2 = 6;
 		health2 = maxHealth2;
 		experience2 = 0;
 		attrPoints2 = 0;

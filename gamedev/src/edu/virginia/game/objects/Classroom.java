@@ -714,7 +714,7 @@ public class Classroom extends DisplayObjectContainer {
 		}
 		/* Check whether player is too close to the boss */
 		Rectangle bossHitboxRange = this.boss.getHitboxGlobal();
-		bossHitboxRange.grow(20, 20);
+		bossHitboxRange.grow(45, 45);
 		if (r.intersects(bossHitboxRange)) {
 			return true;
 		}

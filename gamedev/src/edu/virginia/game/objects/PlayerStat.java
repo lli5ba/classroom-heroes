@@ -17,57 +17,49 @@ public class PlayerStat extends Sprite {
 	private double numHeartsTot;
 	private double numHearts;
 	private double halfHearts;
-	private int x;
-	private int y;
 	private GameManager gameManager = GameManager.getInstance();
 	private PlayerManager playerManager = PlayerManager.getInstance();
 
 	public PlayerStat(String id) {
 		super(id);
 
-		numHeartsTot = this.playerManager.getMaxHealth(1) / 2;
-		numHearts = this.playerManager.getHealth(1) / 2;
-		halfHearts = this.playerManager.getHealth(1) % 2;
-
-		for (int i = 0; i < numHearts; i++) {
-			this.wholeHeart = new Sprite("wholeheart" + i, "statbox/heart-whole.png");
-			this.addChild(wholeHeart);
-			System.out.println("heart" + i);
-			this.wholeHeart.setPosition(150 + (12 * i), 40);
-			this.wholeHeart.setScaleX(1.0);
-			this.wholeHeart.setScaleY(1.0);
-			x++;
-		}
-		if (halfHearts == 1) {
-			this.halfHeart = new Sprite("half", "statbox/heart-half.png");
-			this.addChild(halfHeart);
-			this.halfHeart.setPosition(150 + (12 * x), 40);
-			this.halfHeart.setScaleX(1.0);
-			this.halfHeart.setScaleY(1.0);
-		}
-
-		if (this.gameManager.getNumPlayers() == 2) {
-			for (int j = 0; j < numHearts; j++) {
-				this.wholeHeart = new Sprite("wholeheart" + j, "statbox/heart-whole.png");
-				this.addChild(wholeHeart);
-				System.out.println("heart" + j);
-				this.wholeHeart.setPosition(360 + (12 * j), 40);
-				this.wholeHeart.setScaleX(1.0);
-				this.wholeHeart.setScaleY(1.0);
-			}
-			if (halfHearts == 1) {
-				this.halfHeart = new Sprite("half", "statbox/heart-half.png");
-				this.addChild(halfHeart);
-				this.halfHeart.setPosition(360 + (12 * numHearts), 40);
-				this.halfHeart.setScaleX(1.0);
-				this.halfHeart.setScaleY(1.0);
-			}
-
+		setHearts(1);
+		if(this.gameManager.getNumPlayers() == 2) {
+			setHearts(2);
 		}
 	}
 	// this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
 	// this.addChild(emptyHeart);
 
+	public void setHearts(int player) {
+		numHeartsTot = this.playerManager.getMaxHealth(player) / 2;
+		numHearts = this.playerManager.getHealth(player) / 2;
+		halfHearts = this.playerManager.getHealth(player) % 2;
+		int x = 150;
+		if(player == 2) {
+			System.out.println("drawing player 2");
+			x = 350;
+		}
+		for (int i = 0; i < numHearts; i++) {
+			this.wholeHeart = new Sprite("wholeheart" + i, "statbox/heart-whole.png");
+			this.addChild(wholeHeart);
+			System.out.println("heart" + i);
+			this.wholeHeart.setPosition(x, 40);
+			this.wholeHeart.setScaleX(1.0);
+			this.wholeHeart.setScaleY(1.0);
+			x += 12;
+		}
+		
+		if (halfHearts == 1) {
+			this.halfHeart = new Sprite("half", "statbox/heart-half.png");
+			this.addChild(halfHeart);
+			this.halfHeart.setPosition(x , 40);
+			this.halfHeart.setScaleX(1.0);
+			this.halfHeart.setScaleY(1.0);
+			x += 12;
+		}
+	}
+	
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
@@ -77,6 +69,11 @@ public class PlayerStat extends Sprite {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
+		this.removeAll();
+		setHearts(1);
+		if(this.gameManager.getNumPlayers() == 2) {
+			setHearts(2);
+		}
 		// System.out.println("tot: " + numHeartsTot);
 		// System.out.println("hearts: " + numHearts);
 		// System.out.println("half: " + halfHearts);
