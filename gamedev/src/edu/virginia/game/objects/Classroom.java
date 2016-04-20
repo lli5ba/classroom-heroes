@@ -215,18 +215,17 @@ public class Classroom extends DisplayObjectContainer {
 		// FIXME
 		if (vpOrPoison.equals("vp") && boss != null) {
 			this.boss.setLastThrownDegrees(Math.toDegrees(d));
-			System.out.println("Degrees: " + this.boss.getLastThrownDegrees());
+			//System.out.println("Degrees: " + this.boss.getLastThrownDegrees());
 			if (this.boss.getLastThrownDegrees() > 0 && this.boss.getLastThrownDegrees() < 60) {
 				boss.animate("tossdownright");
-				System.out.println("tossdownright");
+				//System.out.println("tossdownright");
 			} else if (this.boss.getLastThrownDegrees() > 60 && this.boss.getLastThrownDegrees() < 120) {
-
 				boss.animate("tossdown");
-				System.out.println("tossdown");
+				//System.out.println("tossdown");
 			} else if (this.boss.getLastThrownDegrees() > 120 && this.boss.getLastThrownDegrees() < 180) {
 
 				boss.animate("tossdownleft");
-				System.out.println("tossdownleft");
+				//System.out.println("tossdownleft");
 			}
 		}
 		double x = centerx + radius * Math.cos(d);
@@ -521,6 +520,7 @@ public class Classroom extends DisplayObjectContainer {
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
 			}
+			
 		}
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
