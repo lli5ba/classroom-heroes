@@ -14,8 +14,8 @@ public class PlayerStat extends Sprite {
 	private Sprite halfHeart;
 	private Sprite wholeHeart;
 	private Sprite emptyHeart;
-	private int numHeartsTot;
-	private int numHearts;
+	private double numHeartsTot;
+	private double numHearts;
 	private double halfHearts;
 	private int x;
 	private int y;
@@ -28,6 +28,9 @@ public class PlayerStat extends Sprite {
 		numHeartsTot = playerManager.getMaxHealth(1)/2;
 		numHearts = playerManager.getHealth(1)/2;
 		halfHearts = playerManager.getHealth(1)%2;
+		System.out.println("tot: "+numHeartsTot);
+		System.out.println("heart: " + numHearts);
+		System.out.println("half: " + halfHearts);
 		
 		this.halfHeart = new Sprite("half", "statbox/heart-half.png");
 		this.addChild(halfHeart);
@@ -57,19 +60,19 @@ public class PlayerStat extends Sprite {
 		super.update(pressedKeys);
 	}
 
-	public int getNumHearts() {
+	public double getNumHearts() {
 		return numHearts;
 	}
 
-	public void setNumHearts(int numHearts) {
+	public void setNumHearts(double numHearts) {
 		this.numHearts = numHearts;
 	}
 
-	public int getNumHeartsTot() {
+	public double getNumHeartsTot() {
 		return numHeartsTot;
 	}
 
-	public void setNumHeartsTot(int numHeartsTot) {
+	public void setNumHeartsTot(double numHeartsTot) {
 		this.numHeartsTot = numHeartsTot;
 	}
 
