@@ -128,6 +128,7 @@ public class Classroom extends DisplayObjectContainer {
 		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
 
 		/* Boss constructor */
+
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
 				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt");
 		this.addChild(boss);
@@ -135,14 +136,10 @@ public class Classroom extends DisplayObjectContainer {
 		this.boss.setScaleX(.7);
 		this.boss.setScaleY(.7);
 
-		
-		
 		/* Generate Students */
 		spawnStudent("Student0", "down", this.getWidth() * .5, this.getHeight() * .742);
 		spawnStudent("Student1", "left", this.getWidth() * .8, this.getHeight() * .65);
 		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .65);
-		
-		
 
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
@@ -161,7 +158,7 @@ public class Classroom extends DisplayObjectContainer {
 		/* Printing out Player stats */
 		pstat = new PlayerStat("pstats");
 		this.addChild(pstat);
-		
+
 		/* End Level Screen */
 		endLevelScreen = new EndLevelScreen("endLevel");
 		this.endLevelScreen.setVisible(false);
@@ -203,6 +200,7 @@ public class Classroom extends DisplayObjectContainer {
 			
 		}
 	}
+
 	/* Note: floryan logic moved to boss class!*/
 	
 	public void spawnStudent(String id, String animDir, double xPos, double yPos) {
@@ -399,13 +397,8 @@ public class Classroom extends DisplayObjectContainer {
 		// FIXME: want to display these stats on the endLevelScreen
 		double exp = 0;
 		for (Student student : studentList) {
-			exp += student.getCurrentHealth() / student.getMaxHealth() * 100; // Health
-																				// should
-																				// be
-																				// a
-																				// max
-																				// of
-																				// 25000
+			exp += student.getCurrentHealth() / student.getMaxHealth() * 100;
+			// Health should be a max of 25000
 		}
 		exp += this.levelManager.getPoisonCollected(numPlayer) * 10;
 		exp += this.levelManager.getStudentsCured(numPlayer) * 50;
@@ -484,6 +477,7 @@ public class Classroom extends DisplayObjectContainer {
 				this.updatePlayer(pressedKeys, this.player2);
 				this.aimThrowSmokeBomb(pressedKeys, this.player2);
 			}
+			
 		}
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();

@@ -12,18 +12,21 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
 import edu.virginia.game.objects.EventTypes;
+import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.Player;
+import edu.virginia.game.objects.TitleScreen;
 
 public class SoundManager implements IEventListener {
 	HashMap<String, AudioClip> soundeffect;
 	HashMap<String, String> music;
-	
-	AudioInputStream audioIn; //for music
+
+	AudioInputStream audioIn; // for music
 	Clip clipPlaying; // for music
-	
+
 	AudioInputStream audioInSoundEffect;
 	Clip clipPlayingSoundEffect;
 	private static volatile SoundManager instance;
+	private static GameManager gameManager = GameManager.getInstance();
 	private String soundEffect1;
 
 	public static SoundManager getInstance() throws LineUnavailableException {
@@ -34,8 +37,9 @@ public class SoundManager implements IEventListener {
 	}
 
 	// sound effects are short and don't loop
-	public void LoadSoundEffect(String id, String filename) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		if(!soundeffect.containsKey(id)) {
+	public void LoadSoundEffect(String id, String filename)
+			throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+		if (!soundeffect.containsKey(id)) {
 			soundeffect.put(id, new AudioClip(filename));
 		}
 		return;
@@ -51,8 +55,6 @@ public class SoundManager implements IEventListener {
 			return;
 		}
 	}
-	
-
 
 	// music loops and plays forever
 	public void LoadMusic(String id, String filename) {
@@ -63,11 +65,13 @@ public class SoundManager implements IEventListener {
 	public boolean isPlayingMusic() {
 		return clipPlaying.isRunning();
 	}
+
 	public void stopMusic() {
 		clipPlaying.stop();
 		clipPlaying.close();
-		
+
 	}
+
 	public void PlayMusic(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		clipPlaying.stop();
 		if (music.containsKey(id)) {
@@ -93,40 +97,41 @@ public class SoundManager implements IEventListener {
 	public void handleEvent(GameEvent event)
 			throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		if (event.getEventType().equals(EventTypes.SWING_NET.toString())) {
-			if(!this.isPlayingSoundEffect1()) {
+			if (!this.isPlayingSoundEffect1()) {
 				this.LoadSoundEffect("net", "net.wav");
 				this.PlaySoundEffect("net");
 			}
 		} else if (event.getEventType().equals(EventTypes.WALK.toString())) {
-			if(!this.isPlayingSoundEffect1()) {
+			if (!this.isPlayingSoundEffect1()) {
 				this.LoadSoundEffect("walk", "walk.wav");
 				this.PlaySoundEffect("walk");
 			}
 			// FIXME: Walk occurs at end of key press
 			// FIXME: can only play walk OR net, not both at same time
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
-			if(!this.isPlayingSoundEffect1()) {
+			if (!this.isPlayingSoundEffect1()) {
 				this.LoadSoundEffect("vp", "vp.wav");
 				this.PlaySoundEffect("vp");
 			}
 		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
-			if(!this.isPlayingSoundEffect1()) {
+			if (!this.isPlayingSoundEffect1()) {
+				// FIXME: catching poison in net should not load this sound
 				this.LoadSoundEffect("poison", "poison.wav");
 				this.PlaySoundEffect("poison");
 			}
 		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
-			if(!this.isPlayingSoundEffect1()) {
+			if (!this.isPlayingSoundEffect1()) {
 				this.LoadSoundEffect("cured", "cured.wav");
 				this.PlaySoundEffect("cured");
 			}
 		} else if (event.getEventType().equals(EventTypes.POISON_STUDENT.toString())) {
-			if(!this.isPlayingSoundEffect1()) {
+			if (!this.isPlayingSoundEffect1()) {
 				this.LoadSoundEffect("dead", "dead.wav");
 				this.PlaySoundEffect("dead");
 			}
 		}
 	}
-	
+
 	public String getSoundEffect1() {
 		return soundEffect1;
 	}
@@ -144,10 +149,7 @@ public class SoundManager implements IEventListener {
 		this.clipPlayingSoundEffect.close();
 		this.clipPlaying.stop();
 		this.clipPlayingSoundEffect.stop();
-		
+
 	}
-
-
-
 
 }

@@ -97,6 +97,7 @@ public class AnimatedSprite extends Sprite {
 
 	public void animate(String animationName) {
 		if (spriteMap.containsKey(animationName)) {
+			System.out.println("animating " + animationName);
 			if (loop != false) { // Like a lock... animateOnce sequence takes
 									// priority
 				currentAnimation = animationName;

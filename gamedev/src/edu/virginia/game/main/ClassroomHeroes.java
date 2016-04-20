@@ -57,10 +57,9 @@ public class ClassroomHeroes extends Game {
 	private static PlayerManager playerManager = PlayerManager.getInstance();
 	private static LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
-	SoundManager mySoundManager;
+	SoundManager soundManager = SoundManager.getInstance();
 	TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private GameClock gameClock;
-
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters
@@ -72,7 +71,6 @@ public class ClassroomHeroes extends Game {
 	public ClassroomHeroes() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super("Classroom Heroes", gameManager.getGameWidth(), gameManager.getGameHeight());
 		gameClock = new GameClock();
-
 
 	}
 
@@ -87,31 +85,54 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
-		//this updates the corresponding active game scene!!
+		// this updates the corresponding active game scene!!
 		this.gameManager.update(pressedKeys);
-		
-		/*** create an asset and add it to the gameManager if it does not exist **/
-		
-		//assumes active game scene is either "hallway[0-3]" or classroom[1-5]
-		//creates the current scene if it does not yet exist
+
+		/***
+		 * create an asset and add it to the gameManager if it does not exist
+		 **/
+
+		// assumes active game scene is either "hallway[0-3]" or classroom[1-5]
+		// creates the current scene if it does not yet exist
 		if (!this.gameManager.activeGameSceneIsCreated()) {
 			String sceneName = this.gameManager.getActiveGameScene();
 			if (sceneName.contains("title")) {
-				//create the title screen
 				TitleScreen title = new TitleScreen(sceneName);
-				//add scene to gameManager
+				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, title);
-			} else if(sceneName.contains("hallway")) {
-				//create a hallway
-				//get last character in styleCode
+
+				soundManager.stopAll();
+				if (!soundManager.isPlayingMusic()) {
+					soundManager.LoadMusic("title", "title.wav");
+					try {
+						soundManager.PlayMusic("title");
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						e.printStackTrace();
+					}
+				}
+			} else if (sceneName.contains("hallway")) {
+				// create a hallway
+				// get last character in styleCode
 				String styleCode = sceneName.substring(sceneName.length() - 1);
 				Hallway hallway = null;
-				
+
 				hallway = new Hallway(sceneName, styleCode);
-				//add scene to gameManager
+				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, hallway);
+
+				soundManager.stopAll();
+				if (!soundManager.isPlayingMusic()) {
+					soundManager.LoadMusic("hallway", "hallway.wav");
+					try {
+						soundManager.PlayMusic("hallway");
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
 			} else if (sceneName.contains("classroom")) {
-				//create a classroom
+				// create a classroom
 				Classroom classroom = null;
 				try {
 					classroom = new Classroom(sceneName);
@@ -119,9 +140,9 @@ public class ClassroomHeroes extends Game {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//add scene to gameManager
+				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, classroom);
-			} 
+			}
 		}
 
 	}

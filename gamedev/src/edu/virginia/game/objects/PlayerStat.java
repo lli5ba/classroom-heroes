@@ -7,51 +7,78 @@ import java.util.ArrayList;
 import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.Sprite;
 import edu.virginia.game.managers.GameManager;
+import edu.virginia.game.managers.PlayerManager;
 
 public class PlayerStat extends Sprite {
 
-	private Sprite halfheart;
-	private Sprite wholeheart;
-	private Sprite emptyheart;
-	private Sprite VPicon1;
-	private Sprite VPicon2;
+	private Sprite halfHeart;
+	private Sprite wholeHeart;
+	private Sprite emptyHeart;
+	private int numHeartsTot;
+	private int numHearts;
+	private double halfHearts;
+	private int x;
+	private int y;
 	private GameManager gameManager = GameManager.getInstance();
+	private PlayerManager playerManager = PlayerManager.getInstance();
 
 	public PlayerStat(String id) {
 		super(id);
 
-	/**	this.halfheart = new Sprite("half", "statbox/half-heart.png");
-		this.addChild(halfheart);
-
-		this.wholeheart = new Sprite("full", "statbox/heart-whole.png");
-		this.addChild(wholeheart);
-
-		this.emptyheart = new Sprite("empty", "statbox/heart-empty.png");
-		this.addChild(emptyheart);
-**/
-		this.VPicon1 = new Sprite("vp-icon1", "statbox/vp-icon.png");
-		this.VPicon1.setScaleX(.8);
-		this.VPicon1.setScaleY(.8);
-		this.addChild(VPicon1);
-		this.VPicon1.setPosition(78,38);
-
-		if (this.gameManager.getNumPlayers() == 2) {
-		this.VPicon2 = new Sprite("vp-icon2", "statbox/vp-icon.png");
-		this.VPicon2.setScaleX(.8);
-		this.VPicon2.setScaleY(.8);
-		this.addChild(VPicon2);
-		this.VPicon2.setPosition(450,38);
-		}
+		numHeartsTot = playerManager.getMaxHealth(1)/2;
+		numHearts = playerManager.getHealth(1)/2;
+		halfHearts = playerManager.getHealth(1)%2;
+		
+		this.halfHeart = new Sprite("half", "statbox/heart-half.png");
+		this.addChild(halfHeart);
+		//if(halfHearts == 1) {
+			
+		//}
+		
+		
+		this.wholeHeart = new Sprite("full", "statbox/heart-whole.png");
+		this.addChild(wholeHeart);
+	//	for(int i=0; )
+		
+		
+		this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
+		this.addChild(emptyHeart);
+		
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
+		
 		}
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
+	}
+
+	public int getNumHearts() {
+		return numHearts;
+	}
+
+	public void setNumHearts(int numHearts) {
+		this.numHearts = numHearts;
+	}
+
+	public int getNumHeartsTot() {
+		return numHeartsTot;
+	}
+
+	public void setNumHeartsTot(int numHeartsTot) {
+		this.numHeartsTot = numHeartsTot;
+	}
+
+	public double getHalfHearts() {
+		return halfHearts;
+	}
+
+	public void setHalfHearts(double halfHearts) {
+		this.halfHearts = halfHearts;
 	}
 
 }
