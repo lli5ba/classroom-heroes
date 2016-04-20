@@ -101,7 +101,7 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 	 * @throws LineUnavailableException
 	 */
 	public static void main(String[] args) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-		sameHitboxSizes();
+		differentHitboxSizes();
 	}
 
 	
@@ -169,8 +169,8 @@ public class SpriteSheetMapper extends Game implements MouseListener {
 		SpriteSheetMapper mapper = new SpriteSheetMapper();
 		mapper.start();
 
-		PrintWriter writer = new PrintWriter(textFileName + "-frameInfo.txt", "UTF-8");
-		PrintWriter writerOnly = new PrintWriter(textFileName + "-frameInfo-only.txt", "UTF-8");
+		PrintWriter writer = new PrintWriter(textFileName + "-netFrameInfo.txt", "UTF-8");
+		PrintWriter writerOnly = new PrintWriter(textFileName + "-netFrameInfo-only.txt", "UTF-8");
 
 		try {
 			FileInputStream fstream = new FileInputStream(textFileName + ".txt");

@@ -52,7 +52,8 @@ public class TitleScreen extends DisplayObjectContainer {
 	public void navigateTitleScreen(ArrayList<String> pressedKeys) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
-		if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))) {
+		if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))
+				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER))) {
 			//player is selecting action, so start the game
 			//FIXME: or show instruction screen
 			if(this.player1bar.isVisible()) {

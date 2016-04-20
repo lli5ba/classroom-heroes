@@ -47,7 +47,7 @@ public class Player extends AnimatedSprite {
 				"bubbles/bubble-spritesheet.png", "resources/bubbles/bubble-spritesheet.txt");
 		this.addChild(poisonBubbles);
 		this.poisonBubbles.setCenterPos(this.getWidth()*.75, -this.getHeight()*0.05);
-		net = new Sprite("net", imageFileName);
+		net = new AnimatedSprite("net", imageFileName, thisSheetFileName, "resources/player/player-spritesheet-1-netFrameInfo.txt");
 		this.addChild(net);
 		net.setAlpha(0);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));

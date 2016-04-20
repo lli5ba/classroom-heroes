@@ -63,7 +63,7 @@ public class Classroom extends DisplayObjectContainer {
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
-	ArrayList<Sprite> furniture = new ArrayList<Sprite>();
+	ArrayList<Sprite> furnitureList = new ArrayList<Sprite>();
 	private DisplayObjectContainer playArea;
 	private ArrayList<String> prevPressedKeys;
 
@@ -92,11 +92,19 @@ public class Classroom extends DisplayObjectContainer {
 		this.addEventListener(soundManager, EventTypes.CURE_STUDENT.toString());
 		this.addEventListener(soundManager, EventTypes.POISON_STUDENT.toString());
 
+		
+		/* Constructing furniture */
+		
+		spawnTable("table1", "blue", this.getWidth() * .446, this.getHeight() * .592);
+		spawnTable("table2", "blue", this.getWidth() * .746, this.getHeight() * .5);
+		spawnTable("table3", "blue", this.getWidth() * .146, this.getHeight() * .5);
+		
+		
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo-sameHitbox.txt", 1);
+				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
 		player2 = new Player("Player2", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo-sameHitbox.txt", 2);
+				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
 
 		this.player1.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
 		this.player1.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
@@ -113,33 +121,6 @@ public class Classroom extends DisplayObjectContainer {
 			player2.setActive(false);
 			player2.setVisible(false);
 		}
-		
-		table1 = new Sprite("Table1", "table/Table.png");
-		table1.setScaleX(.4);
-		table1.setScaleY(.6);
-		this.addChild(table1);
-		table1.setOriginalHitbox(new Rectangle((int) table1.getOriginalHitbox().getX(),(int) table1.getOriginalHitbox().getY() - 2,(int) table1.getOriginalHitbox().getWidth(),(int) (table1.getOriginalHitbox().getHeight()*.8)));
-		this.table1.setPosition(this.getWidth() * .446, this.getHeight() * .592);
-		
-		table2 = new Sprite("Table2", "table/Table.png");
-		table2.setScaleX(.4);
-		table2.setScaleY(.6);
-		
-		this.addChild(table2);
-		table2.setOriginalHitbox(new Rectangle((int) table2.getOriginalHitbox().getX(),(int) table2.getOriginalHitbox().getY() - 2,(int) table2.getOriginalHitbox().getWidth(),(int) (table2.getOriginalHitbox().getHeight()*.8)));
-		this.table2.setPosition(this.getWidth() * .746, this.getHeight() * .5);
-		
-		table3 = new Sprite("Table2", "table/Table.png");
-		table3.setScaleX(.4);
-		table3.setScaleY(.6);
-		
-		this.addChild(table3);
-		table3.setOriginalHitbox(new Rectangle((int) table3.getOriginalHitbox().getX(),(int) table3.getOriginalHitbox().getY() - 2,(int) table3.getOriginalHitbox().getWidth(),(int) (table3.getOriginalHitbox().getHeight()*.8)));
-		this.table3.setPosition(this.getWidth() * .146, this.getHeight() * .5);
-		
-		this.furniture.add(table1);
-		this.furniture.add(table2);
-		this.furniture.add(table3);
 
 		this.addChild(player1);
 		this.addChild(player2);
@@ -207,6 +188,22 @@ public class Classroom extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 	}
 
+	public void spawnTable(String id, String style, double xPos, double yPos) {
+		if (style.equals("blue")) {
+			table1 = new Sprite(id, "table/Table.png");
+			table1.setScaleX(.4);
+			table1.setScaleY(.6);
+			this.addChild(table1);
+			table1.setOriginalHitbox(new Rectangle((int) table1.getOriginalHitbox().getX(),
+					(int) table1.getOriginalHitbox().getY() - 2,
+					(int) table1.getOriginalHitbox().getWidth(),
+					(int) (table1.getOriginalHitbox().getHeight()*.8)));
+			this.table1.setPosition(xPos, yPos);
+			this.furnitureList.add(table1);
+		} else if (style.equals("wood")) {
+			
+		}
+	}
 	/** Generates random position on semi-circle for spawning poison/VP **/
 	public Position generatePosition(String vpOrPoison, double centerx, double centery, double radius) {
 		double ang_min = (0);
@@ -653,8 +650,8 @@ public class Classroom extends DisplayObjectContainer {
 			}
 		}
 		
-		for (Sprite stuff : furniture) {
-			if (r.intersects(stuff.getHitboxGlobal())) {
+		for (Sprite furniture : furnitureList) {
+			if (r.intersects(furniture.getHitboxGlobal())) {
 				return true;
 			}
 		}
