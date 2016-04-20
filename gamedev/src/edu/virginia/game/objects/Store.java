@@ -122,9 +122,7 @@ public class Store extends DisplayObjectContainer {
 		// TODO: Leandra
 		// check whether enough VP, if so, decrement VP, Increase Inventory, and
 		// stopBuy()
-		// Only buy if enough VP --> currently buying only if VPCount > 1 since
-		// all items cost 2 VP.  Need to send error message when not enough vp
-		if (this.playerManager.getVpCount() >= this.playerManager.getVpCount()-item.getCost() && this.playerManager.getVpCount() > 1) {
+		if (this.playerManager.getVpCount() >= item.getCost() ) {
 			switch (item.getId()) { // switch statements b/c easy to add new items
 			case GINGER_ALE_ID:
 				this.itemToBuy = this.gingerAleDetail;
