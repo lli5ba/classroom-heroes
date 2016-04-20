@@ -48,8 +48,12 @@ public class SoundManager implements IEventListener {
 	public void PlaySoundEffect(String id) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		if (soundeffect.containsKey(id)) {
 			AudioClip clipToPlay = soundeffect.get(id);
+<<<<<<< HEAD
 			if (!clipToPlay.getClip().isRunning()) {
 				System.out.println("playing " + id);
+=======
+			if(!clipToPlay.getClip().isRunning()) {
+>>>>>>> a2964e22496bcbbe1a48c7d80f0af5428f394df9
 				clipToPlay.startPlaying();
 			}
 		} else {
