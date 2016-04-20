@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import edu.virginia.engine.events.CollisionEvent;
+import edu.virginia.engine.util.Position;
 
 public class DisplayObjectContainer extends DisplayObject {
 
@@ -225,6 +226,11 @@ public class DisplayObjectContainer extends DisplayObject {
 		int width = this.getHitbox().width;
 		int height = this.getHitbox().height;
 		g.fillRect(x, y, width, height);
+	}
+	
+	public Position getCenterPosGlobal() {
+		return new Position(this.getxPosGlobal() + this.getWidth() / 2,
+				this.getyPosGlobal() + this.getHeight() / 2);
 	}
 
 }

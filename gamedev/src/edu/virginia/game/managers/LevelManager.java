@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
+import edu.virginia.engine.util.Position;
 import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.Player;
 import edu.virginia.game.objects.Student;
@@ -33,7 +34,11 @@ public class LevelManager implements IEventListener {
 	int poisonCollected2;
 	int studentsCured2;
 
-
+	
+	/* In-Level Details */
+	private boolean smokeBombActive;
+	private Position smokeBombPos;
+	
 	/* Constructors */
 
 
@@ -139,6 +144,22 @@ public class LevelManager implements IEventListener {
 		default:
 			// error
 		}
+	}
+
+	public boolean isSmokeBombActive() {
+		return smokeBombActive;
+	}
+
+	public void setSmokeBombActive(boolean smokeBombActive) {
+		this.smokeBombActive = smokeBombActive;
+	}
+
+	public Position getSmokeBombPos() {
+		return smokeBombPos;
+	}
+
+	public void setSmokeBombPos(Position smokeBombPos) {
+		this.smokeBombPos = smokeBombPos;
 	}
 
 	public void clearStats(){

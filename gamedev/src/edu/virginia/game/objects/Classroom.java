@@ -216,15 +216,18 @@ public class Classroom extends DisplayObjectContainer {
 
 	public void spawnVP() {
 		VP vp = this.boss.spawnVP();
-		this.vpList.add(vp);
-		this.addChild(vp);
-		
+		if (vp != null) {
+			this.vpList.add(vp);
+			this.addChild(vp);
+		}
 	}
 
 	public void spawnPoison() {
 		Poison poison = this.boss.spawnPoison();
-		this.poisonList.add(poison);
-		this.addChild(poison);
+		if (poison != null) {
+			this.poisonList.add(poison);
+			this.addChild(poison);
+		}
 	}
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {

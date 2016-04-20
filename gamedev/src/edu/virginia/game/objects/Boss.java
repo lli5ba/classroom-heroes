@@ -25,18 +25,25 @@ public class Boss extends AnimatedSprite {
 	private ProjectileManager projectileManager = ProjectileManager.getInstance();
 	private TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 
+	private int vpSpeed;
+	private int poisonSpeed;
 	private double lastThrownDegrees;
 	private String animation;
 	
-	
-	public Boss(String id, String imageFileName) {
-		super(id, imageFileName);
-		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
-	}
 
 	public Boss(String id, String imageFileName, String thisSheetFileName, String specsFileName) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
+		if (this.gameManager.getNumLevel() == 1) {
+			this.poisonSpeed = 20000;
+			this.vpSpeed = 17000;
+		} else if (this.gameManager.getNumLevel() == 2) {
+			this.poisonSpeed = 17500;
+			this.vpSpeed = 18000;
+		} else if (this.gameManager.getNumLevel() == 2) {
+			this.poisonSpeed = 16000;
+			this.vpSpeed = 18000;
+		}
 	}
 
 	@Override
@@ -44,8 +51,8 @@ public class Boss extends AnimatedSprite {
 		super.update(pressedKeys);
 	}
 	
-	public void rotateBoss(double angle){
-		int throwSpeed = 6;
+	public void rotateBoss(double angle, int tweenSpeed){
+		int throwSpeed = 200000/tweenSpeed;
 		if (angle > 0 && angle < 60) {
 			this.animateOnce("tossdownright", throwSpeed);
 		} else if (angle > 60 && angle < 120) {
@@ -80,14 +87,16 @@ public class Boss extends AnimatedSprite {
 			vp.addEventListener(playerManager, EventTypes.PICKUP_VP.toString());
 			Tween tween2 = new Tween(vp, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			Position pos = generatePosition("vp", vp.getxPos(), vp.getyPos(), 1000);
-			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), 20000);
-			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), 20000);
+			Position pos = generatePosition("vp", vp.getxPos(), vp.getyPos());
+			if (pos == null) {
+				return null;
+			}
+			tween2.animate(TweenableParam.POS_X, vp.getxPos(), pos.getX(), this.vpSpeed);
+			tween2.animate(TweenableParam.POS_Y, vp.getyPos(), pos.getY(), this.vpSpeed);
 			return vp;
 		}
 		return null;
 	}
-
 
 
 	public Poison spawnPoison() {
@@ -99,27 +108,64 @@ public class Boss extends AnimatedSprite {
 			poison.addEventListener(playerManager, EventTypes.PICKUP_POISON.toString());
 			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			Position pos = generatePosition("posion", poison.getxPos(), poison.getyPos(), 1000);
-			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 25000);
-			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 25000);
+			Position pos = generatePosition("posion", poison.getxPos(), poison.getyPos());
+			if (pos == null) {
+				return null;
+			}
+			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), this.poisonSpeed);
+			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), this.poisonSpeed);
 			return poison;
 		}
 		return null;
 	}
 	
-	/** Generates random position on semi-circle for spawning poison/VP **/
-	public Position generatePosition(String vpOrPoison, double centerx, double centery, double radius) {
+	/** Generates random position on semi-circle for spawning poison/VP 
+	 * Returns null if projectile should not spawn **/
+	
+	public Position generatePosition(String vpOrPoison, double centerx, double centery) {
+		double radius = this.gameManager.getGameWidth();
 		double ang_min = (0);
 		double ang_max = (Math.PI);
 		Random rand1 = new Random();
 		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
-		// System.out.println("d: " + d);
-		// if vp is thrown, give boss right direction to turn
-		// FIXME
-		this.rotateBoss(Math.toDegrees(d));
+		double angleDeg = Math.toDegrees(d);
+		if (this.levelManager.isSmokeBombActive()) {
+			int bombRangeDeg = 10; //range of bomb on either side
+			double bombXPos = this.levelManager.getSmokeBombPos().getX();
+			double bombYPos = this.levelManager.getSmokeBombPos().getY();
+			double centerAngleDeg = this.calcAngleFromCenterGlobal(bombXPos, bombYPos);
+			//if angle is in line of the bomb, then regenerate the angle
+			while (angleDeg > centerAngleDeg - bombRangeDeg && angleDeg < centerAngleDeg + bombRangeDeg) {
+				//calc a new position for VP
+				if (vpOrPoison.equals("v")) {
+					d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
+					angleDeg = Math.toDegrees(d);
+				} else { //return null and don't spawn a Poison
+					return null;
+				}
+				
+			}
+		}
+		
+		//use corresponding tweenSpeed in the rotateBoss method to control 
+		//animation speed
+		if(vpOrPoison.equals("vp")) {
+			this.rotateBoss(Math.toDegrees(d), this.vpSpeed);
+		} else {
+			this.rotateBoss(Math.toDegrees(d), this.poisonSpeed);
+		}
 		double x = centerx + radius * Math.cos(d);
 		double y = centery + radius * Math.sin(d);
+		
 		return new Position(x, y);
+	}
+	
+	//angle in degrees (0 degrees is at 3 o'clock and it goes Clockwise)
+	public double calcAngleFromCenterGlobal(double xPos, double yPos) {
+		double angleRad = Math.atan2(xPos - this.getCenterPosGlobal().getX(), 
+				this.getCenterPosGlobal().getY() - yPos); 
+		double angleDeg = (Math.toDegrees(angleRad) + 270.0) % 360.0;
+		return angleDeg;
 	}
 
 	/**

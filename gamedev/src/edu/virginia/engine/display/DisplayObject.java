@@ -207,6 +207,7 @@ public class DisplayObject extends EventDispatcher {
 	public Position getCenterPos() {
 		return new Position(this.getxPos() + this.getWidth() / 2, this.getyPos() + this.getHeight() / 2);
 	}
+	
 
 	public void setCenterPos(double x, double y) {
 		this.position.setX(x - this.getWidth() / 2);
