@@ -36,37 +36,37 @@ public class PlayerStat extends Sprite {
 			this.wholeHeart.setPosition(150 + (12 * i), 40);
 			this.wholeHeart.setScaleX(1.0);
 			this.wholeHeart.setScaleY(1.0);
+			x++;
+		}
+		if (halfHearts == 1) {
+			this.halfHeart = new Sprite("half", "statbox/heart-half.png");
+			this.addChild(halfHeart);
+			this.halfHeart.setPosition(150 + (12 * x), 40);
+			this.halfHeart.setScaleX(1.0);
+			this.halfHeart.setScaleY(1.0);
+		}
 
+		if (this.gameManager.getNumPlayers() == 2) {
+			for (int j = 0; j < numHearts; j++) {
+				this.wholeHeart = new Sprite("wholeheart" + j, "statbox/heart-whole.png");
+				this.addChild(wholeHeart);
+				System.out.println("heart" + j);
+				this.wholeHeart.setPosition(360 + (12 * j), 40);
+				this.wholeHeart.setScaleX(1.0);
+				this.wholeHeart.setScaleY(1.0);
+			}
 			if (halfHearts == 1) {
 				this.halfHeart = new Sprite("half", "statbox/heart-half.png");
 				this.addChild(halfHeart);
-				this.halfHeart.setPosition(150 + (12 * numHearts), 40);
+				this.halfHeart.setPosition(360 + (12 * numHearts), 40);
 				this.halfHeart.setScaleX(1.0);
 				this.halfHeart.setScaleY(1.0);
 			}
-			if (this.gameManager.getNumPlayers() == 2) {
-				for (int j = 0; j < numHearts; j++) {
-					this.wholeHeart = new Sprite("wholeheart" + j, "statbox/heart-whole.png");
-					this.addChild(wholeHeart);
-					System.out.println("heart" + j);
-					this.wholeHeart.setPosition(360 + (12 * j), 40);
-					this.wholeHeart.setScaleX(1.0);
-					this.wholeHeart.setScaleY(1.0);
-				}
-				if (halfHearts == 1) {
-					this.halfHeart = new Sprite("half", "statbox/heart-half.png");
-					this.addChild(halfHeart);
-					this.halfHeart.setPosition(360 + (12 * numHearts), 40);
-					this.halfHeart.setScaleX(1.0);
-					this.halfHeart.setScaleY(1.0);
-				}
 
-			}
 		}
-		// this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
-		// this.addChild(emptyHeart);
-
 	}
+	// this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
+	// this.addChild(emptyHeart);
 
 	@Override
 	public void draw(Graphics g) {
