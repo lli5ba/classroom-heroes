@@ -586,13 +586,12 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
 				/* throw puffbag */
+				//FIXME: Leandra
 			}
 		}
 	}
 	
-	public void throwSmokebomb() {
-		
-	}
+
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);

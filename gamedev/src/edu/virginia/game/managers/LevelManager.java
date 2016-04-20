@@ -157,11 +157,13 @@ public class LevelManager implements IEventListener {
 	}
 	
 	public void removeCompleteBombs(ArrayList<String> pressedKeys) {
-		for (Iterator<Smokebomb> iterator = this.smokebombList.iterator(); iterator.hasNext();) {
-			Smokebomb bomb = iterator.next();
-			if (bomb.isComplete()) {
-				iterator.remove();
-				// toRemove.add(t);
+		if (this.smokebombList != null) {
+			for (Iterator<Smokebomb> iterator = this.smokebombList.iterator(); iterator.hasNext();) {
+				Smokebomb bomb = iterator.next();
+				if (bomb.isComplete()) {
+					iterator.remove();
+					// toRemove.add(t);
+				}
 			}
 		}
 	}
