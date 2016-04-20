@@ -128,13 +128,9 @@ public class Classroom extends DisplayObjectContainer {
 		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
 
 		/* Boss constructor */
-<<<<<<< HEAD
-		boss = new Boss("Boss", "floryan/floryan-default.png", "floryan/floryan-spritesheet.png",
-				"resources/floryan/floryan-spritesheet.txt");
-=======
+
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
 				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt");
->>>>>>> a2964e22496bcbbe1a48c7d80f0af5428f394df9
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);
@@ -208,40 +204,9 @@ public class Classroom extends DisplayObjectContainer {
 			
 		}
 	}
-<<<<<<< HEAD
-	/** Generates random position on semi-circle for spawning poison/VP **/
-	public Position generatePosition(String vpOrPoison, double centerx, double centery, double radius) {
-		double ang_min = (0);
-		double ang_max = (Math.PI);
-		Random rand1 = new Random();
-		double d = ang_min + rand1.nextDouble() * (ang_max - ang_min);
-		// System.out.println("d: " + d);
-		// if vp is thrown, give boss right direction to turn
-		// FIXME
-		if (vpOrPoison.equals("vp") && boss != null) {
-			this.boss.setLastThrownDegrees(Math.toDegrees(d));
-			//System.out.println("Degrees: " + this.boss.getLastThrownDegrees());
-			if (this.boss.getLastThrownDegrees() > 0 && this.boss.getLastThrownDegrees() < 60) {
-				boss.animate("tossdownright");
-				//System.out.println("tossdownright");
-			} else if (this.boss.getLastThrownDegrees() > 60 && this.boss.getLastThrownDegrees() < 120) {
-				boss.animate("tossdown");
-				//System.out.println("tossdown");
-			} else if (this.boss.getLastThrownDegrees() > 120 && this.boss.getLastThrownDegrees() < 180) {
 
-				boss.animate("tossdownleft");
-				//System.out.println("tossdownleft");
-			}
-		}
-		double x = centerx + radius * Math.cos(d);
-		double y = centery + radius * Math.sin(d);
-		return new Position(x, y);
-	}
-
-=======
 	/* Note: floryan logic moved to boss class!*/
 	
->>>>>>> a2964e22496bcbbe1a48c7d80f0af5428f394df9
 	public void spawnStudent(String id, String animDir, double xPos, double yPos) {
 		Student student1 = new Student(id, "0", animDir);
 		student1.addEventListener(studentManager, EventTypes.POISON_STUDENT.toString());
@@ -260,21 +225,8 @@ public class Classroom extends DisplayObjectContainer {
 	}
 
 	public void spawnPoison() {
-<<<<<<< HEAD
-		if (myTweenJuggler != null) {
-			Poison poison = new Poison("Poison");
-			poison.setCenterPos(this.boss.getCenterPos());
-			poison.addEventListener(projectileManager, EventTypes.PICKUP_POISON.toString());
-			poison.addEventListener(playerManager, EventTypes.PICKUP_POISON.toString());
-			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
-			myTweenJuggler.add(tween2);
-			Position pos = generatePosition("posion", poison.getxPos(), poison.getyPos(), 1000);
-			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), 25000);
-			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), 25000);
-=======
 		Poison poison = this.boss.spawnPoison();
 		if (poison != null) {
->>>>>>> a2964e22496bcbbe1a48c7d80f0af5428f394df9
 			this.poisonList.add(poison);
 			this.addChild(poison);
 		}
@@ -523,11 +475,8 @@ public class Classroom extends DisplayObjectContainer {
 			this.checkPoisonCollisions(pressedKeys);
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
-<<<<<<< HEAD
-=======
 			this.aimThrowSmokeBomb(pressedKeys, this.player1);
 		//	this.floryan(boss.getAnimation());
->>>>>>> a2964e22496bcbbe1a48c7d80f0af5428f394df9
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
 				this.aimThrowSmokeBomb(pressedKeys, this.player2);

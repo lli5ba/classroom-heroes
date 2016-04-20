@@ -101,7 +101,6 @@ public class ClassroomHeroes extends Game {
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, title);
 
-				//FIXME
 				soundManager.stopAll();
 				if (!soundManager.isPlayingMusic()) {
 					soundManager.LoadMusic("title", "title.wav");
@@ -121,12 +120,11 @@ public class ClassroomHeroes extends Game {
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, hallway);
 
-				//FIXME
 				soundManager.stopAll();
 				if (!soundManager.isPlayingMusic()) {
-					soundManager.LoadMusic("bg", "theme.wav");
+					soundManager.LoadMusic("hallway", "hallway.wav");
 					try {
-						soundManager.PlayMusic("bg");
+						soundManager.PlayMusic("hallway");
 					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
