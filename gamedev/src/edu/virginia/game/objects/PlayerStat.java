@@ -25,39 +25,61 @@ public class PlayerStat extends Sprite {
 	public PlayerStat(String id) {
 		super(id);
 
-		numHeartsTot = playerManager.getMaxHealth(1)/2;
-		numHearts = playerManager.getHealth(1)/2;
-		halfHearts = playerManager.getHealth(1)%2;
-		System.out.println("tot: "+numHeartsTot);
-		System.out.println("heart: " + numHearts);
-		System.out.println("half: " + halfHearts);
-		
-		this.halfHeart = new Sprite("half", "statbox/heart-half.png");
-		this.addChild(halfHeart);
-		//if(halfHearts == 1) {
-			
-		//}
-		
-		
-		this.wholeHeart = new Sprite("full", "statbox/heart-whole.png");
-		this.addChild(wholeHeart);
-	//	for(int i=0; )
-		
-		
-		this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
-		this.addChild(emptyHeart);
-		
+		numHeartsTot = this.playerManager.getMaxHealth(1) / 2;
+		numHearts = this.playerManager.getHealth(1) / 2;
+		halfHearts = this.playerManager.getHealth(1) % 2;
+
+		for (int i = 0; i < numHearts; i++) {
+			this.wholeHeart = new Sprite("wholeheart" + i, "statbox/heart-whole.png");
+			this.addChild(wholeHeart);
+			System.out.println("heart" + i);
+			this.wholeHeart.setPosition(150 + (12 * i), 40);
+			this.wholeHeart.setScaleX(1.0);
+			this.wholeHeart.setScaleY(1.0);
+
+			if (halfHearts == 1) {
+				this.halfHeart = new Sprite("half", "statbox/heart-half.png");
+				this.addChild(halfHeart);
+				this.halfHeart.setPosition(150 + (12 * numHearts), 40);
+				this.halfHeart.setScaleX(1.0);
+				this.halfHeart.setScaleY(1.0);
+			}
+			if (this.gameManager.getNumPlayers() == 2) {
+				for (int j = 0; j < numHearts; j++) {
+					this.wholeHeart = new Sprite("wholeheart" + j, "statbox/heart-whole.png");
+					this.addChild(wholeHeart);
+					System.out.println("heart" + j);
+					this.wholeHeart.setPosition(360 + (12 * j), 40);
+					this.wholeHeart.setScaleX(1.0);
+					this.wholeHeart.setScaleY(1.0);
+				}
+				if (halfHearts == 1) {
+					this.halfHeart = new Sprite("half", "statbox/heart-half.png");
+					this.addChild(halfHeart);
+					this.halfHeart.setPosition(360 + (12 * numHearts), 40);
+					this.halfHeart.setScaleX(1.0);
+					this.halfHeart.setScaleY(1.0);
+				}
+
+			}
+		}
+		// this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
+		// this.addChild(emptyHeart);
+
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-		
-		}
+
+	}
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
+		// System.out.println("tot: " + numHeartsTot);
+		// System.out.println("hearts: " + numHearts);
+		// System.out.println("half: " + halfHearts);
 	}
 
 	public double getNumHearts() {

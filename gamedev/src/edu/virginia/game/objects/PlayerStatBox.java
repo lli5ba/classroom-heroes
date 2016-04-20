@@ -57,12 +57,12 @@ public class PlayerStatBox extends DisplayObjectContainer {
 		Font f = new Font("Dialog", Font.BOLD, 9);
 		g.setFont(f);
 
-		g.drawString("Player 1's Health: " + this.playerManager.getHealth(1), 115, 48);
+//		g.drawString("Player 1's Health: " + this.playerManager.getHealth(1), 115, 48);
 		g.drawString(": " + (this.levelManager.getVPCollected(1)), 93, 48);
 		g.drawString(": " + this.playerManager.getNumCheesePuffs(), 270, 48);
 		g.drawString(": " + this.playerManager.getNumGingerAle(), 300, 48);
 		if (this.gameManager.getNumPlayers() == 2) {
-			g.drawString("Player 2's Health: " + this.playerManager.getHealth(2), 350, 48);
+			//g.drawString("Player 2's Health: " + this.playerManager.getHealth(2), 350, 48);
 			g.drawString(": " + this.levelManager.getVPCollected(2), 465, 48);
 		}
 	}
