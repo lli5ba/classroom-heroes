@@ -1,14 +1,24 @@
 package edu.virginia.game.objects;
 
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import edu.virginia.engine.display.AnimatedSprite;
+import edu.virginia.engine.display.FrameInfo;
 import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.events.CollisionEvent;
 import edu.virginia.engine.events.GameEvent;
@@ -21,7 +31,6 @@ import edu.virginia.game.managers.SoundManager;
 
 public class Player extends AnimatedSprite {
 	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
-	private Sprite net;
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private LevelManager levelManager = LevelManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
@@ -30,9 +39,11 @@ public class Player extends AnimatedSprite {
 	private boolean active; // whether movement works
 	private int vpCount;
 	private AnimatedSprite poisonBubbles;
+	private Net net;
 
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
+		
 		try {
 			this.soundManager = SoundManager.getInstance();
 		} catch (LineUnavailableException e) {
@@ -43,13 +54,15 @@ public class Player extends AnimatedSprite {
 		this.numPlayer = numPlayer;
 		this.active = true;
 
+		/* add net */
+		net = new Net(id + "-net" , "resources/player/player-spritesheet-1-netFrameInfo.txt");
+		this.addChild(net);
+		
+		/* add bubbles */
 		poisonBubbles = new AnimatedSprite("bubbles", "bubbles/bubble-default.png", 
 				"bubbles/bubble-spritesheet.png", "resources/bubbles/bubble-spritesheet.txt");
 		this.addChild(poisonBubbles);
 		this.poisonBubbles.setCenterPos(this.getWidth()*.75, -this.getHeight()*0.05);
-		net = new AnimatedSprite("net", imageFileName, thisSheetFileName, "resources/player/player-spritesheet-1-netFrameInfo.txt");
-		this.addChild(net);
-		net.setAlpha(0);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
 	}
 	
@@ -73,10 +86,7 @@ public class Player extends AnimatedSprite {
 		return vpCount;
 	}
 
-	public Sprite getNet() {
-		return net;
-	}
-
+/*
 	public void moveNet(String position) {
 		if (position.equals("up")) {
 			// net.setRotationDegrees(-90);
@@ -105,14 +115,14 @@ public class Player extends AnimatedSprite {
 			net.setHeight(this.getHeight());
 		}
 	}
-
+*/
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys) {
 		double speed = this.playerManager.getSpeed(this.numPlayer);
 		/*
 		 * Make sure this is not null. Sometimes Swing can auto cause an extra
 		 * frame to go before everything is initialized
 		 */
-		if (this != null && net != null) {
+		if (this != null && this.net != null) {
 			/*
 			 * update mario's position if a key is pressed, check bounds of
 			 * canvas
@@ -126,7 +136,7 @@ public class Player extends AnimatedSprite {
 				}
 				this.setDirection("up");
 				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
-				this.moveNet("up");
+				//this.moveNet("up");
 
 			}
 			if (pressedKeys.contains(this.playerManager.getDownKey(this.numPlayer))) {
@@ -138,7 +148,7 @@ public class Player extends AnimatedSprite {
 				}
 				this.setDirection("down");
 				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
-				moveNet("down");
+				//moveNet("down");
 			}
 			if (pressedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
 				if (this.getxPos() > 0) {
@@ -149,7 +159,7 @@ public class Player extends AnimatedSprite {
 				}
 				this.setDirection("left");
 				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
-				moveNet("left");
+				//moveNet("left");
 			}
 			if (pressedKeys.contains(this.playerManager.getRightKey(this.numPlayer))) {
 
@@ -161,7 +171,7 @@ public class Player extends AnimatedSprite {
 				}
 				this.setDirection("right");
 				this.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
-				moveNet("right");
+				//moveNet("right");
 			}
 			if (pressedKeys.contains(this.playerManager.getPrimaryKey(this.numPlayer))) {
 				String currentDir = this.getDirection();
@@ -186,6 +196,7 @@ public class Player extends AnimatedSprite {
 			// System.out.println("playing animation");
 			// System.out.println("Current frame: " + currentFrame);
 			if (!this.isLooping() && this.getTimesLooped() == 1) {
+				this.setNetHitbox(new Rectangle (0,0,0,0));
 				this.stopAnimation();
 			}
 			// Update sprite to next frame if enough time has passed
@@ -195,13 +206,19 @@ public class Player extends AnimatedSprite {
 
 					this.setImage(getSpriteMap().get(getCurrentAnimation()).get(this.getCurrentFrame()).getImage());
 					this.setOriginalHitbox(getSpriteMap().get(getCurrentAnimation()).get(this.getCurrentFrame()).getHitbox());
-
+					//this.net.setOriginalHitbox(getSpriteMap().get(getCurrentAnimation()).get(this.getCurrentFrame()).getHitbox());
+					if (this.net != null && this.net.getNetHitboxMap() != null
+							&& this.net.getNetHitboxMap().containsKey(getCurrentAnimation())) {
+						this.net.setNetHitbox(this.net.getNetHitboxMap()
+								.get(getCurrentAnimation()).get(this.getCurrentFrame()).getHitbox());
+					}
 				}
 				this.increaseFrame();
 				this.getGameClockAnimation().resetGameClock();
 			}
 		}
 	}
+
 	
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
@@ -219,6 +236,46 @@ public class Player extends AnimatedSprite {
 			}
 
 		}*/
+	}
+	
+	@Override
+	public void draw(Graphics g) {
+		super.draw(g);
+	}
+	
+	
+
+	public Rectangle getNetHitbox() {
+		return this.net.getNetHitbox();
+	}
+	
+	public Rectangle getNetHitboxGlobal() {
+		Rectangle globalHitbox = new Rectangle();
+		globalHitbox.setBounds((int) (this.getxPosGlobal() + 
+				(-this.getOriginalHitbox().getX()  + this.getNetHitbox().x) * 
+				this.getScaleXGlobal()),
+				(int) (this.getyPosGlobal() + 
+						(-this.getOriginalHitbox().getY() + this.getNetHitbox().y)* 
+						this.getScaleYGlobal()),
+				(int) (this.getNetHitbox().getWidth() * this.getScaleXGlobal()),
+				(int) (this.getNetHitbox().getHeight() * this.getScaleYGlobal()));
+		if(this.getNetHitbox().getWidth() != 0 && this.getNetHitbox().getHeight() != 0){
+			globalHitbox.grow(5, 5);
+		}
+		
+		return globalHitbox;
+	}
+
+	public void setNetHitbox(Rectangle netHitbox) {
+		this.net.setNetHitbox(netHitbox);
+	}
+	
+	public void drawNetHitboxGlobal(Graphics g) {
+		int x = this.getNetHitboxGlobal().x;
+		int y = this.getNetHitboxGlobal().y;
+		int width = this.getNetHitboxGlobal().width;
+		int height = this.getNetHitboxGlobal().height;
+		g.fillRect(x, y, width, height);
 	}
 
 }

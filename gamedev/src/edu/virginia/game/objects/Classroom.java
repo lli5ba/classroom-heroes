@@ -307,8 +307,8 @@ public class Classroom extends DisplayObjectContainer {
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
-			if ((player1.getNet().collidesWithGlobal(vp) || player1.collidesWithGlobal(vp)) && !vp.isPickedUp()
-					&& pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
+			if (player1.getNetHitboxGlobal().intersects(vp.getHitboxGlobal()) //|| player1.collidesWithGlobal(vp)) 
+					&& !vp.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player1));
@@ -317,8 +317,8 @@ public class Classroom extends DisplayObjectContainer {
 				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 
-			if ((player2.getNet().collidesWithGlobal(vp) || player2.collidesWithGlobal(vp)) && !vp.isPickedUp()
-					&& pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
+			if (player2.getNetHitboxGlobal().intersects(vp.getHitboxGlobal()) //|| player2.collidesWithGlobal(vp)) 
+					&& !vp.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player2));
@@ -362,8 +362,7 @@ public class Classroom extends DisplayObjectContainer {
 				}
 			}
 			// Check all poison collisions with each player's net
-			if (player1.getNet().collidesWithGlobal(poison) && !poison.isPickedUp()
-					&& pressedKeys.contains(this.playerManager.getPrimaryKey(1))) {
+			if (player1.getNetHitboxGlobal().intersects(poison.getHitboxGlobal()) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player1));
@@ -371,8 +370,7 @@ public class Classroom extends DisplayObjectContainer {
 				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
 			}
 
-			if (player2.getNet().collidesWithGlobal(poison) && !poison.isPickedUp()
-					&& pressedKeys.contains(this.playerManager.getPrimaryKey(2))) {
+			if (player2.getNetHitboxGlobal().intersects(poison.getHitboxGlobal()) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player2));
@@ -537,6 +535,9 @@ public class Classroom extends DisplayObjectContainer {
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		this.drawTimeLeft(g);
+		/*if (this.player1 != null) {
+			this.player1.drawNetHitboxGlobal(g);
+		}*/
 
 	}
 
@@ -570,7 +571,7 @@ public class Classroom extends DisplayObjectContainer {
 	/* collision detection and movement for players */
 
 	public void updatePlayer(ArrayList<String> pressedKeys, Player player) {
-		if (player != null && player.getNet() != null) {
+		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
 				this.moveSpriteCartesianAnimate(pressedKeys, player);
 			}
@@ -594,7 +595,7 @@ public class Classroom extends DisplayObjectContainer {
 		 */
 		Position originalPos = new Position(player.getxPos(), player.getyPos());
 
-		if (player != null && player.getNet() != null) {
+		if (player != null && player.getNetHitbox() != null) {
 			/*
 			 * update player's position depending on key pressed
 			 */
@@ -608,7 +609,7 @@ public class Classroom extends DisplayObjectContainer {
 					player.animate("up");
 				}
 				player.setDirection("up");
-				player.moveNet("up");
+				
 
 			}
 			if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))) {
@@ -620,7 +621,7 @@ public class Classroom extends DisplayObjectContainer {
 				}
 				player.setDirection("down");
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
-				player.moveNet("down");
+				
 			}
 			if (pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
 				player.setxPos(player.getxPos() - speed);
@@ -631,7 +632,7 @@ public class Classroom extends DisplayObjectContainer {
 				}
 				player.setDirection("left");
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
-				player.moveNet("left");
+				
 			}
 			if (pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 
@@ -643,7 +644,7 @@ public class Classroom extends DisplayObjectContainer {
 				}
 				player.setDirection("right");
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
-				player.moveNet("right");
+				
 			}
 			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
 				String currentDir = player.getDirection();

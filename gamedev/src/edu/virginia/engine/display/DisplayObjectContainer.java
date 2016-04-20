@@ -168,11 +168,13 @@ public class DisplayObjectContainer extends DisplayObject {
 	}
 
 	public double getyPosGlobal() {
+		
 		if (!this.hasParentObject()) {
 			return this.getyPos();
 		} else {
 			return this.getyPos() * this.getParentObject().getScaleY() + this.getParentObject().getyPosGlobal();
 		}
+		
 	}
 
 	public double getScaleXGlobal() {

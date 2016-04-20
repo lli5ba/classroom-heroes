@@ -166,7 +166,7 @@ public class Hallway extends DisplayObjectContainer {
 	}
 
 	public void movePlayer(ArrayList<String> pressedKeys, Player player){
-		if (player != null && player.getNet() != null) {
+		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
 				player.moveSpriteCartesianAnimate(pressedKeys);
 			}
