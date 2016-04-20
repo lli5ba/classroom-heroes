@@ -31,14 +31,16 @@ public class PlayerStat extends Sprite {
 		
 		this.halfHeart = new Sprite("half", "statbox/heart-half.png");
 		this.addChild(halfHeart);
-		if(halfHearts == 1) {
+		//if(halfHearts == 1) {
 			
-		}
+		//}
 		
 		
 		this.wholeHeart = new Sprite("full", "statbox/heart-whole.png");
 		this.addChild(wholeHeart);
-
+	//	for(int i=0; )
+		
+		
 		this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
 		this.addChild(emptyHeart);
 		
