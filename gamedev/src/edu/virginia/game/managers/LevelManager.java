@@ -175,7 +175,8 @@ public class LevelManager implements IEventListener {
 		this.setPoisonCollected(0, 2);
 		this.setVPCollected(0, 2);
 		this.setStudentsCured(0, 2);
-		this.smokebombList.clear();
+		//FIXME: smokebomb list crashes here
+		//	this.smokebombList.clear();
 	}
 	@Override
 	public void handleEvent(GameEvent event) {
