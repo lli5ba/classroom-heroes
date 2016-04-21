@@ -78,6 +78,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 				//buy health
 				if(this.playerManager.getAttrPoints(numPlayer) > 0) {
 					this.playerManager.setMaxHealth(this.playerManager.getMaxHealth(numPlayer) + 1, numPlayer);
+					this.playerManager.setHealth(this.playerManager.getHealth(numPlayer) + 1, numPlayer);
 					this.playerManager.setAttrPoints(this.playerManager.getAttrPoints(numPlayer) - 1, numPlayer);
 				}	
 			} else if (releasedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
