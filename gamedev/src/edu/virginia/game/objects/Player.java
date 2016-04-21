@@ -41,7 +41,7 @@ public class Player extends AnimatedSprite {
 	private AnimatedSprite poisonBubbles;
 	private Net net;
 	private Sprite smokebomb;
-	private String smokeBombDir;
+	private String smokebombDir;
 
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
@@ -71,6 +71,11 @@ public class Player extends AnimatedSprite {
 		this.addChild(poisonBubbles);
 		this.poisonBubbles.setCenterPos(this.getWidth()*.75, -this.getHeight()*0.05);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
+	}
+	
+	/**global position returned */
+	public Position getSmokebombPos() {
+		return this.smokebomb.getCenterPosGlobal();
 	}
 	
 	public void animateBubbles(){
@@ -317,6 +322,14 @@ public class Player extends AnimatedSprite {
 	
 	public void setSmokebombVisible(boolean visible) {
 		this.smokebomb.setVisible(visible);
+	}
+
+	public String getSmokebombDir() {
+		return smokebombDir;
+	}
+
+	public void setSmokebombDir(String smokeBombDir) {
+		this.smokebombDir = smokeBombDir;
 	}
 
 }

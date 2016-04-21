@@ -140,7 +140,7 @@ public class Boss extends AnimatedSprite {
 		if (this.levelManager.getSmokebombList() != null) {
 			for (Smokebomb bomb : this.levelManager.getSmokebombList())
 				if (bomb.isExploding()) {
-					int bombRangeDeg = 10; //range of bomb on either side
+					int bombRangeDeg = 40; //range of bomb on either side
 					double bombXPos = bomb.getxPosGlobal();
 					double bombYPos = bomb.getyPosGlobal();
 					double centerAngleDeg = this.calcAngleFromCenterGlobal(bombXPos, bombYPos);

@@ -32,15 +32,16 @@ public class Smokebomb extends AnimatedSprite{
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		//reached final position
-		if (this.getyPosGlobal() == this.finalPosGlobal.getY()
-				&& this.getxPosGlobal() == this.finalPosGlobal.getY()
+		//FIXME: doubles don't always equal each other!
+		if (withinRange(5, (int)this.getyPosGlobal(), this.finalPosGlobal.getY())
+				&& withinRange(5, (int)this.getxPosGlobal(), this.finalPosGlobal.getX())
 				&& !this.exploding && !this.complete) {
 			this.exploding = true;
 			//choose random smoke pattern
 			Random rand1 = new Random();
 			 // between 1 and 3 inclusive
 			int smokeVar = (int) (rand1.nextDouble() * 3) + 1;
-			this.animateOnce("smoke" + smokeVar, 1);
+			this.animateOnce("smoke" + smokeVar, .4);
 		}
 		//mark as complete
 		if (this.exploding && !this.complete && !this.isPlaying()) {
@@ -49,6 +50,9 @@ public class Smokebomb extends AnimatedSprite{
 		}
 	}
 
+	public boolean withinRange(int range, double x, double y) {
+		return (Math.abs(x-y) > range); 
+	}
 	public boolean isComplete() {
 		return complete;
 	}
@@ -58,8 +62,34 @@ public class Smokebomb extends AnimatedSprite{
 	}
 
 	public static Position generatePosition(String dir, double range, double centerx, double centery) {
-		
-		double angleRad = Math.toRadians(0);
+		double angleDeg = 0;
+		switch (dir) {
+		case "up":
+			angleDeg = 270;
+			break;
+		case "down":
+			angleDeg = 90;
+			break;
+		case "left":
+			angleDeg = 180;
+			break;
+		case "right":
+			angleDeg = 0;
+			break;
+		case "upright":
+			angleDeg = 315;
+			break;
+		case "upleft":
+			angleDeg = 225;
+			break;
+		case "downright":
+			angleDeg = 45;
+			break;
+		case "downleft":
+			angleDeg = 135;
+			break;
+		}
+		double angleRad = Math.toRadians(angleDeg);
 		
 		double x = centerx + range * Math.cos(angleRad);
 		double y = centery + range * Math.sin(angleRad);
