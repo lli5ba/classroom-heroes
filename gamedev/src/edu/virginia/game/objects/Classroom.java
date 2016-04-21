@@ -238,9 +238,9 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player1));
-				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
-				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
-				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
+//				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
+//				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
+//				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 
 			if (player2.getNetHitboxGlobal().intersects(vp.getHitboxGlobal()) //|| player2.collidesWithGlobal(vp)) 
@@ -248,9 +248,9 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player2));
-				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
-				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
-				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
+//				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
+//				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
+//				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 		}
 	}
@@ -261,8 +261,8 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player1));
-				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
-				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
+//				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
+//				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
 
 			}
 
@@ -270,8 +270,8 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
-				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
-				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
+//				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
+//				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
 
 			}
 			// Check all poison collisions with each student
@@ -292,16 +292,16 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player1));
-				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
-				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
+//				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
+//				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
 			}
 
 			if (player2.getNetHitboxGlobal().intersects(poison.getHitboxGlobal()) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player2));
-				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
-				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
+//				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
+//				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
 			}
 			if (this.playerManager.getHealth(1) == 0 || this.playerManager.getHealth(2) == 0) {
 				/* OUT OF HEALTH LOGIC */
@@ -330,8 +330,6 @@ public class Classroom extends DisplayObjectContainer {
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player1));
 				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
-				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
-				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
 			} else if (player2.inRangeGlobal(student, distToCure) && student.isPoisoned()
 					&& this.playerManager.getNumGingerAle() > 0 && !student.isDead()
 					&& pressedKeys.contains(this.playerManager.getSecondaryKey(2))) {
@@ -340,8 +338,6 @@ public class Classroom extends DisplayObjectContainer {
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
 				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
-				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
-				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
 			}
 			if (!student.isDead()) {
 				atLeastOneStudentAlive = true;

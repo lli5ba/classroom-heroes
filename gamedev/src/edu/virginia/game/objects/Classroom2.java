@@ -129,7 +129,7 @@ public class Classroom2 extends DisplayObjectContainer {
 		/* Boss constructor */
 
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
-				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.BOOMERANG);
+				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.SPEED_UP);
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);

@@ -41,7 +41,8 @@ public class LevelManager implements IEventListener {
 	
 	/* In-Level Details */
 	private ArrayList<Smokebomb> smokebombList;
-	
+	int cheesepuffsUsed;
+	int gingeraleUsed;
 	/* Constructors */
 
 
@@ -74,6 +75,8 @@ public class LevelManager implements IEventListener {
 		vpCollected2 = 0;
 		poisonCollected2 = 0;
 		smokebombList = new ArrayList<Smokebomb>();
+		gingeraleUsed = 0;
+		cheesepuffsUsed = 0;
 	}
 
 	/*********** Temporary Level Stats Getters and Setters *********/
@@ -158,6 +161,22 @@ public class LevelManager implements IEventListener {
 		this.smokebombList.add(bomb);
 	}
 	
+	public int getCheesepuffsUsed() {
+		return cheesepuffsUsed;
+	}
+
+	public void setCheesepuffsUsed(int cheesepuffsUsed) {
+		this.cheesepuffsUsed = cheesepuffsUsed;
+	}
+
+	public int getGingeraleUsed() {
+		return gingeraleUsed;
+	}
+
+	public void setGingeraleUsed(int gingeraleUsed) {
+		this.gingeraleUsed = gingeraleUsed;
+	}
+
 	public void removeCompleteBombs(ArrayList<String> pressedKeys) {
 		if (this.smokebombList != null) {
 			for (Iterator<Smokebomb> iterator = this.smokebombList.iterator(); iterator.hasNext();) {
@@ -189,8 +208,9 @@ public class LevelManager implements IEventListener {
 		this.setPoisonCollected(0, 2);
 		this.setVPCollected(0, 2);
 		this.setStudentsCured(0, 2);
-		//FIXME: smokebomb list crashes here
-		//	this.smokebombList.clear();
+		this.setCheesepuffsUsed(0);
+		this.setGingeraleUsed(0);
+		this.smokebombList.clear();
 	}
 	@Override
 	public void handleEvent(GameEvent event) {
@@ -212,6 +232,8 @@ public class LevelManager implements IEventListener {
 			clearStats();
 		} else if (event.getEventType().equals(EventTypes.WIN_LEVEL.toString())) {
 			clearStats();
+		} else if (event.getEventType().equals(EventTypes.THROW_SMOKEBOMB.toString())) {
+			
 		}
 
 	}

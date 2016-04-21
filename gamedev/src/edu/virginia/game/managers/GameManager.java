@@ -109,7 +109,6 @@ public class GameManager {
 	
 	public void update(ArrayList<String> pressedKeys){
 		//update the active game scene
-		System.out.println(this.activeGameScene);
 		if (this.gameScenes.containsKey(this.activeGameScene)) {
 			if(this.activeGameScene.contains("title")) {
 				TitleScreen title = (TitleScreen) this.gameScenes.get(this.activeGameScene);
@@ -124,7 +123,6 @@ public class GameManager {
 			} else if(this.activeGameScene.contains("classroom")) {
 				if(this.activeGameScene.equals("classroom1"))
 				{
-					System.out.println("c1");
 					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
 					if(classroom != null) {
 						classroom.update(pressedKeys);
@@ -132,7 +130,6 @@ public class GameManager {
 				}
 				if (this.activeGameScene.contains("2"))
 				{
-					System.out.println("c2");
 					Classroom2 classroom2 = (Classroom2) this.gameScenes.get(this.activeGameScene);
 					if(classroom2 != null) {
 						classroom2.update(pressedKeys);
