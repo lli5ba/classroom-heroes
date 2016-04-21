@@ -28,6 +28,7 @@ public class Hallway extends DisplayObjectContainer {
 	private Player player1;
 	private Player player2;
 	private DisplayObjectContainer playArea;
+	private AnimatedSprite door;
 
 	public Hallway(String id, String styleCode) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
@@ -68,6 +69,17 @@ public class Hallway extends DisplayObjectContainer {
 			break;
 		}
 		
+		vendingMachine = new Sprite(id + "-vending-machine", "hallway/vending-machine-" + vendingCode + ".png");
+		drinkMachine = new Sprite(id + "-drink-machine", "hallway/drink-machine-" + drinkCode + ".png");
+		
+		/* add door */
+		door = new AnimatedSprite(id + "-door", "classroom/door/door-default.png",
+				"classroom/door/door-spritesheet.png", 
+				"resources/classroom/door/door-spritesheet.txt");
+		
+		/* add door background */
+		Sprite doorBack = new Sprite(id + "-doorbkg", "hallway/doorbkg" + styleCode +".png");
+		
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
 																				// png
@@ -82,11 +94,13 @@ public class Hallway extends DisplayObjectContainer {
 		store = new Store(id + "-store", styleCode, 1);
 		this.store.setVisible(false);
 
-		vendingMachine = new Sprite(id + "-vending-machine", "hallway/vending-machine-" + vendingCode + ".png");
-		drinkMachine = new Sprite(id + "-drink-machine", "hallway/drink-machine-" + drinkCode + ".png");
+		
 		// add as children in order to draw
 		this.addChild(vendingMachine);
 		this.addChild(drinkMachine);
+		this.addChild(doorBack);
+		this.addChild(door);
+		
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(store);
@@ -94,7 +108,9 @@ public class Hallway extends DisplayObjectContainer {
 		this.vendingMachine.setPosition(this.getWidth() * .4181, this.getHeight() * .2267);
 		this.drinkMachine.setPosition(this.getWidth() * .4181 + this.vendingMachine.getWidth() * 1.1,
 				this.getHeight() * .2267);
-
+		this.door.setPosition(this.getWidth() * .8, this.getHeight() * .21);
+		doorBack.setPosition(this.getWidth() * .8, this.getHeight() * .21);
+		
 		this.player1.setPosition(this.getWidth() * .04, this.getHeight() * .48);
 		this.player2.setPosition(this.getWidth() * .04, this.getHeight() * .6);
 		this.setHeight(gameManager.getGameHeight());
@@ -182,7 +198,7 @@ public class Hallway extends DisplayObjectContainer {
 		// FIXME: check between players, sprites, and walls of background
 	}
 
-	public void movePlayer(ArrayList<String> pressedKeys, Player player){
+	public void movePlayer(ArrayList<String> pressedKeys, Player player) {
 		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
 				this.moveSpriteCartesianAnimate(pressedKeys, player);
@@ -197,12 +213,22 @@ public class Hallway extends DisplayObjectContainer {
 		}
 	}
 	
+	public void checkDoorCollision() {
+		if(this.door.inRangeGlobal(this.player1, 50)
+				|| this.door.inRangeGlobal(this.player1, 50)) {
+			this.door.animateOnceLock("dooropen", 1);
+		} 
+	}
+
 	public void switchScenes() {
-		if(this.player1 != null && 
-				this.player1.getxPosGlobal() > this.gameManager.getGameWidth()) {
+		if (this.player1 != null && this.player1.collidesWithGlobal(this.door)) {
+			this.gameManager.setActiveGameScene("classroom" + gameManager.getNumLevel());
+		}
+		else if (this.player2 != null && this.player1.collidesWithGlobal(this.door)) {
 			this.gameManager.setActiveGameScene("classroom" + gameManager.getNumLevel());
 		}
 	}
+
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
@@ -213,6 +239,7 @@ public class Hallway extends DisplayObjectContainer {
 		 * if (this.vendingMachine != null) {
 		 * this.vendingMachine.drawHitboxGlobal(g); }
 		 */
+
 //		if (this.playArea != null ) {
 //			this.playArea.drawHitboxGlobal(g);
 //		}
@@ -222,11 +249,14 @@ public class Hallway extends DisplayObjectContainer {
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
 		this.navigateStore(pressedKeys);
-		this.movePlayer(pressedKeys, this.player1);
-		if (this.gameManager.getNumPlayers() == 2) {
-			this.movePlayer(pressedKeys, this.player2);
+		if (this.player1 != null) {
+			this.movePlayer(pressedKeys, this.player1);
+			if (this.gameManager.getNumPlayers() == 2) {
+				this.movePlayer(pressedKeys, this.player2);
+			}
+			this.switchScenes();
+			this.checkDoorCollision();
 		}
-		this.switchScenes();
 	}
 	
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {

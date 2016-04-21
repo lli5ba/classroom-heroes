@@ -32,7 +32,7 @@ import edu.virginia.game.managers.StudentManager;
 
 //This class represents a game screen object to be used for levels and hallway scenes.
 //This way you can instantiate a GameScreen and add game elements as children.
-public class Classroom2 extends DisplayObjectContainer {
+public class Classroom3 extends DisplayObjectContainer {
 	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
 	public static final String[] FLORYAN_DIR = new String[] { "tossdown", "tossdownleft", "tossdownright", "tossleft",
 			"tossright", "tossup", "tossupleft", "tossupright" };
@@ -45,8 +45,10 @@ public class Classroom2 extends DisplayObjectContainer {
 	private TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private Player player1;
 	private Player player2;
-	private Sprite table1;
 	private Boss boss;
+	private Sprite table1;
+	private Sprite table2;
+	private Sprite table3;
 	private PlayerStatBox stat;
 	private PlayerStat pstat;
 	private EndLevelScreen endLevelScreen;
@@ -56,7 +58,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 1000;
+	public static final double GAME_TIME = 60000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -64,7 +66,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	private DisplayObjectContainer playArea;
 	private ArrayList<String> prevPressedKeys;
 
-	public Classroom2(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+	public Classroom3(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
 
 		try {
@@ -92,10 +94,9 @@ public class Classroom2 extends DisplayObjectContainer {
 		
 		/* Constructing furniture */
 		
-		spawnTable("table1", "blue", this.getWidth() * .146, this.getHeight() * .75);
-		spawnTable("table2", "blue", this.getWidth() * .746, this.getHeight() * .75);
-		spawnTable("table3", "blue", this.getWidth() * .746, this.getHeight() * .4);
-		spawnTable("table4", "blue", this.getWidth() * .146, this.getHeight() * .4);
+		spawnTable("table1", "blue", this.getWidth() * .446, this.getHeight() * .632);
+		spawnTable("table2", "blue", this.getWidth() * .746, this.getHeight() * .54);
+		spawnTable("table3", "blue", this.getWidth() * .146, this.getHeight() * .54);
 		
 		
 		/* Constructing players and their event listeners */
@@ -129,22 +130,18 @@ public class Classroom2 extends DisplayObjectContainer {
 		/* Boss constructor */
 
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
-				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.SPEED_UP, TweenTransitions.SPEED_UP);
-
+				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.LINEAR, TweenTransitions.SPEED_UP);
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);
 		this.boss.setScaleY(.7);
 
-		
-		
 		/* Generate Students */
-		spawnStudent("Student0", "down", this.getWidth() * .8, this.getHeight() * .90);
-		spawnStudent("Student1", "left", this.getWidth() * .8, this.getHeight() * .55);
-		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .90);
-		spawnStudent("Student3", "right", this.getWidth() * .2, this.getHeight() * .55);
-		
-		
+		spawnStudent("Student0", "down", this.getWidth() * .5, this.getHeight() * .782);
+		spawnStudent("Student1", "left", this.getWidth() * .75, this.getHeight() * .69);
+		spawnStudent("Student2", "right", this.getWidth() * .85, this.getHeight() * .69);
+		spawnStudent("Student3", "left", this.getWidth() * .15, this.getHeight() * .69);
+		spawnStudent("Student4", "right", this.getWidth() * .25, this.getHeight() * .69);
 
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
@@ -173,7 +170,7 @@ public class Classroom2 extends DisplayObjectContainer {
 		// not built well at the moment because just needed to finish!
 
 		/* the game is in session (not on end screen) */
-		this.setInPlay(true);
+		this.inPlay = true;
 
 		/* music */
 		soundManager.stopAll();
@@ -417,7 +414,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	}
 
 	public void stopLevel() {
-		this.setInPlay(false);
+		this.inPlay = false;
 		this.stat.setVisible(false);
 		this.soundManager.stopAll();
 	}
@@ -449,7 +446,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	}
 
 	public void drawTimeLeft(Graphics g) {
-		if (this.isInPlay()) {
+		if (this.inPlay) {
 			Font f = new Font("Dialog", Font.PLAIN, 20);
 			g.setFont(f);
 			int timeLeft = (int) (GAME_TIME - this.gameClock.getElapsedTime()) / 1000;
@@ -472,9 +469,8 @@ public class Classroom2 extends DisplayObjectContainer {
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
-		System.out.println("updating classroom 2");
 		super.update(pressedKeys); // updates children
-		if (this.isInPlay()) {
+		if (this.inPlay) {
 			this.keepTime();
 			this.spawnProjectiles();
 			this.checkVPCollisions(pressedKeys);
@@ -726,18 +722,11 @@ public class Classroom2 extends DisplayObjectContainer {
 		}
 		/* Check whether player is too close to the boss */
 		Rectangle bossHitboxRange = this.boss.getHitboxGlobal();
-		bossHitboxRange.grow(20, 20);
+		bossHitboxRange.grow(45, 45);
 		if (r.intersects(bossHitboxRange)) {
 			return true;
 		}
 		return false;
 	}
-
-	public boolean isInPlay() {
-		return inPlay;
-	}
-
-	public void setInPlay(boolean inPlay) {
-		this.inPlay = inPlay;
-	}
+	
 }

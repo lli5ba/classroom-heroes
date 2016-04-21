@@ -61,7 +61,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 				
 			} else if (releasedKeys.contains(this.playerManager.getSecondaryKey(this.numPlayer))) {
 				//exit
-				this.gameManager.setActiveGameScene("hallway0"); //FIXME: incorporate "numLevel" to decide which to load
+				this.gameManager.setActiveGameScene("hallway" + (this.gameManager.getNumLevel()-1)); //FIXME: incorporate "numLevel" to decide which to load
 			} else if (releasedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
 				//buy movement speed
 				if(this.playerManager.getAttrPoints(numPlayer) > 0) {

@@ -29,20 +29,21 @@ public class Boss extends AnimatedSprite {
 	private int poisonSpeed;
 	private double lastThrownDegrees;
 	private String animation;
-	private TweenTransitions tweenType;
-	
+	private TweenTransitions tweenTypeX;
+	private TweenTransitions tweenTypeY;
 
-	public Boss(String id, String imageFileName, String thisSheetFileName, String specsFileName, TweenTransitions t) {
+	public Boss(String id, String imageFileName, String thisSheetFileName, String specsFileName, TweenTransitions tx, TweenTransitions ty) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
-		this.tweenType = t;
+		this.tweenTypeX = tx;
+		this.tweenTypeY = ty;
 		if (this.gameManager.getNumLevel() == 1) {
 			this.poisonSpeed = 20000;
 			this.vpSpeed = 17000;
 		} else if (this.gameManager.getNumLevel() == 2) {
 			this.poisonSpeed = 17500;
 			this.vpSpeed = 18000;
-		} else if (this.gameManager.getNumLevel() == 2) {
+		} else if (this.gameManager.getNumLevel() == 3) {
 			this.poisonSpeed = 16000;
 			this.vpSpeed = 18000;
 		}
@@ -109,13 +110,15 @@ public class Boss extends AnimatedSprite {
 			poison.setCenterPos(this.getCenterPos());
 			poison.addEventListener(projectileManager, EventTypes.PICKUP_POISON.toString());
 			poison.addEventListener(playerManager, EventTypes.PICKUP_POISON.toString());
-			Tween tween2 = new Tween(poison, tweenType);
+			Tween tween1 = new Tween(poison, tweenTypeX);
+			myTweenJuggler.add(tween1);
+			Tween tween2 = new Tween(poison, tweenTypeY);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition("posion", poison.getxPos(), poison.getyPos());
 			if (pos == null) {
 				return null;
 			}
-			tween2.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), this.poisonSpeed);
+			tween1.animate(TweenableParam.POS_X, poison.getxPos(), pos.getX(), this.poisonSpeed);
 			tween2.animate(TweenableParam.POS_Y, poison.getyPos(), pos.getY(), this.poisonSpeed);
 			return poison;
 		}
