@@ -43,6 +43,7 @@ import edu.virginia.game.managers.PlayerManager;
 import edu.virginia.game.managers.SoundManager;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Hallway;
+import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.ItemDetail;
 import edu.virginia.game.objects.PickedUpItem;
 import edu.virginia.game.objects.Poison;
@@ -110,40 +111,57 @@ public class ClassroomHeroes extends Game {
 						e.printStackTrace();
 					}
 				}
-			} else if (sceneName.contains("hallway")) {
-				// create a hallway
-				// get last character in styleCode
-				String styleCode = sceneName.substring(sceneName.length() - 1);
-				Hallway hallway = null;
+			} else if (sceneName.contains("instructions")) {
+					Instructions instruction = new Instructions(sceneName);
+					// add scene to gameManager
+					this.gameManager.addGameScene(sceneName, instruction);
 
-				hallway = new Hallway(sceneName, styleCode);
-				// add scene to gameManager
-				this.gameManager.addGameScene(sceneName, hallway);
+					soundManager.stopAll();
+					// FIXME: Instructions music
+					if (!soundManager.isPlayingMusic()) {
+						soundManager.LoadMusic("instruction", "hallway.wav");
+						try {
+							soundManager.PlayMusic("instruction");
+						} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				} else if (sceneName.contains("hallway")) {
+					// create a hallway
+					// get last character in styleCode
+					String styleCode = sceneName.substring(sceneName.length() - 1);
+					Hallway hallway = null;
 
-				soundManager.stopAll();
-				if (!soundManager.isPlayingMusic()) {
-					soundManager.LoadMusic("hallway", "hallway.wav");
+					hallway = new Hallway(sceneName, styleCode);
+					// add scene to gameManager
+					this.gameManager.addGameScene(sceneName, hallway);
+
+					soundManager.stopAll();
+					if (!soundManager.isPlayingMusic()) {
+						soundManager.LoadMusic("hallway", "hallway.wav");
+						try {
+							soundManager.PlayMusic("hallway");
+						} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+				} else if (sceneName.contains("classroom")) {
+					// create a classroom
+					Classroom classroom = null;
 					try {
-						soundManager.PlayMusic("hallway");
+						classroom = new Classroom(sceneName);
 					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					// add scene to gameManager
+					this.gameManager.addGameScene(sceneName, classroom);
 				}
-
-			} else if (sceneName.contains("classroom")) {
-				// create a classroom
-				Classroom classroom = null;
-				try {
-					classroom = new Classroom(sceneName);
-				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				// add scene to gameManager
-				this.gameManager.addGameScene(sceneName, classroom);
 			}
-		}
+		
 
 	}
 

@@ -9,6 +9,7 @@ import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Hallway;
+import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.TitleScreen;
 
 /*
@@ -22,7 +23,7 @@ public class GameManager {
 
 	private int gameWidth;
 	private int numPlayers;
-	
+
 	private HashMap<String, DisplayObjectContainer> gameScenes;
 	private ArrayList<String> toRemoveQueue;
 	private String activeGameScene;
@@ -45,7 +46,7 @@ public class GameManager {
 		setActiveGameScene("title");
 		gameScenes = new HashMap<String, DisplayObjectContainer>();
 		toRemoveQueue = new ArrayList<String>();
-		
+
 	}
 
 	/*********** Game Details Getters and Setters *********/
@@ -93,43 +94,48 @@ public class GameManager {
 	}
 
 	public void addGameScene(String name, DisplayObjectContainer scene) {
-		this.gameScenes.put(name,  scene);
+		this.gameScenes.put(name, scene);
 	}
 
 	public void removeGameScene(String name) {
 		this.toRemoveQueue.add(name);
 	}
-	
+
 	public boolean activeGameSceneIsCreated() {
 		return this.gameScenes.containsKey(this.getActiveGameScene());
 	}
-	
+
 	/********* Update Frame ********/
-	
-	public void update(ArrayList<String> pressedKeys){
-		//update the active game scene
+
+	public void update(ArrayList<String> pressedKeys) {
+		// update the active game scene
 		if (this.gameScenes.containsKey(this.activeGameScene)) {
-			if(this.activeGameScene.contains("title")) {
+			if (this.activeGameScene.contains("title")) {
 				TitleScreen title = (TitleScreen) this.gameScenes.get(this.activeGameScene);
-				if(title != null) {
+				if (title != null) {
 					title.update(pressedKeys);
 				}
-			} else if(this.activeGameScene.contains("hallway")) {
+			} else if (this.activeGameScene.contains("instructions")) {
+				Instructions instruction = (Instructions) this.gameScenes.get(this.activeGameScene);
+				if (instruction != null) {
+					instruction.update(pressedKeys);
+				}
+			} else if (this.activeGameScene.contains("hallway")) {
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
-				if(hallway != null) {
+				if (hallway != null) {
 					hallway.update(pressedKeys);
 				}
-			} else if(this.activeGameScene.contains("classroom")) {
+			} else if (this.activeGameScene.contains("classroom")) {
 				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-				if(classroom != null) {
+				if (classroom != null) {
 					classroom.update(pressedKeys);
 				}
 			}
-			
+
 		}
 		// garbage collection
 		for (String name : this.gameScenes.keySet()) {
-			if(!name.equals(this.activeGameScene)) {
+			if (!name.equals(this.activeGameScene)) {
 				this.removeGameScene(name);
 			}
 		}
@@ -137,27 +143,32 @@ public class GameManager {
 			this.gameScenes.remove(name);
 		}
 	}
-	
+
 	public void draw(Graphics g) {
-		//update the active game scene
+		// update the active game scene
 		if (this.gameScenes.containsKey(this.activeGameScene)) {
-			if(this.activeGameScene.contains("title")) {
+			if (this.activeGameScene.contains("title")) {
 				TitleScreen title = (TitleScreen) this.gameScenes.get(this.activeGameScene);
-				if(title != null) {
+				if (title != null) {
 					title.draw(g);
 				}
-			} else if(this.activeGameScene.contains("hallway")) {
+			} else if (this.activeGameScene.contains("instructions")) {
+				Instructions instruction = (Instructions) this.gameScenes.get(this.activeGameScene);
+				if (instruction != null) {
+					instruction.draw(g);
+				}
+			} else if (this.activeGameScene.contains("hallway")) {
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
-				if(hallway != null) {
+				if (hallway != null) {
 					hallway.draw(g);
 				}
-			} else if(this.activeGameScene.contains("classroom")) {
+			} else if (this.activeGameScene.contains("classroom")) {
 				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-				if(classroom != null) {
+				if (classroom != null) {
 					classroom.draw(g);
 				}
 			}
-			
+
 		}
 	}
 }

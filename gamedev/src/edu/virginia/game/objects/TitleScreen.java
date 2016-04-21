@@ -61,7 +61,7 @@ public class TitleScreen extends DisplayObjectContainer {
 			} else {
 				this.gameManager.setNumPlayers(2);
 			}
-			this.gameManager.setActiveGameScene("classroom1");
+			this.gameManager.setActiveGameScene("instructions");
 		}  else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_UP))) {
 			//select 1 player if not currently selected(visible)
 			if(!this.player1bar.isVisible()) {
