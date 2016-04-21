@@ -58,7 +58,7 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 60000;
+	public static final double GAME_TIME = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -133,7 +133,7 @@ public class Classroom extends DisplayObjectContainer {
 		/* Boss constructor */
 
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
-				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt");
+				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.LINEAR);
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);
@@ -426,6 +426,10 @@ public class Classroom extends DisplayObjectContainer {
 			if (garbage.isPickedUp()) {
 				it.remove();
 			}
+			else if (!playArea.getHitboxGlobal().contains(garbage.getHitboxGlobal())) {
+				this.removeChild(garbage);
+				it.remove();				
+			}
 		}
 	}
 
@@ -434,8 +438,10 @@ public class Classroom extends DisplayObjectContainer {
 			PickedUpItem garbage = it.next();
 			if (garbage.isPickedUp()) {
 				it.remove();
-			} else if (!garbage.collidesWithGlobal(this)) {
-				it.remove();
+			}
+			else if (!playArea.getHitboxGlobal().contains(garbage.getHitboxGlobal())) {
+				this.removeChild(garbage);
+				it.remove();				
 			}
 		}
 	}
@@ -760,7 +766,7 @@ public class Classroom extends DisplayObjectContainer {
 		}
 		/* Check whether player is too close to the boss */
 		Rectangle bossHitboxRange = this.boss.getHitboxGlobal();
-		bossHitboxRange.grow(20, 20);
+		bossHitboxRange.grow(45, 45);
 		if (r.intersects(bossHitboxRange)) {
 			return true;
 		}

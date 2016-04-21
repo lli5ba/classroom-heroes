@@ -8,6 +8,7 @@ import java.util.Iterator;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.game.objects.Classroom;
+import edu.virginia.game.objects.Classroom2;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.TitleScreen;
 
@@ -108,6 +109,7 @@ public class GameManager {
 	
 	public void update(ArrayList<String> pressedKeys){
 		//update the active game scene
+		System.out.println(this.activeGameScene);
 		if (this.gameScenes.containsKey(this.activeGameScene)) {
 			if(this.activeGameScene.contains("title")) {
 				TitleScreen title = (TitleScreen) this.gameScenes.get(this.activeGameScene);
@@ -120,13 +122,27 @@ public class GameManager {
 					hallway.update(pressedKeys);
 				}
 			} else if(this.activeGameScene.contains("classroom")) {
-				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-				if(classroom != null) {
-					classroom.update(pressedKeys);
+				if(this.activeGameScene.equals("classroom1"))
+				{
+					System.out.println("c1");
+					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
+					if(classroom != null) {
+						classroom.update(pressedKeys);
+					}
 				}
+				if (this.activeGameScene.contains("2"))
+				{
+					System.out.println("c2");
+					Classroom2 classroom2 = (Classroom2) this.gameScenes.get(this.activeGameScene);
+					if(classroom2 != null) {
+						classroom2.update(pressedKeys);
+					}
+				}
+				
 			}
 			
 		}
+
 		// garbage collection
 		for (String name : this.gameScenes.keySet()) {
 			if(!name.equals(this.activeGameScene)) {
@@ -136,6 +152,7 @@ public class GameManager {
 		for (String name : this.toRemoveQueue) {
 			this.gameScenes.remove(name);
 		}
+		
 	}
 	
 	public void draw(Graphics g) {
@@ -152,12 +169,21 @@ public class GameManager {
 					hallway.draw(g);
 				}
 			} else if(this.activeGameScene.contains("classroom")) {
-				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-				if(classroom != null) {
-					classroom.draw(g);
+				if(this.activeGameScene.equals("classroom1"))
+				{
+					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
+					if(classroom != null) {
+						classroom.draw(g);
+					}
+				}
+				else if (this.activeGameScene.equals("classroom2"))
+				{
+					Classroom2 classroom = (Classroom2) this.gameScenes.get(this.activeGameScene);
+					if(classroom != null) {
+						classroom.draw(g);
+					}
 				}
 			}
-			
 		}
 	}
 }
