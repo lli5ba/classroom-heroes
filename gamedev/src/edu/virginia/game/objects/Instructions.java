@@ -23,16 +23,17 @@ public class Instructions extends AnimatedSprite {
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
-	private Sprite playerIcon;
+	private AnimatedSprite playerIcon;
 	private DisplayObjectContainer keys;
 	private AnimatedSprite vp0;
 	private AnimatedSprite vp1;
 	private AnimatedSprite vp2;
+	private AnimatedSprite poison;
 
 	public Instructions(String id) {
 		super(id, "instructions/instructions-background.png"); // background
 
-		this.playerIcon = new Sprite("playerIcon", "player/player1.png");
+		this.playerIcon = new AnimatedSprite("playerIcon", "player/player1.png");
 		this.playerIcon.setScaleX(1.0);
 		this.playerIcon.setScaleY(1.0);
 		this.addChild(playerIcon);
@@ -51,23 +52,31 @@ public class Instructions extends AnimatedSprite {
 		this.vp0.setPosition(15, 140);
 		this.animate("red");
 		this.addChild(vp0);
-		
+
 		this.vp1 = new AnimatedSprite("vp1", "projectiles/vp1.png", "projectiles/vpsheet.png",
 				"resources/projectiles/vpsheetspecs.txt");
 		this.vp1.setScaleX(.8);
 		this.vp1.setScaleY(.8);
-		this.vp1.setPosition(30, 140); 
+		this.vp1.setPosition(30, 140);
 		this.animate("yellow");
 		this.addChild(vp1);
-		
+
 		this.vp2 = new AnimatedSprite("vp2", "projectiles/vp2.png", "projectiles/vpsheet.png",
 				"resources/projectiles/vpsheetspecs.txt");
 		this.vp2.setScaleX(.8);
 		this.vp2.setScaleY(.8);
-		this.vp2.setPosition(45, 140); 
+		this.vp2.setPosition(45, 140);
 		this.animate("blue");
 		this.addChild(vp2);
-		
+
+		this.poison = new AnimatedSprite("poison", "projectiles/poison.png", "projectiles/poison-spritesheet.png",
+				"resources/projectiles/poison-spritesheet.txt");
+		this.poison.setScaleX(.8);
+		this.poison.setScaleY(.8);
+		this.poison.setPosition(45, 180);
+		this.animate("poison");
+		this.addChild(poison);
+
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 	}
@@ -94,13 +103,12 @@ public class Instructions extends AnimatedSprite {
 		g.drawString("Here is your player:", 20, 80);
 		g.drawString("Use arrow keys to move", 20, 200);
 		g.drawString("Here is a VP: ", 20, 310);
-		
-		
+
 		g.setFont(i);
 		g.drawString("INSTRUCTIONS WILL BE FINISHED BY FINAL", 10, 400);
 		g.drawString("Use space bar to swing net", 10, 450);
 		g.drawString("Use B to cure classmates when poisoned", 10, 500);
-		g.drawString("Use B+spacebar to throw smoke bombs", 10, 550);
+		g.drawString("Use B&spacebar to throw smoke bombs", 10, 550);
 		g.drawString("Press enter or spacebar to begin", 10, 600);
 
 	}

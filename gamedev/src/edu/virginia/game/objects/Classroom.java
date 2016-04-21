@@ -349,7 +349,6 @@ public class Classroom extends DisplayObjectContainer {
 	private void loseLevel(String dialog) {
 		this.stopLevel();
 		this.endLevelScreen.setDialog(dialog);
-		this.endLevelScreen.setExperience((int) this.calcExp(1));
 		this.endLevelScreen.setNumPlayer(1);
 		this.endLevelScreen.setVisible(true);
 		/* reset stats */
@@ -359,10 +358,24 @@ public class Classroom extends DisplayObjectContainer {
 	
 	private void winLevel(String dialog) {
 		this.stopLevel();
+		Random rand1 = new Random();
+		 // between 1 and 2 inclusive
+		int victoryVar = (int) (rand1.nextDouble() * 2) + 1;
+		if (victoryVar == 1) {
+			this.player1.animateOnce("victoryspin", 1);
+			if (this.gameManager.getNumPlayers() == 2) {
+				this.player2.animateOnce("victoryspin", 1);
+			}
+		} else {
+			this.player1.animateOnce("victoryjump", 1);
+			if (this.gameManager.getNumPlayers() == 2) {
+				this.player2.animateOnce("victoryjump", 1);
+			}
+		}
 		this.endLevelScreen.setDialog(dialog);
 		this.endLevelScreen.setExperience((int) this.calcExp(1));
 		this.endLevelScreen.setNumPlayer(1);
-		this.endLevelScreen.setVisible(true);
+		//this.endLevelScreen.setVisible(true);
 		/* Reset stats */
 		this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
 		this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
@@ -493,6 +506,11 @@ public class Classroom extends DisplayObjectContainer {
 				this.aimThrowSmokeBomb(pressedKeys, this.player2);
 			}
 			
+		} else {
+			if(!this.player1.isPlaying() && !this.player2.isPlaying()
+					&& !this.endLevelScreen.isVisible()) {
+				this.endLevelScreen.setVisible(true);
+			}
 		}
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
