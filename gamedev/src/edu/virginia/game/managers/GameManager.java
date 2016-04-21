@@ -9,6 +9,7 @@ import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.tween.Tween;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Classroom2;
+import edu.virginia.game.objects.Classroom3;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.TitleScreen;
 
@@ -109,7 +110,6 @@ public class GameManager {
 	
 	public void update(ArrayList<String> pressedKeys){
 		//update the active game scene
-		System.out.println(this.activeGameScene);
 		if (this.gameScenes.containsKey(this.activeGameScene)) {
 			if(this.activeGameScene.contains("title")) {
 				TitleScreen title = (TitleScreen) this.gameScenes.get(this.activeGameScene);
@@ -117,6 +117,7 @@ public class GameManager {
 					title.update(pressedKeys);
 				}
 			} else if(this.activeGameScene.contains("hallway")) {
+				
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
 				if(hallway != null) {
 					hallway.update(pressedKeys);
@@ -124,7 +125,6 @@ public class GameManager {
 			} else if(this.activeGameScene.contains("classroom")) {
 				if(this.activeGameScene.equals("classroom1"))
 				{
-					System.out.println("c1");
 					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
 					if(classroom != null) {
 						classroom.update(pressedKeys);
@@ -132,10 +132,16 @@ public class GameManager {
 				}
 				if (this.activeGameScene.contains("2"))
 				{
-					System.out.println("c2");
 					Classroom2 classroom2 = (Classroom2) this.gameScenes.get(this.activeGameScene);
 					if(classroom2 != null) {
 						classroom2.update(pressedKeys);
+					}
+				}
+				if (this.activeGameScene.contains("3"))
+				{
+					Classroom3 classroom3 = (Classroom3) this.gameScenes.get(this.activeGameScene);
+					if(classroom3 != null) {
+						classroom3.update(pressedKeys);
 					}
 				}
 				
@@ -168,7 +174,8 @@ public class GameManager {
 				if(hallway != null) {
 					hallway.draw(g);
 				}
-			} else if(this.activeGameScene.contains("classroom")) {
+			} 
+			else if(this.activeGameScene.contains("classroom")) {
 				if(this.activeGameScene.equals("classroom1"))
 				{
 					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
@@ -179,6 +186,14 @@ public class GameManager {
 				else if (this.activeGameScene.equals("classroom2"))
 				{
 					Classroom2 classroom = (Classroom2) this.gameScenes.get(this.activeGameScene);
+					if(classroom != null) {
+						classroom.draw(g);
+					}
+				}
+				
+				else if (this.activeGameScene.equals("classroom3"))
+				{
+					Classroom3 classroom = (Classroom3) this.gameScenes.get(this.activeGameScene);
 					if(classroom != null) {
 						classroom.draw(g);
 					}
