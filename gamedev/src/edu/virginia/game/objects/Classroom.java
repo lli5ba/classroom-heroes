@@ -283,7 +283,7 @@ public class Classroom extends DisplayObjectContainer {
 
 						this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 						poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
-						System.out.println("Student's Health: " + student.getCurrentHealth());
+//						System.out.println("Student's Health: " + student.getCurrentHealth());
 					}
 				}
 			}
@@ -305,14 +305,9 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			if (this.playerManager.getHealth(1) == 0 || this.playerManager.getHealth(2) == 0) {
 				/* OUT OF HEALTH LOGIC */
+				
 				this.stopLevel();
-				this.endLevelScreen.setDialog(endLevelScreen.LOSE_NO_HEALTH);
-				this.endLevelScreen.setExperience((int) this.calcExp(1));
-				this.endLevelScreen.setNumPlayer(1);
-				this.endLevelScreen.setVisible(true);
-				/* Reset stats for next level */
-				this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
-				this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+				this.loseLevel(endLevelScreen.LOSE_NO_HEALTH);
 			}
 
 		}
@@ -345,16 +340,32 @@ public class Classroom extends DisplayObjectContainer {
 		}
 		if (!atLeastOneStudentAlive) {
 			/* ALL STUDENTS DIED logic */
-			this.stopLevel();
-			this.endLevelScreen.setDialog(endLevelScreen.LOSE_STUDENTS);
-			this.endLevelScreen.setExperience((int) this.calcExp(1));
-			this.endLevelScreen.setNumPlayer(1);
-			this.endLevelScreen.setVisible(true);
-			/* reset stats */
-			this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
-			this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+			this.loseLevel(endLevelScreen.LOSE_STUDENTS);
+			
 		}
 
+	}
+
+	private void loseLevel(String dialog) {
+		this.stopLevel();
+		this.endLevelScreen.setDialog(dialog);
+		this.endLevelScreen.setExperience((int) this.calcExp(1));
+		this.endLevelScreen.setNumPlayer(1);
+		this.endLevelScreen.setVisible(true);
+		/* reset stats */
+		this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
+		this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+	}
+	
+	private void winLevel(String dialog) {
+		this.stopLevel();
+		this.endLevelScreen.setDialog(dialog);
+		this.endLevelScreen.setExperience((int) this.calcExp(1));
+		this.endLevelScreen.setNumPlayer(1);
+		this.endLevelScreen.setVisible(true);
+		/* Reset stats */
+		this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
+		this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
 	}
 
 	private void spawnProjectiles() {
@@ -380,14 +391,8 @@ public class Classroom extends DisplayObjectContainer {
 		if (this.gameClock != null) {
 			if (this.gameClock.getElapsedTime() > GAME_TIME) {
 				/* WIN LEVEL logic */
-				this.stopLevel();
-				this.endLevelScreen.setDialog(endLevelScreen.WIN);
-				this.endLevelScreen.setExperience((int) this.calcExp(1));
-				this.endLevelScreen.setNumPlayer(1);
-				this.endLevelScreen.setVisible(true);
-				/* Reset stats */
-				this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
-				this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+				this.winLevel(endLevelScreen.WIN);
+				
 			}
 		}
 	}
