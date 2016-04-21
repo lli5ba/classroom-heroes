@@ -95,14 +95,14 @@ public class Instructions extends AnimatedSprite {
 		g.drawString("Use arrow keys to move", 20, 200);
 		g.drawString("Here is a VP: ", 20, 310);
 		
-		/**
+		
 		g.setFont(i);
 		g.drawString("INSTRUCTIONS WILL BE FINISHED BY FINAL", 10, 400);
 		g.drawString("Use space bar to swing net", 10, 450);
 		g.drawString("Use b to cure classmates when poisoned", 10, 500);
 		g.drawString("Use b+spacebar to throw smoke bombs", 10, 550);
 		g.drawString("Press enter or spacebar to begin", 10, 600);
-**/
+
 	}
 
 	public void update(ArrayList<String> pressedKeys) {
