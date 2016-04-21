@@ -160,10 +160,6 @@ public class ClassroomHeroes extends Game {
 					}
 					// add scene to gameManager
 					this.gameManager.addGameScene(sceneName, classroom);
-				}
-<<<<<<< HEAD
-=======
-
 			} else if (sceneName.contains("classroom")) {
 				if (sceneName.equals("classroom1")) {
 					// create a classroom
@@ -177,6 +173,7 @@ public class ClassroomHeroes extends Game {
 					// add scene to gameManager
 					this.gameManager.addGameScene(sceneName, classroom);
 					this.gameManager.setNumLevel(2);
+				}
 				} else if (sceneName.equals("classroom2")) {
 					
 				// create a classroom
@@ -191,12 +188,8 @@ public class ClassroomHeroes extends Game {
 				System.out.println(classroom2.isInPlay());
 				this.gameManager.addGameScene(sceneName, classroom2);
 				}
->>>>>>> 534b62795af286f10f3307c54dc87a7461b3c3fc
 			}
-		
-
-
-	}
+		}
 
 	/**
 	 * Engine automatically invokes draw() every frame as well. If we want to
@@ -206,7 +199,7 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-		this.gameManager.draw(g);
+		//this.gameManager.draw(g);
 	}
 
 	/**

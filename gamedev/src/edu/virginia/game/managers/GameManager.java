@@ -126,29 +126,20 @@ public class GameManager {
 				if (hallway != null) {
 					hallway.update(pressedKeys);
 				}
-<<<<<<< HEAD
 			} else if (this.activeGameScene.contains("classroom")) {
-				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-				if (classroom != null) {
-					classroom.update(pressedKeys);
-=======
-			} else if(this.activeGameScene.contains("classroom")) {
-				if(this.activeGameScene.equals("classroom1"))
-				{
+				if (this.activeGameScene.equals("classroom1")) {
 					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-					if(classroom != null) {
+					if (classroom != null) {
 						classroom.update(pressedKeys);
 					}
->>>>>>> 534b62795af286f10f3307c54dc87a7461b3c3fc
 				}
-				if (this.activeGameScene.contains("2"))
-				{
+				if (this.activeGameScene.contains("2")) {
 					Classroom2 classroom2 = (Classroom2) this.gameScenes.get(this.activeGameScene);
-					if(classroom2 != null) {
+					if (classroom2 != null) {
 						classroom2.update(pressedKeys);
 					}
 				}
-				
+
 			}
 
 		}
@@ -162,7 +153,7 @@ public class GameManager {
 		for (String name : this.toRemoveQueue) {
 			this.gameScenes.remove(name);
 		}
-		
+
 	}
 
 	public void draw(Graphics g) {
@@ -183,32 +174,19 @@ public class GameManager {
 				if (hallway != null) {
 					hallway.draw(g);
 				}
-<<<<<<< HEAD
 			} else if (this.activeGameScene.contains("classroom")) {
-				Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-				if (classroom != null) {
-					classroom.draw(g);
-				}
-			}
-
-=======
-			} else if(this.activeGameScene.contains("classroom")) {
-				if(this.activeGameScene.equals("classroom1"))
-				{
+				if (this.activeGameScene.equals("classroom1")) {
 					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
-					if(classroom != null) {
+					if (classroom != null) {
 						classroom.draw(g);
 					}
-				}
-				else if (this.activeGameScene.equals("classroom2"))
-				{
+				} else if (this.activeGameScene.equals("classroom2")) {
 					Classroom2 classroom = (Classroom2) this.gameScenes.get(this.activeGameScene);
-					if(classroom != null) {
+					if (classroom != null) {
 						classroom.draw(g);
 					}
 				}
 			}
->>>>>>> 534b62795af286f10f3307c54dc87a7461b3c3fc
 		}
 	}
 }

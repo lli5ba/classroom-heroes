@@ -25,7 +25,7 @@ public class Instructions extends DisplayObjectContainer {
 	private Sprite playerIcon;
 
 	public Instructions(String id) {
-		super(id, "titlescreen/title-screen-background.png"); //background
+		super(id, "instructions/instructions-background.png"); //background
 
 		this.playerIcon = new Sprite("playerIcon", "player/player1.png");
 		this.playerIcon.setScaleX(1.0);
@@ -44,10 +44,6 @@ public class Instructions extends DisplayObjectContainer {
 		if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))
 				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER))) {
 			this.gameManager.setActiveGameScene("classroom1");
-		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_UP))) {
-		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_DOWN))) {
-		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_RIGHT))) {
-		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_LEFT))) {
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
