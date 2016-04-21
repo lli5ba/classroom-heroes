@@ -23,16 +23,17 @@ public class Instructions extends AnimatedSprite {
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
-	private Sprite playerIcon;
+	private AnimatedSprite playerIcon;
 	private DisplayObjectContainer keys;
 	private AnimatedSprite vp0;
 	private AnimatedSprite vp1;
 	private AnimatedSprite vp2;
-
+	private AnimatedSprite poison;
+	
 	public Instructions(String id) {
 		super(id, "instructions/instructions-background.png"); // background
 
-		this.playerIcon = new Sprite("playerIcon", "player/player1.png");
+		this.playerIcon = new AnimatedSprite("playerIcon", "player/player1.png");
 		this.playerIcon.setScaleX(1.0);
 		this.playerIcon.setScaleY(1.0);
 		this.addChild(playerIcon);
@@ -68,6 +69,14 @@ public class Instructions extends AnimatedSprite {
 		this.animate("blue");
 		this.addChild(vp2);
 		
+		this.poison = new AnimatedSprite("poison", "projectiles/poison.png", 
+				"projectiles/poison-spritesheet.png", "resources/projectiles/poison-spritesheet.txt");
+		this.poison.setScaleX(.8);
+		this.poison.setScaleY(.8);
+		this.poison.setPosition(45,180);
+		this.animate("poison");
+		this.addChild(poison);
+				
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 	}
