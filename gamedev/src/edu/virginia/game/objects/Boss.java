@@ -29,11 +29,13 @@ public class Boss extends AnimatedSprite {
 	private int poisonSpeed;
 	private double lastThrownDegrees;
 	private String animation;
+	private TweenTransitions tweenType;
 	
 
-	public Boss(String id, String imageFileName, String thisSheetFileName, String specsFileName) {
+	public Boss(String id, String imageFileName, String thisSheetFileName, String specsFileName, TweenTransitions t) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
+		this.tweenType = t;
 		if (this.gameManager.getNumLevel() == 1) {
 			this.poisonSpeed = 20000;
 			this.vpSpeed = 17000;
@@ -107,7 +109,7 @@ public class Boss extends AnimatedSprite {
 			poison.setCenterPos(this.getCenterPos());
 			poison.addEventListener(projectileManager, EventTypes.PICKUP_POISON.toString());
 			poison.addEventListener(playerManager, EventTypes.PICKUP_POISON.toString());
-			Tween tween2 = new Tween(poison, TweenTransitions.LINEAR);
+			Tween tween2 = new Tween(poison, tweenType);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition("posion", poison.getxPos(), poison.getyPos());
 			if (pos == null) {
