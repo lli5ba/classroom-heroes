@@ -183,7 +183,7 @@ public class Hallway extends DisplayObjectContainer {
 	public void switchScenes() {
 		if(this.player1 != null && 
 				this.player1.getxPosGlobal() > this.gameManager.getGameWidth()) {
-			this.gameManager.setActiveGameScene("classroom2");
+			this.gameManager.setActiveGameScene("classroom" + gameManager.getNumLevel());
 		}
 	}
 	@Override

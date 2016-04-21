@@ -27,7 +27,7 @@ public class AnimatedSprite extends Sprite {
 	private int currentFrame;
 	private String currentAnimation;
 	private boolean isPlaying;
-	private int animationSpeed;
+	private double animationSpeed;
 	private GameClock gameClockAnimation;
 	private boolean loop;
 	private int timesLooped;
@@ -97,7 +97,6 @@ public class AnimatedSprite extends Sprite {
 
 	public void animate(String animationName) {
 		if (spriteMap.containsKey(animationName)) {
-			System.out.println("animating " + animationName);
 			if (loop != false) { // Like a lock... animateOnce sequence takes
 									// priority
 				currentAnimation = animationName;
@@ -157,7 +156,7 @@ public class AnimatedSprite extends Sprite {
 		}
 	}
 
-	public void animateOnce(String animationName, int speed) {
+	public void animateOnce(String animationName, double speed) {
 		if (spriteMap.containsKey(animationName)) {
 			currentAnimation = animationName;
 			isPlaying = true;
@@ -203,7 +202,7 @@ public class AnimatedSprite extends Sprite {
 		this.gameClockAnimation = gameClockAnimation;
 	}
 
-	public int getAnimationSpeed() {
+	public double getAnimationSpeed() {
 		return animationSpeed;
 	}
 
@@ -227,8 +226,8 @@ public class AnimatedSprite extends Sprite {
 		return isPlaying;
 	}
 
-	public void setAnimationSpeed(int animationSpeed) {
-		this.animationSpeed = animationSpeed;
+	public void setAnimationSpeed(double speed) {
+		this.animationSpeed = speed;
 	}
 
 	@Override

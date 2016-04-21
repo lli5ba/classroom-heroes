@@ -42,6 +42,7 @@ import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
 import edu.virginia.game.managers.SoundManager;
 import edu.virginia.game.objects.Classroom;
+import edu.virginia.game.objects.Classroom2;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.ItemDetail;
@@ -88,7 +89,7 @@ public class ClassroomHeroes extends Game {
 		super.update(pressedKeys);
 		// this updates the corresponding active game scene!!
 		this.gameManager.update(pressedKeys);
-
+		
 		/***
 		 * create an asset and add it to the gameManager if it does not exist
 		 **/
@@ -160,8 +161,40 @@ public class ClassroomHeroes extends Game {
 					// add scene to gameManager
 					this.gameManager.addGameScene(sceneName, classroom);
 				}
+<<<<<<< HEAD
+=======
+
+			} else if (sceneName.contains("classroom")) {
+				if (sceneName.equals("classroom1")) {
+					// create a classroom
+					Classroom classroom = null;
+					try {
+						classroom = new Classroom(sceneName);
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					// add scene to gameManager
+					this.gameManager.addGameScene(sceneName, classroom);
+					this.gameManager.setNumLevel(2);
+				} else if (sceneName.equals("classroom2")) {
+					
+				// create a classroom
+				Classroom2 classroom2 = null;
+				try {
+					classroom2 = new Classroom2(sceneName);
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// add scene to gameManager
+				System.out.println(classroom2.isInPlay());
+				this.gameManager.addGameScene(sceneName, classroom2);
+				}
+>>>>>>> 534b62795af286f10f3307c54dc87a7461b3c3fc
 			}
 		
+
 
 	}
 

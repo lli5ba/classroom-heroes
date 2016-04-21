@@ -58,7 +58,7 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 60000;
+	public static final double GAME_TIME = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -90,7 +90,6 @@ public class Classroom extends DisplayObjectContainer {
 		this.addEventListener(levelManager, EventTypes.LOSE_LEVEL.toString());
 		this.addEventListener(soundManager, EventTypes.CURE_STUDENT.toString());
 		this.addEventListener(soundManager, EventTypes.POISON_STUDENT.toString());
-
 		
 		/* Constructing furniture */
 		
@@ -109,11 +108,15 @@ public class Classroom extends DisplayObjectContainer {
 		this.player1.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
 		this.player1.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player1.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
-
+		this.player1.addEventListener(playerManager, EventTypes.THROW_SMOKEBOMB.toString());
+		this.player2.addEventListener(levelManager, EventTypes.THROW_SMOKEBOMB.toString());
+		
 		this.player2.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
 		this.player2.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
 		this.player2.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player2.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
+		this.player2.addEventListener(playerManager, EventTypes.THROW_SMOKEBOMB.toString());
+		this.player2.addEventListener(levelManager, EventTypes.THROW_SMOKEBOMB.toString());
 
 		if (this.gameManager.getNumPlayers() == 1) {
 			// set player2 inactive and invisible
@@ -130,7 +133,7 @@ public class Classroom extends DisplayObjectContainer {
 		/* Boss constructor */
 
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
-				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt");
+				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.LINEAR);
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);
@@ -235,9 +238,9 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player1));
-				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
-				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
-				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
+//				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
+//				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
+//				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 
 			if (player2.getNetHitboxGlobal().intersects(vp.getHitboxGlobal()) //|| player2.collidesWithGlobal(vp)) 
@@ -245,9 +248,9 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
 				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player2));
-				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
-				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
-				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
+//				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
+//				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
+//				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
 			}
 		}
 	}
@@ -258,8 +261,8 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player1));
-				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
-				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
+//				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
+//				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
 
 			}
 
@@ -267,8 +270,8 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
-				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
-				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
+//				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
+//				System.out.println("Player 2's Health: " + this.playerManager.getHealth(2));
 
 			}
 			// Check all poison collisions with each student
@@ -289,16 +292,16 @@ public class Classroom extends DisplayObjectContainer {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player1));
-				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
-				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
+//				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
+//				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
 			}
 
 			if (player2.getNetHitboxGlobal().intersects(poison.getHitboxGlobal()) && !poison.isPickedUp()) {
 				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this.player2));
-				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
-				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
+//				System.out.println("Player 1's Number of Poison Collected: " + this.levelManager.getPoisonCollected(1));
+//				System.out.println("Player 2's Number of Poison Collected: " + this.levelManager.getPoisonCollected(2));
 			}
 			if (this.playerManager.getHealth(1) == 0 || this.playerManager.getHealth(2) == 0) {
 				/* OUT OF HEALTH LOGIC */
@@ -327,8 +330,6 @@ public class Classroom extends DisplayObjectContainer {
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player1));
 				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
-				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
-				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
 			} else if (player2.inRangeGlobal(student, distToCure) && student.isPoisoned()
 					&& this.playerManager.getNumGingerAle() > 0 && !student.isDead()
 					&& pressedKeys.contains(this.playerManager.getSecondaryKey(2))) {
@@ -337,8 +338,6 @@ public class Classroom extends DisplayObjectContainer {
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
 				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
-				System.out.println("Player 1's Number of Students Cured: " + this.levelManager.getStudentsCured(1));
-				System.out.println("Player 2's Number of Students Cured: " + this.levelManager.getStudentsCured(2));
 			}
 			if (!student.isDead()) {
 				atLeastOneStudentAlive = true;
@@ -423,6 +422,10 @@ public class Classroom extends DisplayObjectContainer {
 			if (garbage.isPickedUp()) {
 				it.remove();
 			}
+			else if (!playArea.getHitboxGlobal().contains(garbage.getHitboxGlobal())) {
+				this.removeChild(garbage);
+				it.remove();				
+			}
 		}
 	}
 
@@ -431,8 +434,10 @@ public class Classroom extends DisplayObjectContainer {
 			PickedUpItem garbage = it.next();
 			if (garbage.isPickedUp()) {
 				it.remove();
-			} else if (!garbage.collidesWithGlobal(this)) {
-				it.remove();
+			}
+			else if (!playArea.getHitboxGlobal().contains(garbage.getHitboxGlobal())) {
+				this.removeChild(garbage);
+				it.remove();				
 			}
 		}
 	}
@@ -453,6 +458,8 @@ public class Classroom extends DisplayObjectContainer {
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		this.drawTimeLeft(g);
+		//smokebomb
+		this.levelManager.drawBombs(g);
 		/*if (this.player1 != null) {
 			this.player1.drawNetHitboxGlobal(g);
 		}*/
@@ -472,6 +479,9 @@ public class Classroom extends DisplayObjectContainer {
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
 			this.aimThrowSmokeBomb(pressedKeys, this.player1);
+			//smokebomb
+			this.levelManager.removeCompleteBombs(pressedKeys);
+		
 		//	this.floryan(boss.getAnimation());
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
@@ -517,20 +527,20 @@ public class Classroom extends DisplayObjectContainer {
 			player.setSmokebombVisible(false);
 		}
 		if (player != null && player.getNetHitbox() != null 
-				&& pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))) {
+				&& pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))
+				&& this.playerManager.getNumCheesePuffs() > 0) {
 			/*
 			 * update player's position depending on key pressed
 			 */
 			player.moveSmokebomb(player.getDirection());
-			String smokebombDir = player.getDirection();
-			System.out.println(pressedKeys.toString());
+			player.setSmokebombDir(player.getDirection());
 			if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 				String dir = "up"; //right
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "right");
-				smokebombDir = dir + "right";
+				player.setSmokebombDir( dir + "right" );
 				
 			} else if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
@@ -538,54 +548,92 @@ public class Classroom extends DisplayObjectContainer {
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "left");
-				smokebombDir = dir + "left";
+				player.setSmokebombDir( dir + "left" );
 			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 				String dir = "down"; //right
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "right");
-				smokebombDir = dir + "right";
+				player.setSmokebombDir(dir + "right");
 			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
 				String dir = "down"; //left
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "left");
-				smokebombDir = dir + "left";
+				player.setSmokebombDir(dir + "left");
 			} else if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))) {
 				String dir = "up";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))) {
 				String dir = "down";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			} else if (pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
 				String dir = "left";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			} else if (pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 				String dir = "right";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			}
-			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
+			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))
+					) {
+				int bombSpeed = 1000;
 				/* throw puffbag */
-				//FIXME: Leandra
+				double range = player.getHeight()*5;
+				//a global position, will be the final position of the smokebomb
+				Position candidatePos = Smokebomb.generatePosition(player.getSmokebombDir(), 
+						range, player.getSmokebombPos().getX(), player.getSmokebombPos().getY());
+				//Position finalPos = correctSmokebombPos(candidatePos);
+				Position finalPos = candidatePos;
+				Smokebomb bomb = new Smokebomb("bomb", (int)finalPos.getX(), (int)finalPos.getY());
+				bomb.setScaleX(player.getScaleXGlobal());
+				bomb.setScaleY(player.getScaleYGlobal());
+				bomb.setCenterPos(player.getSmokebombPos());
+				Tween tween = new Tween(bomb, TweenTransitions.LINEAR);
+				myTweenJuggler.add(tween);
+				tween.animate(TweenableParam.POS_X, (int)bomb.getxPos(), (int)finalPos.getX(), bombSpeed);
+				tween.animate(TweenableParam.POS_Y, (int)bomb.getyPos(), (int)finalPos.getY(), bombSpeed);
+				
+				/* add to list */
+				this.levelManager.addSmokebomb(bomb);
+				player.setSmokebombVisible(false);
+				player.dispatchEvent(new GameEvent(EventTypes.THROW_SMOKEBOMB.toString(), player));
 			}
 		}
 	}
 	
-
+	public Position correctSmokebombPos(Position candidatePos) {
+		//bounds check with playarea and change to be inside play area if necessary
+		if (candidatePos.getX() < this.playArea.getxPosGlobal()) { //off the screen left
+			candidatePos.setX(this.playArea.getxPosGlobal());
+		} else if (candidatePos.getX() > this.playArea.getxPosGlobal() +
+				this.playArea.getWidth()) {//off the screen right
+			candidatePos.setX(this.playArea.getxPosGlobal() + 
+					this.playArea.getWidth());
+		}
+		if (candidatePos.getY() < this.playArea.getyPosGlobal()) { //off the screen top
+			candidatePos.setY(this.playArea.getyPosGlobal());
+		} else if (candidatePos.getY() > this.playArea.getyPosGlobal() + 
+				this.playArea.getHeight()) { //off the screen bottom
+			candidatePos.setY(this.playArea.getyPosGlobal() + 
+					this.playArea.getHeight());
+		} 
+		
+		return candidatePos;
+	}
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
