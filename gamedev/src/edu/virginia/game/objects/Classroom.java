@@ -136,14 +136,10 @@ public class Classroom extends DisplayObjectContainer {
 		this.boss.setScaleX(.7);
 		this.boss.setScaleY(.7);
 
-		
-		
 		/* Generate Students */
 		spawnStudent("Student0", "down", this.getWidth() * .5, this.getHeight() * .742);
 		spawnStudent("Student1", "left", this.getWidth() * .8, this.getHeight() * .65);
 		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .65);
-		
-		
 
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
@@ -724,7 +720,7 @@ public class Classroom extends DisplayObjectContainer {
 		}
 		/* Check whether player is too close to the boss */
 		Rectangle bossHitboxRange = this.boss.getHitboxGlobal();
-		bossHitboxRange.grow(20, 20);
+		bossHitboxRange.grow(45, 45);
 		if (r.intersects(bossHitboxRange)) {
 			return true;
 		}

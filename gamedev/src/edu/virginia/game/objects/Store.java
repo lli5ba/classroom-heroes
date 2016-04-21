@@ -122,8 +122,7 @@ public class Store extends DisplayObjectContainer {
 		// TODO: Leandra
 		// check whether enough VP, if so, decrement VP, Increase Inventory, and
 		// stopBuy()
-		// Only buy if enough VP
-		if (this.playerManager.getVpCount() >= this.playerManager.getVpCount()-item.getCost()) {
+		if (this.playerManager.getVpCount() >= item.getCost() ) {
 			switch (item.getId()) { // switch statements b/c easy to add new items
 			case GINGER_ALE_ID:
 				this.itemToBuy = this.gingerAleDetail;

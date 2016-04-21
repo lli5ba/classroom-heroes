@@ -115,11 +115,9 @@ public class SoundManager implements IEventListener {
 			}
 		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
 			if (!this.isPlayingSoundEffect1()) {
-				// FIXME
+				// FIXME: catching poison in net should not load this sound
 				this.LoadSoundEffect("poison", "poison.wav");
 				this.PlaySoundEffect("poison");
-				// this.LoadSoundEffect("poison", "poison.wav");
-				// this.PlaySoundEffect("poison");
 			}
 		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
 			if (!this.isPlayingSoundEffect1()) {
