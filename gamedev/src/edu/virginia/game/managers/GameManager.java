@@ -117,17 +117,12 @@ public class GameManager {
 				if (title != null) {
 					title.update(pressedKeys);
 				}
-<<<<<<< HEAD
 			} else if (this.activeGameScene.contains("instructions")) {
 				Instructions instruction = (Instructions) this.gameScenes.get(this.activeGameScene);
 				if (instruction != null) {
 					instruction.update(pressedKeys);
 				}
-			} else if (this.activeGameScene.contains("hallway")) {
-=======
 			} else if(this.activeGameScene.contains("hallway")) {
-				
->>>>>>> 1115c6beb4423a555f547335647d7b942b139316
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
 				if (hallway != null) {
 					hallway.update(pressedKeys);
@@ -145,9 +140,6 @@ public class GameManager {
 						classroom2.update(pressedKeys);
 					}
 				}
-<<<<<<< HEAD
-
-=======
 				if (this.activeGameScene.contains("3"))
 				{
 					Classroom3 classroom3 = (Classroom3) this.gameScenes.get(this.activeGameScene);
@@ -155,8 +147,6 @@ public class GameManager {
 						classroom3.update(pressedKeys);
 					}
 				}
-				
->>>>>>> 1115c6beb4423a555f547335647d7b942b139316
 			}
 
 		}
@@ -191,15 +181,10 @@ public class GameManager {
 				if (hallway != null) {
 					hallway.draw(g);
 				}
-<<<<<<< HEAD
-			} else if (this.activeGameScene.contains("classroom")) {
-				if (this.activeGameScene.equals("classroom1")) {
-=======
 			} 
 			else if(this.activeGameScene.contains("classroom")) {
 				if(this.activeGameScene.equals("classroom1"))
 				{
->>>>>>> 1115c6beb4423a555f547335647d7b942b139316
 					Classroom classroom = (Classroom) this.gameScenes.get(this.activeGameScene);
 					if (classroom != null) {
 						classroom.draw(g);

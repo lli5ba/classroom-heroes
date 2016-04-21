@@ -130,23 +130,8 @@ public class ClassroomHeroes extends Game {
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, hallway);
 				sceneMusic("hallway", "hallway.wav");
-			} else if (sceneName.contains("classroom")) {
-				// create a classroom
-				Classroom classroom = null;
-				try {
-					classroom = new Classroom(sceneName);
-				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-					e.printStackTrace();
-				}
-<<<<<<< HEAD
-				// add scene to gameManager
-				this.gameManager.addGameScene(sceneName, classroom);
-			} else if (sceneName.contains("classroom")) {
-=======
-
 			}
 			else if (sceneName.contains("classroom")) {
->>>>>>> 1115c6beb4423a555f547335647d7b942b139316
 				if (sceneName.equals("classroom1")) {
 					// create a classroom
 					Classroom classroom = null;
@@ -159,20 +144,6 @@ public class ClassroomHeroes extends Game {
 					this.gameManager.addGameScene(sceneName, classroom);
 					this.gameManager.setNumLevel(2);
 				}
-<<<<<<< HEAD
-			} else if (sceneName.equals("classroom2")) {
-
-				// create a classroom
-				Classroom2 classroom2 = null;
-				try {
-					classroom2 = new Classroom2(sceneName);
-				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-					e.printStackTrace();
-				}
-				// add scene to gameManager
-				System.out.println(classroom2.isInPlay());
-				this.gameManager.addGameScene(sceneName, classroom2);
-=======
 				else if (sceneName.equals("classroom2")) {
 					
 					// create a classroom
@@ -202,8 +173,6 @@ public class ClassroomHeroes extends Game {
 
 					this.gameManager.addGameScene(sceneName, classroom3);
 				}
-				
->>>>>>> 1115c6beb4423a555f547335647d7b942b139316
 			}
 		}
 	}

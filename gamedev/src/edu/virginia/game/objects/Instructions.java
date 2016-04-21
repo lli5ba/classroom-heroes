@@ -99,8 +99,8 @@ public class Instructions extends AnimatedSprite {
 		g.setFont(i);
 		g.drawString("INSTRUCTIONS WILL BE FINISHED BY FINAL", 10, 400);
 		g.drawString("Use space bar to swing net", 10, 450);
-		g.drawString("Use b to cure classmates when poisoned", 10, 500);
-		g.drawString("Use b+spacebar to throw smoke bombs", 10, 550);
+		g.drawString("Use B to cure classmates when poisoned", 10, 500);
+		g.drawString("Use B+spacebar to throw smoke bombs", 10, 550);
 		g.drawString("Press enter or spacebar to begin", 10, 600);
 
 	}

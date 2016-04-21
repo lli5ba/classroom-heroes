@@ -35,7 +35,7 @@ public class PlayerStat extends Sprite {
 		numHeartsTot = this.playerManager.getMaxHealth(player) / 2;
 		numHearts = this.playerManager.getHealth(player) / 2;
 		halfHearts = this.playerManager.getHealth(player) % 2;
-		int x = 160;
+		int x = 180;
 		if (player == 2) {
 			x = 350;
 		}
