@@ -80,6 +80,19 @@ public class ClassroomHeroes extends Game {
 		// TODO: Leandra
 	}
 
+	public void sceneMusic(String id, String filename) {
+		
+		soundManager.stopAll();
+		if (!soundManager.isPlayingMusic()) {
+			soundManager.LoadMusic(id, filename);
+			try {
+				soundManager.PlayMusic(id);
+			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	/**
 	 * Engine will automatically call this update method once per frame and pass
 	 * to us the set of keys (as strings) that are currently being pressed down
@@ -89,11 +102,10 @@ public class ClassroomHeroes extends Game {
 		super.update(pressedKeys);
 		// this updates the corresponding active game scene!!
 		this.gameManager.update(pressedKeys);
-		
+
 		/***
 		 * create an asset and add it to the gameManager if it does not exist
 		 **/
-
 		// assumes active game scene is either "hallway[0-3]" or classroom[1-5]
 		// creates the current scene if it does not yet exist
 		if (!this.gameManager.activeGameSceneIsCreated()) {
@@ -102,64 +114,31 @@ public class ClassroomHeroes extends Game {
 				TitleScreen title = new TitleScreen(sceneName);
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, title);
-
-				soundManager.stopAll();
-				if (!soundManager.isPlayingMusic()) {
-					soundManager.LoadMusic("title", "title.wav");
-					try {
-						soundManager.PlayMusic("title");
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						e.printStackTrace();
-					}
-				}
+				sceneMusic("title", "title.wav");
 			} else if (sceneName.contains("instructions")) {
-					Instructions instruction = new Instructions(sceneName);
-					// add scene to gameManager
-					this.gameManager.addGameScene(sceneName, instruction);
-
-					soundManager.stopAll();
-					// FIXME: Instructions music
-					if (!soundManager.isPlayingMusic()) {
-						soundManager.LoadMusic("instruction", "hallway.wav");
-						try {
-							soundManager.PlayMusic("instruction");
-						} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				} else if (sceneName.contains("hallway")) {
-					// create a hallway
-					// get last character in styleCode
-					String styleCode = sceneName.substring(sceneName.length() - 1);
-					Hallway hallway = null;
-
-					hallway = new Hallway(sceneName, styleCode);
-					// add scene to gameManager
-					this.gameManager.addGameScene(sceneName, hallway);
-
-					soundManager.stopAll();
-					if (!soundManager.isPlayingMusic()) {
-						soundManager.LoadMusic("hallway", "hallway.wav");
-						try {
-							soundManager.PlayMusic("hallway");
-						} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-
-				} else if (sceneName.contains("classroom")) {
-					// create a classroom
-					Classroom classroom = null;
-					try {
-						classroom = new Classroom(sceneName);
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					// add scene to gameManager
-					this.gameManager.addGameScene(sceneName, classroom);
+				Instructions instruction = new Instructions(sceneName);
+				// add scene to gameManager
+				this.gameManager.addGameScene(sceneName, instruction);
+				sceneMusic("instruction", "instructions.wav");
+			} else if (sceneName.contains("hallway")) {
+				// create a hallway
+				// get last character in styleCode
+				String styleCode = sceneName.substring(sceneName.length() - 1);
+				Hallway hallway = null;
+				hallway = new Hallway(sceneName, styleCode);
+				// add scene to gameManager
+				this.gameManager.addGameScene(sceneName, hallway);
+				sceneMusic("hallway", "hallway.wav");
+			} else if (sceneName.contains("classroom")) {
+				// create a classroom
+				Classroom classroom = null;
+				try {
+					classroom = new Classroom(sceneName);
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					e.printStackTrace();
+				}
+				// add scene to gameManager
+				this.gameManager.addGameScene(sceneName, classroom);
 			} else if (sceneName.contains("classroom")) {
 				if (sceneName.equals("classroom1")) {
 					// create a classroom
@@ -167,29 +146,27 @@ public class ClassroomHeroes extends Game {
 					try {
 						classroom = new Classroom(sceneName);
 					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					// add scene to gameManager
 					this.gameManager.addGameScene(sceneName, classroom);
 					this.gameManager.setNumLevel(2);
 				}
-				} else if (sceneName.equals("classroom2")) {
-					
+			} else if (sceneName.equals("classroom2")) {
+
 				// create a classroom
 				Classroom2 classroom2 = null;
 				try {
 					classroom2 = new Classroom2(sceneName);
 				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				// add scene to gameManager
 				System.out.println(classroom2.isInPlay());
 				this.gameManager.addGameScene(sceneName, classroom2);
-				}
 			}
 		}
+	}
 
 	/**
 	 * Engine automatically invokes draw() every frame as well. If we want to
@@ -199,7 +176,7 @@ public class ClassroomHeroes extends Game {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-		//this.gameManager.draw(g);
+		this.gameManager.draw(g);
 	}
 
 	/**

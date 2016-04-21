@@ -146,9 +146,7 @@ public class SoundManager implements IEventListener {
 
 	public void stopAll() {
 		this.clipPlaying.close();
-		this.clipPlayingSoundEffect.close();
 		this.clipPlaying.stop();
-		this.clipPlayingSoundEffect.stop();
 
 	}
 
