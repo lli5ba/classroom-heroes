@@ -1,12 +1,15 @@
 package edu.virginia.game.objects;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.engine.events.GameEvent;
+import edu.virginia.engine.util.Position;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
@@ -24,6 +27,7 @@ public class Hallway extends DisplayObjectContainer {
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
 	private Player player1;
 	private Player player2;
+	private DisplayObjectContainer playArea;
 
 	public Hallway(String id, String styleCode) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
@@ -63,6 +67,18 @@ public class Hallway extends DisplayObjectContainer {
 		default:
 			break;
 		}
+		
+		/* set play area bounds */
+		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
+																				// png
+																				// file
+		this.playArea.setVisible(false);
+		this.playArea.setWidth(this.getWidth());
+		this.playArea.setHeight(this.getHeight() * .58);
+		this.addChild(playArea);
+		this.playArea.setPosition(0, this.getHeight() * .3);
+		
+		/* set store */
 		store = new Store(id + "-store", styleCode, 1);
 		this.store.setVisible(false);
 
@@ -80,6 +96,7 @@ public class Hallway extends DisplayObjectContainer {
 				this.getHeight() * .2267);
 
 		this.player1.setPosition(this.getWidth() * .04, this.getHeight() * .48);
+		this.player2.setPosition(this.getWidth() * .04, this.getHeight() * .6);
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 	}
@@ -168,7 +185,7 @@ public class Hallway extends DisplayObjectContainer {
 	public void movePlayer(ArrayList<String> pressedKeys, Player player){
 		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
-				player.moveSpriteCartesianAnimate(pressedKeys);
+				this.moveSpriteCartesianAnimate(pressedKeys, player);
 			}
 			// if there are no keys being pressed, and sprite is walking, then
 			// stop the animation
@@ -196,6 +213,9 @@ public class Hallway extends DisplayObjectContainer {
 		 * if (this.vendingMachine != null) {
 		 * this.vendingMachine.drawHitboxGlobal(g); }
 		 */
+//		if (this.playArea != null ) {
+//			this.playArea.drawHitboxGlobal(g);
+//		}
 	}
 
 	@Override
@@ -207,5 +227,133 @@ public class Hallway extends DisplayObjectContainer {
 			this.movePlayer(pressedKeys, this.player2);
 		}
 		this.switchScenes();
+	}
+	
+	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {
+		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
+		releasedKeys.removeAll(pressedKeys);
+		double speed = this.playerManager.getSpeed(player.getNumPlayer());
+		/*
+		 * Make sure this is not null. Sometimes Swing can auto cause an extra
+		 * frame to go before everything is initialized
+		 */
+		Position originalPos = new Position(player.getxPos(), player.getyPos());
+
+		if (player != null && player.getNetHitbox() != null 
+				&& !pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))) {
+			/*
+			 * update player's position depending on key pressed
+			 */
+
+			if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))) {
+
+				player.setyPos(player.getyPos() - speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+
+				if (!player.isPlaying() || player.getCurrentAnimation() != "up") {
+					player.animate("up");
+				}
+				player.setDirection("up");
+				
+
+			}
+			if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))) {
+
+				player.setyPos(player.getyPos() + speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+				if (!player.isPlaying() || player.getCurrentAnimation() != "down") {
+					player.animate("down");
+				}
+				player.setDirection("down");
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
+				
+			}
+			if (pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
+				player.setxPos(player.getxPos() - speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+
+				if (!player.isPlaying() || player.getCurrentAnimation() != "left") {
+					player.animate("left");
+				}
+				player.setDirection("left");
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
+				
+			}
+			if (pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
+
+				player.setxPos(player.getxPos() + speed);
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
+
+				if (!player.isPlaying() || player.getCurrentAnimation() != "right") {
+					player.animate("right");
+				}
+				player.setDirection("right");
+				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
+				
+			}
+			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
+				String currentDir = player.getDirection();
+				// Until we have combined net and walking animation, net
+				// animation overrides walking animation
+				if (player.isPlaying() && !player.getCurrentAnimation().contains("net")) {
+					// System.out.println("STOPPING\n");
+					player.stopAnimation();
+				}
+
+				player.animateOnceLock("net" + currentDir, this.playerManager.getSwingSpeed(player.getNumPlayer()));
+				player.dispatchEvent(new GameEvent(EventTypes.SWING_NET.toString(), player));
+			}
+
+			// this revises the net animation mid-swing
+			// if direction changes and animateOnce net sequence is playing
+			if (player.isPlaying() && player.getCurrentAnimation().contains("net")
+					&& !player.getCurrentAnimation().contains(player.getDirection())) {
+				player.setCurrentAnimation("net" + player.getDirection());
+			}
+			// System.out.println("position: " + player.getHitboxGlobal().getX()
+			// + ", " + player.getHitboxGlobal().getY());
+
+			// FIXME: check for collisions
+			if (playerCollision(player.getHitboxGlobal(), player.getNumPlayer())) {
+				player.setPosition(originalPos);// move the player back
+			} else {
+				// don't move the player
+			}
+		}
+	}
+
+	// Rectangle r is the players global hitbox
+	private boolean playerCollision(Rectangle r, int numPlayer) {
+		/* Check collisions with vending machines*/
+		Rectangle other = this.vendingMachine.getHitboxGlobal();
+		other.grow(0, (int) (-45));
+		if (other.intersects(r)) {
+			return true;
+		}
+		other = this.drinkMachine.getHitboxGlobal();
+		other.grow(0, (int) (-45));
+		if (other.intersects(r)) {
+			return true;
+		}
+		/* Check collisions with the other player */
+		switch (numPlayer) {
+		case 1:
+			if (r.intersects(this.player2.getHitboxGlobal())) {
+				return true;
+			}
+			break;
+		case 2:
+			if (r.intersects(this.player1.getHitboxGlobal())) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+		/* Check whether player is not inside of the play area */
+		if (!(this.playArea.getHitboxGlobal().contains(r))) {
+			return true;
+		}
+		return false;
 	}
 }
