@@ -165,7 +165,7 @@ public class Hallway extends DisplayObjectContainer {
 		// FIXME: check between players, sprites, and walls of background
 	}
 
-	public void movePlayer(ArrayList<String> pressedKeys, Player player){
+	public void movePlayer(ArrayList<String> pressedKeys, Player player) {
 		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
 				player.moveSpriteCartesianAnimate(pressedKeys);
@@ -179,13 +179,13 @@ public class Hallway extends DisplayObjectContainer {
 
 		}
 	}
-	
+
 	public void switchScenes() {
-		if(this.player1 != null && 
-				this.player1.getxPosGlobal() > this.gameManager.getGameWidth()) {
+		if (this.player1 != null && this.player1.getxPosGlobal() > this.gameManager.getGameWidth()) {
 			this.gameManager.setActiveGameScene("classroom" + gameManager.getNumLevel());
 		}
 	}
+
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
@@ -201,6 +201,7 @@ public class Hallway extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
+		System.out.println("updating hallway");
 		this.navigateStore(pressedKeys);
 		this.movePlayer(pressedKeys, this.player1);
 		if (this.gameManager.getNumPlayers() == 2) {
