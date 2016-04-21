@@ -373,7 +373,12 @@ public class Classroom extends DisplayObjectContainer {
 			}
 		}
 		this.endLevelScreen.setDialog(dialog);
-		this.endLevelScreen.setExperience((int) this.calcExp(1));
+		if (this.gameManager.getNumPlayers() == 1) {
+			this.endLevelScreen.setExperience((int) this.calcExp(1));
+		} else {
+			this.endLevelScreen.setExperience((int) this.calcExp(1), (int) this.calcExp(2));
+		}
+		
 		this.endLevelScreen.setNumPlayer(1);
 		//this.endLevelScreen.setVisible(true);
 		/* Reset stats */

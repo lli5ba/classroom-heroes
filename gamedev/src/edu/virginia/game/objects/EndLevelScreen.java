@@ -24,8 +24,10 @@ public class EndLevelScreen extends DisplayObjectContainer {
 	private LevelManager levelManager = LevelManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
 	private int numPlayer;
-	private int experience;
+	private int experience1;
+	private int experience2;
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
+	
 
 	public EndLevelScreen(String id) {
 		super(id, "end-level/notebook.png"); // notebook
@@ -61,7 +63,14 @@ public class EndLevelScreen extends DisplayObjectContainer {
 				
 			} else if (releasedKeys.contains(this.playerManager.getSecondaryKey(this.numPlayer))) {
 				//exit
-				this.gameManager.setActiveGameScene("hallway" + (this.gameManager.getNumLevel()-1)); //FIXME: incorporate "numLevel" to decide which to load
+				if (this.numPlayer == 1 && this.gameManager.getNumPlayers() == 2) {
+					this.setNumPlayer(2);
+				}
+				else if (this.numPlayer == 2 || 
+						(this.numPlayer == 1 && this.gameManager.getNumPlayers() == 1) ) {
+					this.gameManager.setActiveGameScene("hallway" + (this.gameManager.getNumLevel()-1)); //FIXME: incorporate "numLevel" to decide which to load
+				
+				}
 			} else if (releasedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
 				//buy movement speed
 				if(this.playerManager.getAttrPoints(numPlayer) > 0) {
@@ -101,8 +110,15 @@ public class EndLevelScreen extends DisplayObjectContainer {
 			f = new Font("Dialog", Font.PLAIN, 12);
 			g.setFont(f);
 			if(this.dialog.equals(WIN)) {
-				g.drawString("Experience Points Earned: " +
-						this.experience, 140, 120);
+				if (this.numPlayer == 1) {
+					g.drawString("Player 1", 140, 110);
+					g.drawString("Experience Points Earned: " +
+							this.experience1, 140, 125);
+				} else {
+					g.drawString("Player 2", 140, 110);
+					g.drawString("Experience Points Earned: " +
+							this.experience2, 140, 125);
+				}
 				g.drawString("Attribute Points Remaining: " +
 						this.playerManager.getAttrPoints(this.numPlayer), 140, 139);
 				g.drawString("Current Movement Speed: " +
@@ -150,12 +166,16 @@ public class EndLevelScreen extends DisplayObjectContainer {
 
 
 	public int getExperience() {
-		return experience;
+		return experience1;
 	}
 
 
-
 	public void setExperience(int experience) {
-		this.experience = experience;
+		this.experience1 = experience;
+	}
+	
+	public void setExperience(int exp1, int exp2) {
+		this.experience1 = exp1;
+		this.experience2 = exp2;
 	}
 }
