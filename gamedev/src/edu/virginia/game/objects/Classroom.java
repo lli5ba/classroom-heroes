@@ -90,7 +90,6 @@ public class Classroom extends DisplayObjectContainer {
 		this.addEventListener(levelManager, EventTypes.LOSE_LEVEL.toString());
 		this.addEventListener(soundManager, EventTypes.CURE_STUDENT.toString());
 		this.addEventListener(soundManager, EventTypes.POISON_STUDENT.toString());
-
 		
 		/* Constructing furniture */
 		
@@ -109,11 +108,15 @@ public class Classroom extends DisplayObjectContainer {
 		this.player1.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
 		this.player1.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player1.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
-
+		this.player1.addEventListener(playerManager, EventTypes.THROW_SMOKEBOMB.toString());
+		this.player2.addEventListener(levelManager, EventTypes.THROW_SMOKEBOMB.toString());
+		
 		this.player2.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
 		this.player2.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
 		this.player2.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player2.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
+		this.player2.addEventListener(playerManager, EventTypes.THROW_SMOKEBOMB.toString());
+		this.player2.addEventListener(levelManager, EventTypes.THROW_SMOKEBOMB.toString());
 
 		if (this.gameManager.getNumPlayers() == 1) {
 			// set player2 inactive and invisible
@@ -453,6 +456,8 @@ public class Classroom extends DisplayObjectContainer {
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
 		this.drawTimeLeft(g);
+		//smokebomb
+		this.levelManager.drawBombs(g);
 		/*if (this.player1 != null) {
 			this.player1.drawNetHitboxGlobal(g);
 		}*/
@@ -472,6 +477,9 @@ public class Classroom extends DisplayObjectContainer {
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
 			this.aimThrowSmokeBomb(pressedKeys, this.player1);
+			//smokebomb
+			this.levelManager.removeCompleteBombs(pressedKeys);
+		
 		//	this.floryan(boss.getAnimation());
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
@@ -517,20 +525,20 @@ public class Classroom extends DisplayObjectContainer {
 			player.setSmokebombVisible(false);
 		}
 		if (player != null && player.getNetHitbox() != null 
-				&& pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))) {
+				&& pressedKeys.contains(this.playerManager.getSecondaryKey(player.getNumPlayer()))
+				&& this.playerManager.getNumCheesePuffs() > 0) {
 			/*
 			 * update player's position depending on key pressed
 			 */
 			player.moveSmokebomb(player.getDirection());
-			String smokebombDir = player.getDirection();
-			System.out.println(pressedKeys.toString());
+			player.setSmokebombDir(player.getDirection());
 			if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 				String dir = "up"; //right
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "right");
-				smokebombDir = dir + "right";
+				player.setSmokebombDir( dir + "right" );
 				
 			} else if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
@@ -538,54 +546,92 @@ public class Classroom extends DisplayObjectContainer {
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "left");
-				smokebombDir = dir + "left";
+				player.setSmokebombDir( dir + "left" );
 			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 				String dir = "down"; //right
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "right");
-				smokebombDir = dir + "right";
+				player.setSmokebombDir(dir + "right");
 			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))
 					&& pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
 				String dir = "down"; //left
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir + "left");
-				smokebombDir = dir + "left";
+				player.setSmokebombDir(dir + "left");
 			} else if (pressedKeys.contains(this.playerManager.getUpKey(player.getNumPlayer()))) {
 				String dir = "up";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			} else if (pressedKeys.contains(this.playerManager.getDownKey(player.getNumPlayer()))) {
 				String dir = "down";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			} else if (pressedKeys.contains(this.playerManager.getLeftKey(player.getNumPlayer()))) {
 				String dir = "left";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			} else if (pressedKeys.contains(this.playerManager.getRightKey(player.getNumPlayer()))) {
 				String dir = "right";
 				player.setDirection(dir);
 				player.setDefaultImage(dir);
 				player.moveSmokebomb(dir);
-				smokebombDir = dir;
+				player.setSmokebombDir(dir);
 			}
-			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))) {
+			if (releasedKeys.contains(this.playerManager.getPrimaryKey(player.getNumPlayer()))
+					) {
+				int bombSpeed = 1000;
 				/* throw puffbag */
-				//FIXME: Leandra
+				double range = player.getHeight()*5;
+				//a global position, will be the final position of the smokebomb
+				Position candidatePos = Smokebomb.generatePosition(player.getSmokebombDir(), 
+						range, player.getSmokebombPos().getX(), player.getSmokebombPos().getY());
+				//Position finalPos = correctSmokebombPos(candidatePos);
+				Position finalPos = candidatePos;
+				Smokebomb bomb = new Smokebomb("bomb", (int)finalPos.getX(), (int)finalPos.getY());
+				bomb.setScaleX(player.getScaleXGlobal());
+				bomb.setScaleY(player.getScaleYGlobal());
+				bomb.setCenterPos(player.getSmokebombPos());
+				Tween tween = new Tween(bomb, TweenTransitions.LINEAR);
+				myTweenJuggler.add(tween);
+				tween.animate(TweenableParam.POS_X, (int)bomb.getxPos(), (int)finalPos.getX(), bombSpeed);
+				tween.animate(TweenableParam.POS_Y, (int)bomb.getyPos(), (int)finalPos.getY(), bombSpeed);
+				
+				/* add to list */
+				this.levelManager.addSmokebomb(bomb);
+				player.setSmokebombVisible(false);
+				player.dispatchEvent(new GameEvent(EventTypes.THROW_SMOKEBOMB.toString(), player));
 			}
 		}
 	}
 	
-
+	public Position correctSmokebombPos(Position candidatePos) {
+		//bounds check with playarea and change to be inside play area if necessary
+		if (candidatePos.getX() < this.playArea.getxPosGlobal()) { //off the screen left
+			candidatePos.setX(this.playArea.getxPosGlobal());
+		} else if (candidatePos.getX() > this.playArea.getxPosGlobal() +
+				this.playArea.getWidth()) {//off the screen right
+			candidatePos.setX(this.playArea.getxPosGlobal() + 
+					this.playArea.getWidth());
+		}
+		if (candidatePos.getY() < this.playArea.getyPosGlobal()) { //off the screen top
+			candidatePos.setY(this.playArea.getyPosGlobal());
+		} else if (candidatePos.getY() > this.playArea.getyPosGlobal() + 
+				this.playArea.getHeight()) { //off the screen bottom
+			candidatePos.setY(this.playArea.getyPosGlobal() + 
+					this.playArea.getHeight());
+		} 
+		
+		return candidatePos;
+	}
 	public void moveSpriteCartesianAnimate(ArrayList<String> pressedKeys, Player player) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);

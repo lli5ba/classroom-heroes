@@ -73,6 +73,7 @@ public class LevelManager implements IEventListener {
 		poisonCollected1 = 0;
 		vpCollected2 = 0;
 		poisonCollected2 = 0;
+		smokebombList = new ArrayList<Smokebomb>();
 	}
 
 	/*********** Temporary Level Stats Getters and Setters *********/
@@ -164,13 +165,21 @@ public class LevelManager implements IEventListener {
 				if (bomb.isComplete()) {
 					iterator.remove();
 					// toRemove.add(t);
+				} else {
+					bomb.update(pressedKeys);
 				}
 			}
 		}
 	}
 	
 	public void drawBombs(Graphics g) {
-		
+		if (this.smokebombList != null) {
+			for (Smokebomb bomb : this.smokebombList) {
+				if(!bomb.isComplete()) {
+					bomb.draw(g);
+				}
+			}
+		}
 	}
 
 	public void clearStats(){
