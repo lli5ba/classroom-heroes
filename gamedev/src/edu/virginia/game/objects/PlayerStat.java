@@ -17,6 +17,7 @@ public class PlayerStat extends Sprite {
 	private double numHeartsTot;
 	private double numHearts;
 	private double halfHearts;
+	private int y;
 	private GameManager gameManager = GameManager.getInstance();
 	private PlayerManager playerManager = PlayerManager.getInstance();
 
@@ -24,12 +25,12 @@ public class PlayerStat extends Sprite {
 		super(id);
 
 		setHearts(1);
+		setEmpty(1);
 		if(this.gameManager.getNumPlayers() == 2) {
 			setHearts(2);
+			setEmpty(2);
 		}
 	}
-	// this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
-	// this.addChild(emptyHeart);
 
 	public void setHearts(int player) {
 		numHeartsTot = this.playerManager.getMaxHealth(player) / 2;
@@ -37,13 +38,12 @@ public class PlayerStat extends Sprite {
 		halfHearts = this.playerManager.getHealth(player) % 2;
 		int x = 150;
 		if(player == 2) {
-			System.out.println("drawing player 2");
 			x = 350;
 		}
 		for (int i = 0; i < numHearts; i++) {
 			this.wholeHeart = new Sprite("wholeheart" + i, "statbox/heart-whole.png");
 			this.addChild(wholeHeart);
-			System.out.println("heart" + i);
+			//System.out.println("heart" + i);
 			this.wholeHeart.setPosition(x, 40);
 			this.wholeHeart.setScaleX(1.0);
 			this.wholeHeart.setScaleY(1.0);
@@ -58,6 +58,22 @@ public class PlayerStat extends Sprite {
 			this.halfHeart.setScaleY(1.0);
 			x += 12;
 		}
+		y = x;
+	}
+	
+	public void setEmpty(int player) {
+		
+		if(numHearts != numHeartsTot) {
+			double half = numHearts + halfHearts;
+			if(half == numHearts) {
+				 this.emptyHeart = new Sprite("empty", "statbox/heart-empty.png");
+				 this.addChild(emptyHeart);
+				 this.emptyHeart.setPosition(y,40);
+				 this.emptyHeart.setScaleX(1.0);
+				 this.emptyHeart.setScaleY(1.0);
+			}
+			
+		}
 	}
 	
 	@Override
@@ -69,10 +85,13 @@ public class PlayerStat extends Sprite {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
+		setEmpty(1);
 		this.removeAll();
 		setHearts(1);
+		setEmpty(1);
 		if(this.gameManager.getNumPlayers() == 2) {
 			setHearts(2);
+			setEmpty(2);
 		}
 		// System.out.println("tot: " + numHeartsTot);
 		// System.out.println("hearts: " + numHearts);
