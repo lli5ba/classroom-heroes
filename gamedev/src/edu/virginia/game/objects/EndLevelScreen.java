@@ -83,6 +83,8 @@ public class EndLevelScreen extends DisplayObjectContainer {
 			} else if (releasedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
 				
 			}
+		} else {
+			//lost level, press secondaryKey to replay
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
