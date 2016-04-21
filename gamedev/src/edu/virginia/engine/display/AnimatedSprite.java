@@ -241,7 +241,7 @@ public class AnimatedSprite extends Sprite {
 		if (this.isPlaying) {
 			// Stop if done looping
 			// System.out.println("playing animation");
-			if (this.getId().equals("floyran")) {
+			if (this.getId().equals("floryan")) {
 			System.out.println("Current frame: " + currentFrame);
 			}
 			if (!this.isLooping() && this.getTimesLooped() == 1) {
