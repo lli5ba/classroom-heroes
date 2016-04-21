@@ -40,14 +40,14 @@ public class PlayerStatBox extends DisplayObjectContainer {
 		this.VPicon1.setScaleX(.8);
 		this.VPicon1.setScaleY(.8);
 		this.addChild(VPicon1);
-		this.VPicon1.setPosition(78, 38);
+		this.VPicon1.setPosition(125, 38);
 
 		if (this.gameManager.getNumPlayers() == 2) {
 			this.VPicon2 = new Sprite("vp-icon2", "statbox/vp-icon.png");
 			this.VPicon2.setScaleX(.8);
 			this.VPicon2.setScaleY(.8);
 			this.addChild(VPicon2);
-			this.VPicon2.setPosition(450, 38);
+			this.VPicon2.setPosition(420, 38);
 		}
 	}
 
@@ -58,12 +58,12 @@ public class PlayerStatBox extends DisplayObjectContainer {
 		g.setFont(f);
 
 //		g.drawString("Player 1's Health: " + this.playerManager.getHealth(1), 115, 48);
-		g.drawString(": " + (this.levelManager.getVPCollected(1)), 93, 48);
+		g.drawString(": " + (this.levelManager.getVPCollected(1)), 145, 48);
 		g.drawString(": " + this.playerManager.getNumCheesePuffs(), 270, 48);
 		g.drawString(": " + this.playerManager.getNumGingerAle(), 300, 48);
 		if (this.gameManager.getNumPlayers() == 2) {
 			//g.drawString("Player 2's Health: " + this.playerManager.getHealth(2), 350, 48);
-			g.drawString(": " + this.levelManager.getVPCollected(2), 465, 48);
+			g.drawString(": " + this.levelManager.getVPCollected(2), 440, 48);
 		}
 	}
 

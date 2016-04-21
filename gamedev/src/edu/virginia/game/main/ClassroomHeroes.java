@@ -45,6 +45,7 @@ import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Classroom2;
 import edu.virginia.game.objects.Classroom3;
 import edu.virginia.game.objects.Hallway;
+import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.ItemDetail;
 import edu.virginia.game.objects.PickedUpItem;
 import edu.virginia.game.objects.Poison;
@@ -80,6 +81,19 @@ public class ClassroomHeroes extends Game {
 		// TODO: Leandra
 	}
 
+	public void sceneMusic(String id, String filename) {
+		
+		soundManager.stopAll();
+		if (!soundManager.isPlayingMusic()) {
+			soundManager.LoadMusic(id, filename);
+			try {
+				soundManager.PlayMusic(id);
+			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	/**
 	 * Engine will automatically call this update method once per frame and pass
 	 * to us the set of keys (as strings) that are currently being pressed down
@@ -89,11 +103,10 @@ public class ClassroomHeroes extends Game {
 		super.update(pressedKeys);
 		// this updates the corresponding active game scene!!
 		this.gameManager.update(pressedKeys);
-		
+
 		/***
 		 * create an asset and add it to the gameManager if it does not exist
 		 **/
-
 		// assumes active game scene is either "hallway[0-3]" or classroom[1-5]
 		// creates the current scene if it does not yet exist
 		if (!this.gameManager.activeGameSceneIsCreated()) {
@@ -102,37 +115,21 @@ public class ClassroomHeroes extends Game {
 				TitleScreen title = new TitleScreen(sceneName);
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, title);
-
-				soundManager.stopAll();
-				if (!soundManager.isPlayingMusic()) {
-					soundManager.LoadMusic("title", "title.wav");
-					try {
-						soundManager.PlayMusic("title");
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						e.printStackTrace();
-					}
-				}
+				sceneMusic("title", "title.wav");
+			} else if (sceneName.contains("instructions")) {
+				Instructions instruction = new Instructions(sceneName);
+				// add scene to gameManager
+				this.gameManager.addGameScene(sceneName, instruction);
+				sceneMusic("instruction", "instructions.wav");
 			} else if (sceneName.contains("hallway")) {
 				// create a hallway
 				// get last character in styleCode
 				String styleCode = sceneName.substring(sceneName.length() - 1);
 				Hallway hallway = null;
-
 				hallway = new Hallway(sceneName, styleCode);
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, hallway);
-
-				soundManager.stopAll();
-				if (!soundManager.isPlayingMusic()) {
-					soundManager.LoadMusic("hallway", "hallway.wav");
-					try {
-						soundManager.PlayMusic("hallway");
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
+				sceneMusic("hallway", "hallway.wav");
 			}
 			else if (sceneName.contains("classroom")) {
 				if (sceneName.equals("classroom1")) {
@@ -141,7 +138,6 @@ public class ClassroomHeroes extends Game {
 					try {
 						classroom = new Classroom(sceneName);
 					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					// add scene to gameManager
@@ -177,11 +173,8 @@ public class ClassroomHeroes extends Game {
 
 					this.gameManager.addGameScene(sceneName, classroom3);
 				}
-				
 			}
 		}
-
-
 	}
 
 	/**
