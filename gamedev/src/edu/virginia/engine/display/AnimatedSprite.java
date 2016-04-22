@@ -69,12 +69,12 @@ public class AnimatedSprite extends Sprite {
 		spriteMap = new HashMap<String, ArrayList<FrameInfo>>();
 		loadSprites(specsFileName, spriteSheetFileName);
 		isPlaying = false;
-		currentAnimation = null;
+		currentAnimation = "";
 		setAnimationSpeed(1);
 		setGameClockAnimation(new GameClock());
 		loop = true;
 		setTimesLooped(0);
-		prevAnimation = null;
+		prevAnimation = "";
 		direction = "down";
 		if (spriteMap.containsKey("default")) {
 			this.setDefault();
@@ -96,19 +96,40 @@ public class AnimatedSprite extends Sprite {
 	}
 
 	public void animate(String animationName) {
-		if(this.getId().contains("door")){
-		System.out.println(animationName);
-		}
+		
 		if (spriteMap.containsKey(animationName)) {
 			
 			if (loop != false) { // Like a lock... animateOnce sequence takes
 									// priority
+				//if different animation, then reset currentFrame
+				if (!currentAnimation.equals(animationName)) {
+					
+					currentFrame = 0;
+					this.getGameClockAnimation().resetGameClock();
+				}
 				currentAnimation = animationName;
 				isPlaying = true;
-				currentFrame = 0;
 				loop = true;
 				setTimesLooped(0);
-				this.getGameClockAnimation().resetGameClock();
+				
+			}
+		}
+	}
+	
+	public void animate(String animationName, double speed) {
+		if (spriteMap.containsKey(animationName)) {
+			if (loop != false) { // Like a lock... animateOnce sequence takes
+									// priority
+				//if different animation, then reset currentFrame
+				if (!currentAnimation.equals(animationName)) {
+					currentFrame = 0;
+					this.getGameClockAnimation().resetGameClock();
+				}
+				currentAnimation = animationName;
+				isPlaying = true;
+				setAnimationSpeed(speed);
+				loop = true;
+				setTimesLooped(0);
 			}
 		}
 	}
@@ -121,33 +142,25 @@ public class AnimatedSprite extends Sprite {
 		 */
 		if (loop == false) {
 			if (prevAnimation != null) {
-				this.setDefaultImage(prevAnimation);
-				loop = true;
+				//if the animation sequence is still the same, don't reset animation to frame 0
+				if (!currentAnimation.equals(prevAnimation)) {
+					this.setDefaultImage(prevAnimation);
+					loop = true;
+				}
 			}
 		} else {
-			this.setDefaultImage(currentAnimation);
+			//if the animation sequence is still the same, don't reset animation to frame 0
+			if (!currentAnimation.equals(prevAnimation)) {
+				this.setDefaultImage(currentAnimation);
+			}
 			prevAnimation = currentAnimation; 
 		}
 		isPlaying = false;
-		currentFrame = 0;
+		//currentFrame = 0;
 		setTimesLooped(0);
 		setAnimationSpeed(1);		
 	}
 
-	public void animate(String animationName, int speed) {
-		if (spriteMap.containsKey(animationName)) {
-			if (loop != false) { // Like a lock... animateOnce sequence takes
-									// priority
-				currentAnimation = animationName;
-				isPlaying = true;
-				currentFrame = 0;
-				setAnimationSpeed(speed);
-				loop = true;
-				setTimesLooped(0);
-				this.getGameClockAnimation().resetGameClock();
-			}
-		}
-	}
 
 	public void animateOnce(String animationName) {
 		if (spriteMap.containsKey(animationName)) {
@@ -236,7 +249,7 @@ public class AnimatedSprite extends Sprite {
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
-
+		
 		super.update(pressedKeys);
 		updateAnimation();
 	}
@@ -244,10 +257,6 @@ public class AnimatedSprite extends Sprite {
 	public void updateAnimation() {
 		if (this.isPlaying) {
 			// Stop if done looping
-			// System.out.println("playing animation");
-			if (this.getId().equals("floryan")) {
-			System.out.println("Current frame: " + currentFrame);
-			}
 			if (!this.isLooping() && this.getTimesLooped() == 1) {
 				this.stopAnimation();
 			}

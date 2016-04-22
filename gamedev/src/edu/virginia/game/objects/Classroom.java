@@ -684,7 +684,7 @@ public class Classroom extends DisplayObjectContainer {
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 
 				if (!player.isPlaying() || player.getCurrentAnimation() != "up") {
-					player.animate("up");
+					player.animate("up", speed/2);
 				}
 				player.setDirection("up");
 				
@@ -695,7 +695,7 @@ public class Classroom extends DisplayObjectContainer {
 				player.setyPos(player.getyPos() + speed);
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 				if (!player.isPlaying() || player.getCurrentAnimation() != "down") {
-					player.animate("down");
+					player.animate("down", speed/2);
 				}
 				player.setDirection("down");
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
@@ -706,7 +706,7 @@ public class Classroom extends DisplayObjectContainer {
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 
 				if (!player.isPlaying() || player.getCurrentAnimation() != "left") {
-					player.animate("left");
+					player.animate("left", speed/2);
 				}
 				player.setDirection("left");
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
@@ -718,7 +718,7 @@ public class Classroom extends DisplayObjectContainer {
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), this));
 
 				if (!player.isPlaying() || player.getCurrentAnimation() != "right") {
-					player.animate("right");
+					player.animate("right", speed/2);
 				}
 				player.setDirection("right");
 				player.dispatchEvent(new GameEvent(EventTypes.WALK.toString(), player));
