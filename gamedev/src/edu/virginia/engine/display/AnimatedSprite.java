@@ -249,7 +249,6 @@ public class AnimatedSprite extends Sprite {
 
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
-		
 		super.update(pressedKeys);
 		updateAnimation();
 	}
