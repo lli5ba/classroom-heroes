@@ -467,7 +467,7 @@ public class Classroom extends DisplayObjectContainer {
 
 	public void drawTimeLeft(Graphics g) {
 		if (this.inPlay) {
-			Font f = new Font("Dialog", Font.PLAIN, 20);
+			Font f = new Font("Dialog", Font.BOLD, 20);
 			g.setFont(f);
 			int timeLeft = (int) (GAME_TIME - this.gameClock.getElapsedTime()) / 1000;
 			if (timeLeft < 0) {

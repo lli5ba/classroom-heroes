@@ -460,9 +460,12 @@ public class PlayerManager implements IEventListener {
 				int playerNum = player.getNumPlayer();
 				System.out.println(playerNum);
 				player.animateBubbles(); //play animation
+				//show health bar'
+				player.showHealthBar(1.5);
 				int currentHealth = this.getHealth(playerNum);
 				this.setHealth(currentHealth - 1, playerNum); // decrease
 																		// health
+				
 			}
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.setVpCount(this.vpCount + 1);

@@ -42,6 +42,7 @@ public class Player extends AnimatedSprite {
 	private Net net;
 	private Sprite smokebomb;
 	private String smokebombDir;
+	private PlayerHealthBar healthBar;
 
 	public Player(String id, String imageFileName, String thisSheetFileName, String specsFileName, int numPlayer) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
@@ -55,7 +56,7 @@ public class Player extends AnimatedSprite {
 		this.addEventListener(soundManager, EventTypes.WALK.toString());
 		this.numPlayer = numPlayer;
 		this.active = true;
-
+		
 		/* add smokebomb */
 		smokebomb = new Sprite(id + "-bomb", "smokebomb/smokebomb-default.png");
 		this.addChild(smokebomb);
@@ -71,8 +72,16 @@ public class Player extends AnimatedSprite {
 		this.addChild(poisonBubbles);
 		this.poisonBubbles.setCenterPos(this.getWidth()*.75, -this.getHeight()*0.05);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
+		
+		/* add healthbar */
+		this.healthBar = new PlayerHealthBar(id + "-healthBar", numPlayer);
+		this.addChild(healthBar);
+		this.healthBar.setPosition(0, -10); // float over head
 	}
 	
+	public void showHealthBar(double seconds) {
+		this.healthBar.play(seconds);
+	}
 	/**global position returned */
 	public Position getSmokebombPos() {
 		return this.smokebomb.getCenterPosGlobal();
