@@ -157,9 +157,12 @@ public class GameManager {
 				this.removeGameScene(name);
 			}
 		}
+		
 		for (String name : this.toRemoveQueue) {
 			this.gameScenes.remove(name);
 		}
+		this.toRemoveQueue.clear();
+		
 
 	}
 
@@ -205,5 +208,10 @@ public class GameManager {
 				}
 			}
 		}
+	}
+
+	public void restartGame() {
+		// TODO Auto-generated method stub
+		
 	}
 }
