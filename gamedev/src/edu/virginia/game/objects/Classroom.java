@@ -46,9 +46,6 @@ public class Classroom extends DisplayObjectContainer {
 	private Player player1;
 	private Player player2;
 	private Boss boss;
-	private Sprite table1;
-	private Sprite table2;
-	private Sprite table3;
 	private PlayerStatBox stat;
 	private PlayerStat pstat;
 	private EndLevelScreen endLevelScreen;
@@ -101,7 +98,7 @@ public class Classroom extends DisplayObjectContainer {
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
 				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
-		player2 = new Player("Player2", "player/player1.png", "player/player-spritesheet-1.png",
+		player2 = new Player("Player2", "player/player2.png", "player/player-spritesheet-2.png",
 				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
 
 		this.player1.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
@@ -189,7 +186,7 @@ public class Classroom extends DisplayObjectContainer {
 
 	public void spawnTable(String id, String style, double xPos, double yPos) {
 		if (style.equals("blue")) {
-			table1 = new Sprite(id, "table/Table.png");
+			Sprite table1 = new Sprite(id, "table/Table.png");
 			table1.setScaleX(.4);
 			table1.setScaleY(.6);
 			this.addChild(table1);
@@ -197,7 +194,7 @@ public class Classroom extends DisplayObjectContainer {
 					(int) table1.getOriginalHitbox().getY() - 2,
 					(int) table1.getOriginalHitbox().getWidth(),
 					(int) (table1.getOriginalHitbox().getHeight()*.8)));
-			this.table1.setPosition(xPos, yPos);
+			table1.setPosition(xPos, yPos);
 			this.furnitureList.add(table1);
 		} else if (style.equals("wood")) {
 			
