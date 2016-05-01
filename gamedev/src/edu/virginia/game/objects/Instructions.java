@@ -2,6 +2,7 @@ package edu.virginia.game.objects;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,57 +24,60 @@ public class Instructions extends AnimatedSprite {
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private GameManager gameManager = GameManager.getInstance();
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
-	private AnimatedSprite playerIcon;
-	private DisplayObjectContainer keys;
 	private AnimatedSprite vp0;
 	private AnimatedSprite vp1;
 	private AnimatedSprite vp2;
+	private AnimatedSprite vpPlayer;
+	private AnimatedSprite thrownVP;
 	private AnimatedSprite poison;
 
 	public Instructions(String id) {
 		super(id, "instructions/instructions-background.png"); // background
 
-		this.playerIcon = new AnimatedSprite("playerIcon", "player/player1.png");
-		this.playerIcon.setScaleX(1.0);
-		this.playerIcon.setScaleY(1.0);
-		this.addChild(playerIcon);
-		this.playerIcon.setPosition(20, 40);
-
-		this.keys = new DisplayObjectContainer("keys", "instructions/keys-arrowkeys.png");
-		this.keys.setScaleX(.4);
-		this.keys.setScaleY(.4);
-		this.addChild(keys);
-		this.keys.setPosition(20, 95);
-
 		this.vp0 = new AnimatedSprite("vp0", "projectiles/vp0.png", "projectiles/vpsheet.png",
 				"resources/projectiles/vpsheetspecs.txt");
-		this.vp0.setScaleX(.8);
-		this.vp0.setScaleY(.8);
-		this.vp0.setPosition(15, 140);
+		this.vp0.setScaleX(.5);
+		this.vp0.setScaleY(.5);
+		this.vp0.setPosition(25, 125);
 		this.animate("red");
 		this.addChild(vp0);
 
 		this.vp1 = new AnimatedSprite("vp1", "projectiles/vp1.png", "projectiles/vpsheet.png",
 				"resources/projectiles/vpsheetspecs.txt");
-		this.vp1.setScaleX(.8);
-		this.vp1.setScaleY(.8);
-		this.vp1.setPosition(30, 140);
+		this.vp1.setScaleX(.5);
+		this.vp1.setScaleY(.5);
+		this.vp1.setPosition(40, 125);
 		this.animate("yellow");
 		this.addChild(vp1);
 
 		this.vp2 = new AnimatedSprite("vp2", "projectiles/vp2.png", "projectiles/vpsheet.png",
 				"resources/projectiles/vpsheetspecs.txt");
-		this.vp2.setScaleX(.8);
-		this.vp2.setScaleY(.8);
-		this.vp2.setPosition(45, 140);
+		this.vp2.setScaleX(.5);
+		this.vp2.setScaleY(.5);
+		this.vp2.setPosition(55, 125);
 		this.animate("blue");
 		this.addChild(vp2);
 
+		this.vpPlayer = new AnimatedSprite("vp2", "player/player1.png", "player/player-spritesheet-1.png",
+				"resources/player/player-spritesheet-1-frameInfo.txt");
+		this.vpPlayer.setScaleX(1.0);
+		this.vpPlayer.setScaleY(1.0);
+		this.vpPlayer.setPosition(80, 110);
+		this.addChild(vpPlayer);
+		
+		this.thrownVP = new AnimatedSprite("vp0", "projectiles/vp0.png", "projectiles/vpsheet.png",
+				"resources/projectiles/vpsheetspecs.txt");
+		this.thrownVP.setScaleX(.5);
+		this.thrownVP.setScaleY(.5);
+		this.thrownVP.setPosition(25, 125);
+		this.animate("red");
+		this.addChild(thrownVP);
+
 		this.poison = new AnimatedSprite("poison", "projectiles/poison.png", "projectiles/poison-spritesheet.png",
 				"resources/projectiles/poison-spritesheet.txt");
-		this.poison.setScaleX(.8);
-		this.poison.setScaleY(.8);
-		this.poison.setPosition(45, 180);
+		this.poison.setScaleX(.5);
+		this.poison.setScaleY(.5);
+		this.poison.setPosition(40, 180);
 		this.animate("poison");
 		this.addChild(poison);
 
@@ -94,23 +98,20 @@ public class Instructions extends AnimatedSprite {
 
 	public void draw(Graphics g) {
 		super.draw(g);
+
 		Font f = new Font("Dialog", Font.BOLD, 50);
-		Font h = new Font("Dialog", Font.BOLD, 20);
-		Font i = new Font("Dialog", Font.BOLD, 60);
+		Font h = new Font("Dialog", Font.BOLD, 25);
+		Font i = new Font("Monospaced", Font.BOLD, 15);
 		g.setFont(f);
-		g.drawString("Welcome to the classroom!", 20, 50);
+		g.drawString("Welcome to the classroom!", 40, 70);
 		g.setFont(h);
-		g.drawString("Here is your player:", 20, 80);
-		g.drawString("Use arrow keys to move", 20, 200);
-		g.drawString("Here is a VP: ", 20, 310);
-
+		g.drawString("Collect VP", 40, 120);
+		g.drawString("Use VP to buy from store at end of level", 40, 235);
+		g.drawString("Collect poison before it hits you or your classmates", 40, 360);
+		g.drawString("If hit, cure classmates with antidote", 40, 475);
+		g.drawString("Aim and throw smoke bombs to protect area", 40, 590);
 		g.setFont(i);
-		g.drawString("INSTRUCTIONS WILL BE FINISHED BY FINAL", 10, 400);
-		g.drawString("Use space bar to swing net", 10, 450);
-		g.drawString("Use B to cure classmates when poisoned", 10, 500);
-		g.drawString("Use B&spacebar to throw smoke bombs", 10, 550);
-		g.drawString("Press enter or spacebar to begin", 10, 600);
-
+		g.drawString("VP", 95, 320);
 	}
 
 	public void update(ArrayList<String> pressedKeys) {

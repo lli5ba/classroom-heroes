@@ -124,8 +124,8 @@ public class Classroom extends DisplayObjectContainer {
 		this.addChild(player1);
 		this.addChild(player2);
 
-		this.player1.setPosition(this.getWidth() * .08, this.getHeight() * .742);
-		this.player2.setPosition(this.getWidth() * .814, this.getHeight() * .742);
+		this.player1.setPosition(this.getWidth() * .814, this.getHeight() * .742);
+		this.player2.setPosition(this.getWidth() * .08, this.getHeight() * .742);
 
 		/* Boss constructor */
 
