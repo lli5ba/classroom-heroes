@@ -139,14 +139,14 @@ public class Instructions extends AnimatedSprite {
 				"resources/player/player-spritesheet-1-frameInfo.txt");
 		this.bombPlayer.setScaleX(1.0);
 		this.bombPlayer.setScaleY(1.0);
-		this.bombPlayer.setPosition(40, 260);
+		this.bombPlayer.setPosition(40, 264);
 		this.addChild(bombPlayer);
 		
 		this.bomb = new AnimatedSprite("bomb", "smokebomb/smokebomb-default.png", "smokebomb/smokebomb-spritesheet.png",
 				"resources/smokebomb/smokebomb-spritesheet.txt");
 		this.bomb.setScaleX(.8);
 		this.bomb.setScaleY(.8);
-		this.bomb.setPosition(80, 280);
+		this.bomb.setPosition(80, 284);
 		this.addChild(bomb);
 
 		this.setHeight(gameManager.getGameHeight());
