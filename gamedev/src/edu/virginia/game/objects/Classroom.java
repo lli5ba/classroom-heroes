@@ -83,6 +83,7 @@ public class Classroom extends DisplayObjectContainer {
 		/* Game Event Listener */
 		this.addEventListener(soundManager, EventTypes.PICKUP_VP.toString());
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
+		this.addEventListener(soundManager, EventTypes.POISON_PLAYER.toString());
 		this.addEventListener(levelManager, EventTypes.WIN_LEVEL.toString());
 		this.addEventListener(levelManager, EventTypes.LOSE_LEVEL.toString());
 		this.addEventListener(soundManager, EventTypes.CURE_STUDENT.toString());
@@ -255,7 +256,7 @@ public class Classroom extends DisplayObjectContainer {
 	private void checkPoisonCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem poison : poisonList) {
 			if (player1.collidesWithGlobal(poison) && !poison.isPickedUp()) {
-				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
+				this.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this)); //soundmanager
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player1.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player1));
 //				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
@@ -264,7 +265,7 @@ public class Classroom extends DisplayObjectContainer {
 			}
 
 			if (player2.collidesWithGlobal(poison) && !poison.isPickedUp()) {
-				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), this));
+				this.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this)); //sound manager
 				poison.dispatchEvent(new GameEvent(EventTypes.PICKUP_POISON.toString(), poison));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.POISON_PLAYER.toString(), this.player2));
 //				System.out.println("Player 1's Health: " + this.playerManager.getHealth(1));
