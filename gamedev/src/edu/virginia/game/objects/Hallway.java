@@ -29,13 +29,14 @@ public class Hallway extends DisplayObjectContainer {
 	private Player player2;
 	private DisplayObjectContainer playArea;
 	private AnimatedSprite door;
+	private boolean doorOpen;
 
 	public Hallway(String id, String styleCode) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
 
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
 				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
-		player2 = new Player("Player2", "player/player1.png", "player/player-spritesheet-1.png",
+		player2 = new Player("Player2", "player/player2.png", "player/player-spritesheet-2.png",
 				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
 		if (this.gameManager.getNumPlayers() == 1) {
 			// set player2 inactive and invisible
@@ -76,7 +77,7 @@ public class Hallway extends DisplayObjectContainer {
 		door = new AnimatedSprite(id + "-door", "classroom/door/door-default.png",
 				"classroom/door/door-spritesheet.png", 
 				"resources/classroom/door/door-spritesheet.txt");
-		
+		doorOpen = false;
 		/* add door background */
 		Sprite doorBack = new Sprite(id + "-doorbkg", "hallway/doorbkg" + styleCode +".png");
 		
@@ -214,10 +215,18 @@ public class Hallway extends DisplayObjectContainer {
 	}
 	
 	public void checkDoorCollision() {
-		if(this.door.inRangeGlobal(this.player1, 50)
-				|| this.door.inRangeGlobal(this.player1, 50)) {
-			this.door.animateOnceLock("dooropen", 1);
-		} 
+		if(this.door.inRangeGlobal(this.player1, 75)
+				|| this.door.inRangeGlobal(this.player2, 75)) {
+			if (!doorOpen) {
+				this.door.animateOnceLock("dooropen", 5);
+				doorOpen = true;
+			}
+		}  else {
+			if (doorOpen) {
+				this.door.animateOnceLock("doorclose", 5);
+				doorOpen = false;
+			}
+		}
 	}
 
 	public void switchScenes() {

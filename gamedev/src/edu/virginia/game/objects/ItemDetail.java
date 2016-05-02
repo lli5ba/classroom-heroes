@@ -16,6 +16,8 @@ public class ItemDetail extends DisplayObjectContainer {
 	private int cost;
 	private boolean highlighted;
 	private Sprite highlight;
+	private boolean grey;
+	private String fileName;
 
 	public ItemDetail(String iconId, String iconImageFileName, String description, int cost) {
 		super(iconId, "store/item-detail-background.png");
@@ -23,10 +25,11 @@ public class ItemDetail extends DisplayObjectContainer {
 		// this.setWidth(width);
 		// this.setHeight(height);
 		// this.setAlpha(0);
-
+		this.grey = false;
 		this.description = description;
 		this.cost = cost;
-		this.itemIcon = new Sprite(iconId, iconImageFileName);
+		this.fileName = iconImageFileName;
+		this.itemIcon = new Sprite(iconId, iconImageFileName + ".png");
 		this.addChild(itemIcon);
 		this.itemIcon.setHeight(this.getHeight());
 		this.itemIcon.setWidth(this.getHeight());
@@ -39,15 +42,19 @@ public class ItemDetail extends DisplayObjectContainer {
 
 	}
 
+	private void drawString(Graphics g, String text, int x, int y) {
+        for (String line : text.split("\n"))
+            g.drawString(line, x, y += g.getFontMetrics().getHeight());
+    }
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
 		Font f = new Font("Dialog", Font.PLAIN, 12);
 		g.setFont(f);
 		g.setColor(Color.white);
-		g.drawString(description, (int) (this.getxPos() + this.itemIcon.getWidth() * 1.1),
+		this.drawString(g, description, (int) (this.getxPos() + this.itemIcon.getWidth() * 1.1),
 				(int) (this.getyPos() + this.itemIcon.getHeight() * .25));
-		g.drawString("Cost: " + cost + " VP", (int) (this.getxPos() + this.itemIcon.getWidth() * 1.1),
+		this.drawString(g, "Cost: " + cost + " VP", (int) (this.getxPos() + this.itemIcon.getWidth() * 1.1),
 				(int) (this.getyPos() + this.itemIcon.getHeight() * .75));
 		g.setColor(Color.black);
 
@@ -59,6 +66,18 @@ public class ItemDetail extends DisplayObjectContainer {
 
 	}
 
+	public void setGrey(boolean isGrey){
+		this.grey = isGrey;
+		if (isGrey) {
+			this.itemIcon.setImage(this.fileName + "-grey.png");
+		} else {
+			this.itemIcon.setImage(this.fileName + ".png");
+		}
+	}
+	
+	public boolean isGrey() {
+		return this.grey;
+	}
 	public boolean isHighlighted() {
 		return highlighted;
 	}

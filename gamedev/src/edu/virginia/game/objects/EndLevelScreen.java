@@ -68,7 +68,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 				}
 				else if (this.numPlayer == 2 || 
 						(this.numPlayer == 1 && this.gameManager.getNumPlayers() == 1) ) {
-					this.gameManager.setActiveGameScene("hallway" + (this.gameManager.getNumLevel()-1)); //FIXME: incorporate "numLevel" to decide which to load
+					this.gameManager.setActiveGameScene("hallway" + (this.gameManager.getNumLevel()-2)); //FIXME: incorporate "numLevel" to decide which to load
 				
 				}
 			} else if (releasedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
@@ -97,7 +97,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 			//lost level, press secondaryKey to replay
 			if (releasedKeys.contains(this.playerManager.getPrimaryKey(this.numPlayer))) { 
 				this.gameManager.setActiveGameScene("title");
-				this.gameManager.setNumLevel(1);
+				this.gameManager.restartGame();
 			}
 		}
 		this.prevPressedKeys.clear();

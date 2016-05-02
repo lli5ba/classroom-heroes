@@ -319,7 +319,7 @@ public class DisplayObject extends EventDispatcher {
 		return this.displayImage;
 	}
 
-	protected void setImage(String imageName) {
+	public void setImage(String imageName) {
 		setVisible(true);
 		if (imageName == null) {
 			return;
