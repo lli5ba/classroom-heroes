@@ -58,6 +58,13 @@ public class Store extends DisplayObjectContainer {
 		
 		
 		this.numPlayer = numPlayerBuying;
+		
+		/* insufficient funds toast */
+		this.insuffFundsDialog = new ToastSprite("insuffFunds", "store/insufficient-funds.png");
+		this.addChild(insuffFundsDialog);
+		this.insuffFundsDialog.setPosition(this.getWidth()*.5 - (this.insuffFundsDialog.getWidth() *.5), 
+				this.getHeight()*.5 - (this.insuffFundsDialog.getHeight()*.5));
+		
 		/* continue button */
 		this.contButton = new NavButtonIcon(NavButtonIcon.BACK, 
 				true, this.playerManager.getSecondaryKey(numPlayerBuying));
@@ -301,7 +308,7 @@ public class Store extends DisplayObjectContainer {
 				//only move to insert if not out of funds
 				if(this.outOfFunds()) {
 					//show dialog for 2 seconds
-					//this.insuffFundsDialog.play(2);
+					this.insuffFundsDialog.play(2);
 				} else {
 					this.highlightInsert();
 				}
