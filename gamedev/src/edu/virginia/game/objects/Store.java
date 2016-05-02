@@ -27,6 +27,9 @@ public class Store extends DisplayObjectContainer {
 	private Sprite antidote;
 	private Sprite cheese;
 	private Sprite VPicon;
+	private ToastSprite antidoteIconHighlight;
+	private ToastSprite cheeseIconHighlight;
+	private ToastSprite VPIconHighlight;
 	private Sprite previewIcon;
 	private ToastSprite insuffFundsDialog;
 	private NavButtonIcon contButton;
@@ -83,23 +86,45 @@ public class Store extends DisplayObjectContainer {
 		this.insuffFundsCheck(); //grey out items can't afford and initialize highlight accordingly
 		this.initializePuchase();
 		/* icons */
+		//FIXME: should use relative positions
 		this.antidote = new Sprite("antidote", "statbox/soda-icon.png");
 		this.antidote.setScaleX(.8);
 		this.antidote.setScaleY(.8);
 		this.addChild(antidote);
 		this.antidote.setPosition(450, 70);
-
+		
+		this.antidoteIconHighlight = new ToastSprite("antidoteHighlight", "statbox/highlight-icon.png");
+		this.antidoteIconHighlight.setScaleX(.8);
+		this.antidoteIconHighlight.setScaleY(.8);
+		this.antidoteIconHighlight.setAlpha((float) .5);
+		this.addChild(antidoteIconHighlight);
+		this.antidoteIconHighlight.setPosition(450 + this.antidote.getWidth(), 70);
+		
 		this.cheese = new Sprite("cheese", "statbox/bomb-icon.png");
 		this.cheese.setScaleX(.8);
 		this.cheese.setScaleY(.8);
 		this.addChild(cheese);
 		this.cheese.setPosition(485, 70);
+		
+		this.cheeseIconHighlight = new ToastSprite("cheeseHighlight", "statbox/highlight-icon.png");
+		this.cheeseIconHighlight.setScaleX(.8);
+		this.cheeseIconHighlight.setScaleY(.8);
+		this.cheeseIconHighlight.setAlpha((float) .5);
+		this.addChild(cheeseIconHighlight);
+		this.cheeseIconHighlight.setPosition(485 + this.cheese.getWidth(), 70);
 
 		this.VPicon = new Sprite("vp-icon1", "statbox/vp-icon.png");
 		this.VPicon.setScaleX(.8);
 		this.VPicon.setScaleY(.8);
 		this.addChild(VPicon);
 		this.VPicon.setPosition(415, 70);
+		
+		this.VPIconHighlight = new ToastSprite("VPHighlight", "statbox/highlight-icon.png");
+		this.VPIconHighlight.setScaleX(.8);
+		this.VPIconHighlight.setScaleY(.8);
+		this.VPIconHighlight.setAlpha((float) .5);
+		this.addChild(VPIconHighlight);
+		this.VPIconHighlight.setPosition(415 + this.VPicon.getWidth(), 70);
 
 	}
 
@@ -211,7 +236,6 @@ public class Store extends DisplayObjectContainer {
 		
 	}
 	public void buyItem(ItemDetail item) {
-		// TODO: Leandra
 		// check whether enough VP, if so, decrement VP, Increase Inventory, and
 		// stopBuy()
 		if (this.playerManager.getVpCount() >= item.getCost() ) {
@@ -219,10 +243,12 @@ public class Store extends DisplayObjectContainer {
 			case GINGER_ALE_ID:
 				this.itemToBuy = this.gingerAleDetail;
 				this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle() + 1);
+				this.antidoteIconHighlight.play(.5);
 				break;
 			case CHEESE_PUFFS_ID:
 				this.itemToBuy = this.cheesePuffsDetail;
 				this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs() + 1);
+				this.cheeseIconHighlight.play(.5);
 				break;
 			default:
 				System.out.println("Error in Store startBuy(). Should not happen.");
@@ -230,6 +256,7 @@ public class Store extends DisplayObjectContainer {
 			}
 			//System.out.println("You bought " + item.getId() + " for " + item.getCost() + " VP");
 			this.playerManager.setVpCount(this.playerManager.getVpCount()-this.itemToBuy.getCost());
+			this.VPIconHighlight.play(.5);
 			this.insuffFundsCheck();
 			if (this.outOfFunds()) {
 				this.highlightCancel();
