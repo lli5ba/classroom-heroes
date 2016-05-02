@@ -236,6 +236,15 @@ public class Classroom extends DisplayObjectContainer {
 		}
 	}
 	
+	private void checkTACollisions(ArrayList<String> pressedKeys) {
+		if(player1.getNetHitboxGlobal().intersects(ta.getHitbox())) {
+			this.ta.doAction();
+		}
+		
+		if(player2.getNetHitboxGlobal().intersects(ta.getHitbox())) {
+			this.ta.doAction();
+		}
+	}
 	
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
@@ -804,7 +813,7 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean playerCollision(Rectangle r, int numPlayer) {
 		/* check TA collision */
 		if (this.ta.isVisible()) {
-			if(r.intersects(ta.getHitbox())) {
+			if(r.intersects(ta.getHitboxGlobal())) {
 				return true;
 			}
 		}

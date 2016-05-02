@@ -51,5 +51,19 @@ public class TA extends ToastSprite {
 
 	public void doAction() {
 		// randomize effect on game
+		Random r = new Random();
+		int action = r.nextInt(24) + 1;
+		if(action > 0 && action <= 3) {
+			//decrease health by 1
+		} else if(action > 3 && action <= 6) {
+			//decrease inventory by 1
+		} else if(action > 6 && action <= 12) {
+			//cure all students
+			//ask Leandra how to do this later!
+		} else if(action > 12 && action <= 18) {
+			//inventory all increases by two
+		} else if(action > 18 && action <= 24) {
+			//make user health bar full
+		}
 	}
 }
