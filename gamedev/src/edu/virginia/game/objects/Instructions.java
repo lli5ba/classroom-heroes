@@ -34,21 +34,27 @@ public class Instructions extends AnimatedSprite {
 	private Sprite drink;
 	private Sprite drink1;
 	private AnimatedSprite poison;
-	private AnimatedSprite poisonPlayer;
+	private Player poisonPlayer;
 	private AnimatedSprite dead;
 	private AnimatedSprite revived;
 	private AnimatedSprite bombPlayer;
 	private AnimatedSprite bomb;
+	private AnimatedSprite bombExplode;
+	private NavButtonIcon contButton;
+	private Sprite notebook;
 
 	public Instructions(String id) {
-		super(id, "instructions/instructions-background.png"); // background
-
+		super(id, "instructions/wood-grain-background.png"); // background
+		
+		this.notebook = new Sprite("notebook", "instructions/instructions-background.png");
+		this.addChild(notebook);
+		
 		this.vp0 = new AnimatedSprite("vp0", "projectiles/vp0.png", "projectiles/vpsheet.png",
 				"resources/projectiles/vpsheetspecs.txt");
 		this.vp0.setScaleX(.5);
 		this.vp0.setScaleY(.5);
 		this.vp0.setPosition(225, 85);
-		this.animate("red");
+		this.vp0.animate("red");
 		this.addChild(vp0);
 
 		this.vp1 = new AnimatedSprite("vp1", "projectiles/vp1.png", "projectiles/vpsheet.png",
@@ -56,7 +62,7 @@ public class Instructions extends AnimatedSprite {
 		this.vp1.setScaleX(.5);
 		this.vp1.setScaleY(.5);
 		this.vp1.setPosition(240, 85);
-		this.animate("yellow");
+		this.vp1.animate("yellow");
 		this.addChild(vp1);
 
 		this.vp2 = new AnimatedSprite("vp2", "projectiles/vp2.png", "projectiles/vpsheet.png",
@@ -64,7 +70,7 @@ public class Instructions extends AnimatedSprite {
 		this.vp2.setScaleX(.5);
 		this.vp2.setScaleY(.5);
 		this.vp2.setPosition(255, 85);
-		this.animate("blue");
+		this.vp2.animate("blue");
 		this.addChild(vp2);
 
 		this.vpPlayer = new AnimatedSprite("vpPlayer", "player/player1.png", "player/player-spritesheet-1.png",
@@ -72,6 +78,7 @@ public class Instructions extends AnimatedSprite {
 		this.vpPlayer.setScaleX(.8);
 		this.vpPlayer.setScaleY(.8);
 		this.vpPlayer.setPosition(290, 75);
+		this.vpPlayer.animate("netright");
 		this.addChild(vpPlayer);
 		
 		this.thrownVP = new AnimatedSprite("vp0", "projectiles/vp0.png", "projectiles/vpsheet.png",
@@ -79,7 +86,7 @@ public class Instructions extends AnimatedSprite {
 		this.thrownVP.setScaleX(.5);
 		this.thrownVP.setScaleY(.5);
 		this.thrownVP.setPosition(335, 85);
-		this.animate("red");
+		this.thrownVP.animate("red");
 		this.addChild(thrownVP);
 		
 		this.vending = new Sprite("vending", "hallway/vending-machine-0.png");
@@ -106,19 +113,21 @@ public class Instructions extends AnimatedSprite {
 		this.drink1.setPosition(350, 118);
 		this.addChild(drink1);
 		
-		this.poisonPlayer = new AnimatedSprite("poisonPlayer", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt");
+		this.poisonPlayer = new Player("poisonPlayer", "player/player1.png", "player/player-spritesheet-1.png",
+				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
 		this.poisonPlayer.setScaleX(.8);
 		this.poisonPlayer.setScaleY(.8);
 		this.poisonPlayer.setPosition(240, 172);
 		this.addChild(poisonPlayer);
+		this.poisonPlayer.animateBubblesContinuous();
+		
 
 		this.poison = new AnimatedSprite("poison", "projectiles/poison.png", "projectiles/poison-spritesheet.png",
 				"resources/projectiles/poison-spritesheet.txt");
 		this.poison.setScaleX(.5);
 		this.poison.setScaleY(.5);
 		this.poison.setPosition(300, 190);
-		this.animate("poison");
+		this.poison.animate("poison");
 		this.addChild(poison);
 		
 		this.dead = new AnimatedSprite("dead", "student/student-default-0.png", "student/student-spritesheet-0.png",
@@ -126,6 +135,7 @@ public class Instructions extends AnimatedSprite {
 		this.dead.setScaleX(.7);
 		this.dead.setScaleY(.7);
 		this.dead.setPosition(250, 252);
+		this.dead.animate("fallleft");
 		this.addChild(dead);
 		
 		this.revived = new AnimatedSprite("revived", "student/student-default-0.png", "student/student-spritesheet-0.png",
@@ -133,6 +143,7 @@ public class Instructions extends AnimatedSprite {
 		this.revived.setScaleX(.7);
 		this.revived.setScaleY(.7);
 		this.revived.setPosition(330, 252);
+		this.revived.animate("floatleft");
 		this.addChild(revived);
 
 		this.bombPlayer = new AnimatedSprite("vpPlayer", "player/player1.png", "player/player-spritesheet-1.png",
@@ -147,8 +158,25 @@ public class Instructions extends AnimatedSprite {
 		this.bomb.setScaleX(.8);
 		this.bomb.setScaleY(.8);
 		this.bomb.setPosition(280, 294);
+		this.bomb.animate("puffbag");
 		this.addChild(bomb);
+		
+		this.bombExplode = new AnimatedSprite("bomb", "smokebomb/smokebomb-default.png", "smokebomb/smokebomb-spritesheet.png",
+				"resources/smokebomb/smokebomb-spritesheet.txt");
+		this.bombExplode.setScaleX(.8);
+		this.bombExplode.setScaleY(.8);
+		this.bombExplode.setPosition(320, 280);
+		this.bombExplode.animate("smoke2", .2);
+		this.addChild(bombExplode);
 
+		/* continue button */
+		this.contButton = new NavButtonIcon(NavButtonIcon.CONTINUE, 
+				true, KeyEvent.getKeyText(KeyEvent.VK_B));
+		//this.contButton.setScaleY(.5);
+		//this.contButton.setScaleX(.5);
+		this.addChild(contButton);
+		this.contButton.setPosition(this.getWidth() * .78, this.getHeight() * .88);
+		
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 	}
@@ -157,8 +185,9 @@ public class Instructions extends AnimatedSprite {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
 		if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))
-				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER))) {
-			this.gameManager.setActiveGameScene("controls");
+				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER))
+				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_B))) {
+			this.gameManager.setActiveGameScene("controls1");
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
@@ -176,8 +205,8 @@ public class Instructions extends AnimatedSprite {
 		g.drawString("Collect VP", 440, 155);
 		g.drawString("Use VP to buy from store at end of level", 440, 255);
 		g.drawString("Collect poison before it hits you or your classmates", 440, 380);
-		g.drawString("If hit, cure classmates with antidote", 440, 495);
-		g.drawString("Aim and throw smoke bombs to protect area", 440, 610);
+		g.drawString("If hit, cure classmates with ginger ale", 440, 495);
+		g.drawString("Aim and throw cheese puff smoke bombs to protect an area", 440, 610);
 		g.setFont(i);
 		g.drawString("VP", 575, 230);
 	}

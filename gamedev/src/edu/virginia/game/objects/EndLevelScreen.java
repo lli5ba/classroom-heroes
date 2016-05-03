@@ -199,7 +199,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 		if(this.dialog.equals(WIN)) {
 			if(this.attributes != null) {
 				this.attributes.setVisible(true);
-				this.attributes.setDrawChildren(false);
+				this.attributes.setDrawChildren(true);
 			}
 		} else {
 			if(this.attributes != null) {

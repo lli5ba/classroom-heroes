@@ -90,6 +90,10 @@ public class Player extends AnimatedSprite {
 	public void animateBubbles(){
 		this.poisonBubbles.animateOnce("bubble");
 	}
+	
+	public void animateBubblesContinuous(){
+		this.poisonBubbles.animate("bubble");
+	}
 
 	public int getNumPlayer() {
 		return numPlayer;

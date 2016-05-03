@@ -38,9 +38,29 @@ public class KeyboardKey extends Sprite{
 			}
 			g.setFont(f);
 			g.setColor(Color.BLACK);
-			g.drawString(this.playerManager.getKey(this.buttonType, numPlayer), 
-					(int) (this.getxPos() + this.getHeight()*.348), 
-					(int) (this.getyPos() + this.getHeight()*.75));
+			String key = this.playerManager.getKey(this.buttonType, numPlayer);
+			if (key.equals("Up")) {
+				key = "^";
+			} else if (key.equals("Left")) {
+				key = "<";
+			} else if (key.equals("Right")) {
+				key = ">";
+			} else if (key.equals("Down")) {
+				key = "v";
+			} 
+			
+			if (key.equals("Space")) {
+				f = new Font("Dialog", Font.BOLD, 6);
+				g.setFont(f);
+				g.drawString(key, 
+						(int) (this.getxPos() + this.getHeight()*.228), 
+						(int) (this.getyPos() + this.getHeight()*.65));
+			} else {
+				g.drawString(key, 
+						(int) (this.getxPos() + this.getHeight()*.348), 
+						(int) (this.getyPos() + this.getHeight()*.75));
+			}
+			
 		}
 
 	}

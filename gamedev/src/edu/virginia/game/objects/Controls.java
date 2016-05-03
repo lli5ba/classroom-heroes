@@ -7,10 +7,13 @@ import java.util.ArrayList;
 
 import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.DisplayObjectContainer;
+import edu.virginia.engine.display.Sprite;
 import edu.virginia.game.managers.GameManager;
+import edu.virginia.game.managers.PlayerManager;
 
 public class Controls extends DisplayObjectContainer {
 
+	private PlayerManager playerManager = PlayerManager.getInstance();
 	KeyboardKey up;
 	KeyboardKey down;
 	KeyboardKey left;
@@ -21,22 +24,34 @@ public class Controls extends DisplayObjectContainer {
 	KeyboardKey primaryBomb;
 	private int numPlayer;
 	private AnimatedSprite Upplayer;
-	private AnimatedSprite Downplayer;
+	private Player Downplayer;
 	private AnimatedSprite Leftplayer;
 	private AnimatedSprite Rightplayer;
 	private GameManager gameManager = GameManager.getInstance();
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
+	private Sprite notebook;
+	private NavButtonIcon contButton;
 
 	public Controls(String id) {
-		super(id, "instructions/instructions-background.png"); // background
-		// get last character in styleCode
-		//numPlayer = Integer.parseInt(id.substring(id.length() - 1)); //id is either 1 or 2
+		super(id, "instructions/wood-grain-background.png"); // background
 		
-		this.Upplayer = new AnimatedSprite("Upplayer", "player/player1.png", "player/player-spritesheet-1.png",
+		this.notebook = new Sprite("notebook", "instructions/instructions-background.png");
+		this.addChild(notebook);
+		// get last character in styleCode
+		this.numPlayer = Integer.parseInt(id.substring(id.length() - 1)); //id is either 1 or 2
+		//this.numPlayer = 1;
+		
+		if(this.numPlayer == 1) {
+			this.Upplayer = new AnimatedSprite("Upplayer", "player/player1.png", "player/player-spritesheet-1.png",
 				"resources/player/player-spritesheet-1-frameInfo.txt");
+		} else {
+			this.Upplayer = new AnimatedSprite("Upplayer", "player/player2.png", "player/player-spritesheet-2.png",
+					"resources/player/player-spritesheet-1-frameInfo.txt");
+		}
 		this.Upplayer.setScaleX(.8);
 		this.Upplayer.setScaleY(.8);
 		this.Upplayer.setPosition(400, 140);
+		this.Upplayer.animate("up", .3);
 		this.addChild(Upplayer);
 		
 		up = new KeyboardKey("up", numPlayer);
@@ -45,11 +60,17 @@ public class Controls extends DisplayObjectContainer {
 		this.addChild(up);
 		this.up.setPosition(400, 175);
 
-		this.Downplayer = new AnimatedSprite("Downplayer", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt");
+		if (this.numPlayer == 1) {
+			this.Downplayer = new Player("Downplayer", "player/player1.png", "player/player-spritesheet-1.png",
+				"resources/player/player-spritesheet-1-frameInfo.txt", 1);
+		} else {
+			this.Downplayer = new Player("Downplayer", "player/player2.png", "player/player-spritesheet-2.png",
+					"resources/player/player-spritesheet-1-frameInfo.txt", 2);
+		}
 		this.Downplayer.setScaleX(.8);
 		this.Downplayer.setScaleY(.8);
 		this.Downplayer.setPosition(400, 235);
+		this.Downplayer.animate("down", .3);
 		this.addChild(Downplayer);
 
 		down = new KeyboardKey("down", numPlayer);
@@ -58,11 +79,18 @@ public class Controls extends DisplayObjectContainer {
 		this.addChild(down);
 		this.down.setPosition(400, 205);
 	
-		this.Leftplayer = new AnimatedSprite("Leftplayer", "player/player1.png", "player/player-spritesheet-1.png",
-				"resources/player/player-spritesheet-1-frameInfo.txt");
+		if (this.numPlayer == 1) {
+			this.Leftplayer = new AnimatedSprite("Leftplayer", "player/player1.png", "player/player-spritesheet-1.png",
+					"resources/player/player-spritesheet-1-frameInfo.txt");
+		} else {
+			this.Leftplayer = new AnimatedSprite("Leftplayer", "player/player2.png", "player/player-spritesheet-2.png",
+					"resources/player/player-spritesheet-1-frameInfo.txt");
+		}
+		
 		this.Leftplayer.setScaleX(.8);
 		this.Leftplayer.setScaleY(.8);
 		this.Leftplayer.setPosition(335, 205);
+		this.Leftplayer.animate("left", .3);
 		this.addChild(Leftplayer);
 
 		left = new KeyboardKey("left", numPlayer);
@@ -71,11 +99,17 @@ public class Controls extends DisplayObjectContainer {
 		this.addChild(left);
 		this.left.setPosition(370, 205);
 		
-		this.Rightplayer = new AnimatedSprite("Rightplayer", "player/player1.png", "player/player-spritesheet-1.png",
+		if (this.numPlayer == 1) {
+			this.Rightplayer = new AnimatedSprite("Rightplayer", "player/player1.png", "player/player-spritesheet-1.png",
 				"resources/player/player-spritesheet-1-frameInfo.txt");
+		} else {
+			this.Rightplayer = new AnimatedSprite("Rightplayer", "player/player2.png", "player/player-spritesheet-2.png",
+					"resources/player/player-spritesheet-1-frameInfo.txt");
+		}
 		this.Rightplayer.setScaleX(.8);
 		this.Rightplayer.setScaleY(.8);
 		this.Rightplayer.setPosition(465, 205);
+		this.Rightplayer.animate("right", .3);
 		this.addChild(Rightplayer);
 		
 		right = new KeyboardKey("right", numPlayer);
@@ -84,29 +118,35 @@ public class Controls extends DisplayObjectContainer {
 		this.addChild(right);
 		this.right.setPosition(430, 205);
 	
-		secondaryCure = new KeyboardKey("secondaryCure", numPlayer);
+		secondaryCure = new KeyboardKey("secondary", numPlayer);
 		this.secondaryCure.setScaleX(1.0);
 		this.secondaryCure.setScaleY(1.0);
 		this.addChild(secondaryCure);
 		this.secondaryCure.setPosition(200, 153);
 		
-		primaryCure = new KeyboardKey("primaryCure", numPlayer);
+		primaryCure = new KeyboardKey("primary", numPlayer);
 		this.primaryCure.setScaleX(1.0);
 		this.primaryCure.setScaleY(1.0);
 		this.addChild(primaryCure);
 		this.primaryCure.setPosition(250, 153);
 		
-		secondaryBomb = new KeyboardKey("secondaryBomb", numPlayer);
+		secondaryBomb = new KeyboardKey("secondary", numPlayer);
 		this.secondaryBomb.setScaleX(1.0);
 		this.secondaryBomb.setScaleY(1.0);
 		this.addChild(secondaryBomb);
 		this.secondaryBomb.setPosition(200, 228);
 		
-		primaryBomb = new KeyboardKey("primaryBomb", numPlayer);
+		primaryBomb = new KeyboardKey("primary", numPlayer);
 		this.primaryBomb.setScaleX(1.0);
 		this.primaryBomb.setScaleY(1.0);
 		this.addChild(primaryBomb);
 		this.primaryBomb.setPosition(250, 228);
+		
+		/* continue button */
+		this.contButton = new NavButtonIcon(NavButtonIcon.CONTINUE, 
+				true, this.playerManager.getSecondaryKey(numPlayer));
+		this.addChild(contButton);
+		this.contButton.setPosition(this.getWidth() * .78, this.getHeight() * .88);
 		
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
@@ -115,9 +155,15 @@ public class Controls extends DisplayObjectContainer {
 	public void navigate(ArrayList<String> pressedKeys) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
-		if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))
-				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER))) {
-			this.gameManager.setActiveGameScene("classroom1");
+		if (releasedKeys.contains(this.playerManager.getSecondaryKey(this.numPlayer))
+				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) ) {
+			if (this.numPlayer == 1 && this.gameManager.getNumPlayers() == 2) {
+				this.gameManager.setActiveGameScene("controls2");
+			}
+			else if (this.numPlayer == 2 || 
+					(this.numPlayer == 1 && this.gameManager.getNumPlayers() == 1) ) {
+				this.gameManager.setActiveGameScene("classroom1");  //move on
+			}
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
