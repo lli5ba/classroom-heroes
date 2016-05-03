@@ -27,7 +27,8 @@ public class EndLevelScreen extends DisplayObjectContainer {
 	private int experience1;
 	private int experience2;
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
-	
+	private Attributes attributes;
+	private NavButtonIcon contButton;
 
 	public EndLevelScreen(String id) {
 		super(id, "end-level/notebook.png"); // notebook
@@ -35,6 +36,17 @@ public class EndLevelScreen extends DisplayObjectContainer {
 		this.setExperience(0);
 		this.setDialog(WIN);
 		this.numPlayer = 1;
+		this.attributes = new Attributes("attributes", numPlayer);
+		this.addChild(attributes);
+		this.attributes.setPosition(this.getWidth() * 0.25, this.getHeight() * 0.4);
+		
+		/* continue button */
+		this.contButton = new NavButtonIcon(NavButtonIcon.CONTINUE, 
+				true, this.playerManager.getSecondaryKey(this.numPlayer));
+		//this.contButton.setScaleY(.5);
+		//this.contButton.setScaleX(.5);
+		this.addChild(contButton);
+		this.contButton.setPosition(this.getWidth() * .75, this.getHeight() * .77);
 	}
 
 	
@@ -45,6 +57,8 @@ public class EndLevelScreen extends DisplayObjectContainer {
 
 	public void setNumPlayer(int numPlayer) {
 		this.numPlayer = numPlayer;
+		this.attributes.setNumPlayer(numPlayer);
+		this.contButton.setButtonId(this.playerManager.getSecondaryKey(numPlayer));
 	}
 
 	@Override
@@ -72,24 +86,11 @@ public class EndLevelScreen extends DisplayObjectContainer {
 				
 				}
 			} else if (releasedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
-				//buy movement speed
-				if(this.playerManager.getAttrPoints(numPlayer) > 0) {
-					this.playerManager.setSpeed(this.playerManager.getSpeed(numPlayer) + 1, numPlayer);
-					this.playerManager.setAttrPoints(this.playerManager.getAttrPoints(numPlayer) - 1, numPlayer);
-				}
+				
 			} else if (releasedKeys.contains(this.playerManager.getDownKey(this.numPlayer))) {
-				//buy swing speed
-				if(this.playerManager.getAttrPoints(numPlayer) > 0) {
-					this.playerManager.setSwingSpeed(this.playerManager.getSwingSpeed(numPlayer) + 1, numPlayer);
-					this.playerManager.setAttrPoints(this.playerManager.getAttrPoints(numPlayer) - 1, numPlayer);
-					}
+				
 			} else if (releasedKeys.contains(this.playerManager.getRightKey(this.numPlayer))) {
-				//buy health
-				if(this.playerManager.getAttrPoints(numPlayer) > 0) {
-					this.playerManager.setMaxHealth(this.playerManager.getMaxHealth(numPlayer) + 1, numPlayer);
-					this.playerManager.setHealth(this.playerManager.getHealth(numPlayer) + 1, numPlayer);
-					this.playerManager.setAttrPoints(this.playerManager.getAttrPoints(numPlayer) - 1, numPlayer);
-				}	
+				
 			} else if (releasedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
 				
 			}
@@ -110,7 +111,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 		if (this.isVisible()) {
 			Font f = new Font("Dialog", Font.BOLD, 20);
 			g.setFont(f);
-			g.drawString(this.dialog, 140, 100);
+			g.drawString(this.dialog, 140, 90);
 			f = new Font("Dialog", Font.PLAIN, 12);
 			g.setFont(f);
 			if(this.dialog.equals(WIN)) {
@@ -125,7 +126,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 				}
 				g.drawString("Attribute Points Remaining: " +
 						this.playerManager.getAttrPoints(this.numPlayer), 140, 139);
-				g.drawString("Current Movement Speed: " +
+				/*g.drawString("Current Movement Speed: " +
 						(int)this.playerManager.getSpeed(this.numPlayer), 140, 180);
 				g.drawString("(Press " +
 						this.playerManager.getUpKey(this.numPlayer).toString() +
@@ -139,10 +140,10 @@ public class EndLevelScreen extends DisplayObjectContainer {
 						(int)this.playerManager.getMaxHealth(this.numPlayer), 140, 230);
 				g.drawString("(Press " +
 						this.playerManager.getRightKey(this.numPlayer).toString() +
-						" to buy)", 340, 230);
+						" to buy)", 340, 230); 
 				g.drawString("(Press " +
 						this.playerManager.getSecondaryKey(this.numPlayer).toString() +
-						" to Continue)", 340, 255);
+						" to Continue)", 340, 255); */
 			} else {
 				g.drawString("Close Game and Restart ", 140, 120);
 				//FIXME... should be able to 
