@@ -41,7 +41,7 @@ public class AttributeModule extends Sprite{
 			
 		}
 		attrAdditions = 0;
-		numPlayer = PlayerNum;
+		numPlayer = playerNum;
 	}
 	
 	@Override
@@ -74,36 +74,67 @@ public class AttributeModule extends Sprite{
 		}
 	}
 	
+	//only happens if this module is selected
 	private void navigateAttribute(ArrayList<String> pressedKeys) {
 		ArrayList<String> releasedKeys = new ArrayList<String>(this.prevPressedKeys);
 		releasedKeys.removeAll(pressedKeys);
-		if (releasedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
-			//select 1 player if not currently selected(visible)
-			if(!this.player1bar.isVisible()) {
-				this.switchPlayerSelection();
-			}
-		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_DOWN))) {
-			//select 2 players if not currently selected(visible)
-			if(!this.player2bar.isVisible()) {
-				this.switchPlayerSelection();
-			}
-		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_RIGHT))) {
-			
-		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_LEFT))) {
 		
-		}
+		if (releasedKeys.contains(this.playerManager.getUpKey(this.numPlayer))) {
+			this.decrementAttr();
+		} else if (releasedKeys.contains(this.playerManager.getDownKey(this.numPlayer))) {
+			//select 2 players if not currently selected(visible)
+			this.incrementAttr();
+		} 
+		
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
 	}
 
+	private void incrementAttr() {
+		this.upArrow.play(.5);
+		if(this.playerManager.getAttrPoints(numPlayer) > 0) {
+			if(this.getId().equals(HEALTH)) {
+				//increase health
+				this.playerManager.setMaxHealth(this.playerManager.getMaxHealth(numPlayer) + 1, numPlayer);
+				this.playerManager.setHealth(this.playerManager.getMaxHealth(numPlayer), numPlayer);
+			} else if(this.getId().equals(MOVEMENT_SPEED)) {
+				//increase movement speed
+				this.playerManager.setSpeed(this.playerManager.getSpeed(numPlayer) + 1, numPlayer);
+			} else if(this.getId().equals(SWING_SPEED)) {
+				//increase swing speed
+				this.playerManager.setSwingSpeed(this.playerManager.getSwingSpeed(numPlayer) + 1, numPlayer);
+			}
+			this.updateDisplay();
+			this.attrAdditions ++;
+		}
+	}
+
+	private void decrementAttr() {
+		this.downArrow.play(.5);
+		if(this.attrAdditions > 0) { //they have added attribute points, so they can decrement
+			if(this.getId().equals(HEALTH)) {
+				//decrease health
+				this.playerManager.setMaxHealth(this.playerManager.getMaxHealth(numPlayer) - 1, numPlayer);
+				this.playerManager.setHealth(this.playerManager.getMaxHealth(numPlayer), numPlayer);
+			} else if(this.getId().equals(MOVEMENT_SPEED)) {
+				//decrease movement speed
+				this.playerManager.setSpeed(this.playerManager.getSpeed(numPlayer) - 1, numPlayer);
+			} else if(this.getId().equals(SWING_SPEED)) {
+				//decrease swing speed
+				this.playerManager.setSwingSpeed(this.playerManager.getSwingSpeed(numPlayer) - 1, numPlayer);
+			}
+			this.updateDisplay();
+			this.attrAdditions--;
+		}
+	}
+
 	public void updateDisplay() {
 		if(this.getId().equals(HEALTH)) {
-			//is updated already
+			//is updated automatically when added as child
 		} else if(this.getId().equals(MOVEMENT_SPEED)) {
-			player.animate("right");
-			
+			player.animate("right", this.playerManager.getSpeed(numPlayer));
 		} else if(this.getId().equals(SWING_SPEED)) {
-			
+			player.animate("netright", this.playerManager.getSwingSpeed(numPlayer));
 		}
 	}
 	public boolean isSelected() {
