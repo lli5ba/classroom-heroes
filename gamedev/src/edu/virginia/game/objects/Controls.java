@@ -199,6 +199,14 @@ public class Controls extends DisplayObjectContainer {
 			f = new Font("Dialog", Font.PLAIN, 50);
 			g.setFont(f);
 			g.drawString("Player " + this.numPlayer, 445, 195);
+			
+			Font h = new Font("Dialog", Font.BOLD, 18);
+			g.setFont(h);
+			g.drawString("Cure Student", 440, 420);
+			g.drawString("Swing net", 590, 420);
+			g.drawString("+", 560, 540);
+			g.drawString("Aim", 490, 590);
+			g.drawString("Throw Smoke Bomb", 580, 590);
 		}
 	}
 
