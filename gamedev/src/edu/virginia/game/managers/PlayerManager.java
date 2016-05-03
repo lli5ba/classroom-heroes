@@ -260,11 +260,11 @@ public class PlayerManager implements IEventListener {
 			return "F";
 		} else if (isBetween(exp, 2001, 3500)) {
 			return "D";
-		} else if (isBetween(exp, 3501, 4500)) {
+		} else if (isBetween(exp, 3501, 5500)) {
 			return "C";
-		} else if (isBetween(exp, 4501, 5500)) {
+		} else if (isBetween(exp, 5501, 7500)) {
 			return "B";
-		} else if (isBetween(exp, 5501, 6000)) {
+		} else if (isBetween(exp, 7501, 15000)) {
 			return "A";
 		}
 		return "W";
