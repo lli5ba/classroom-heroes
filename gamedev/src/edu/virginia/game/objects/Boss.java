@@ -42,10 +42,34 @@ public class Boss extends AnimatedSprite {
 			this.vpSpeed = 17000;
 		} else if (this.gameManager.getNumLevel() == 2) {
 			this.poisonSpeed = 17500;
-			this.vpSpeed = 18000;
+			this.vpSpeed = 16000;
 		} else if (this.gameManager.getNumLevel() == 3) {
 			this.poisonSpeed = 16000;
-			this.vpSpeed = 18000;
+			this.vpSpeed = 15000;
+		} else if (this.gameManager.getNumLevel() == 4) {
+			this.poisonSpeed = 14000;
+			this.vpSpeed = 12000;
+		}
+		
+	}
+	
+	public Boss(String id, String imageFileName, TweenTransitions tx, TweenTransitions ty) {
+		super(id, imageFileName);
+		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
+		this.tweenTypeX = tx;
+		this.tweenTypeY = ty;
+		if (this.gameManager.getNumLevel() == 1) {
+			this.poisonSpeed = 20000;
+			this.vpSpeed = 17000;
+		} else if (this.gameManager.getNumLevel() == 2) {
+			this.poisonSpeed = 17500;
+			this.vpSpeed = 16000;
+		} else if (this.gameManager.getNumLevel() == 3) {
+			this.poisonSpeed = 16000;
+			this.vpSpeed = 15000;
+		} else if (this.gameManager.getNumLevel() == 4) {
+			this.poisonSpeed = 14000;
+			this.vpSpeed = 12000;
 		}
 		
 	}

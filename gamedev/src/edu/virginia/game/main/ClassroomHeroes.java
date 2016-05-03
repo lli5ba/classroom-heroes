@@ -44,6 +44,7 @@ import edu.virginia.game.managers.SoundManager;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Classroom2;
 import edu.virginia.game.objects.Classroom3;
+import edu.virginia.game.objects.Classroom4;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.ItemDetail;
@@ -52,6 +53,7 @@ import edu.virginia.game.objects.Poison;
 import edu.virginia.game.objects.Store;
 import edu.virginia.game.objects.TitleScreen;
 import edu.virginia.game.objects.VP;
+import edu.virginia.game.objects.WeimerBonus;
 
 /**
  * 
@@ -172,8 +174,36 @@ public class ClassroomHeroes extends Game {
 					// add scene to gameManager
 
 					this.gameManager.addGameScene(sceneName, classroom3);
+					this.gameManager.setNumLevel(4);
+				}
+				else if (sceneName.equals("classroom4")) {
+					
+					// create a classroom
+					Classroom4 classroom4 = null;
+					try {
+						classroom4 = new Classroom4(sceneName);
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					// add scene to gameManager
+
+					this.gameManager.addGameScene(sceneName, classroom4);
 				}
 			}
+			else if (sceneName.equals("WeimerBonus")) {
+				
+				WeimerBonus weimer = null;
+				try {
+					weimer = new WeimerBonus(sceneName);
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				}
+				
+				this.gameManager.addGameScene(sceneName, weimer);
+			}
+			
 		}
 	}
 

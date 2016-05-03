@@ -10,6 +10,7 @@ import edu.virginia.engine.tween.Tween;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Classroom2;
 import edu.virginia.game.objects.Classroom3;
+import edu.virginia.game.objects.Classroom4;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.TitleScreen;
@@ -147,6 +148,13 @@ public class GameManager {
 						classroom3.update(pressedKeys);
 					}
 				}
+				if (this.activeGameScene.contains("4"))
+				{
+					Classroom4 classroom4 = (Classroom4) this.gameScenes.get(this.activeGameScene);
+					if(classroom4 != null) {
+						classroom4.update(pressedKeys);
+					}
+				}
 			}
 
 		}
@@ -202,6 +210,13 @@ public class GameManager {
 				else if (this.activeGameScene.equals("classroom3"))
 				{
 					Classroom3 classroom = (Classroom3) this.gameScenes.get(this.activeGameScene);
+					if(classroom != null) {
+						classroom.draw(g);
+					}
+				}
+				else if (this.activeGameScene.equals("classroom4"))
+				{
+					Classroom4 classroom = (Classroom4) this.gameScenes.get(this.activeGameScene);
 					if(classroom != null) {
 						classroom.draw(g);
 					}

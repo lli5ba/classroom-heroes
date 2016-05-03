@@ -55,7 +55,7 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 60000;
+	public static final double GAME_TIME = 1000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -125,12 +125,13 @@ public class Classroom extends DisplayObjectContainer {
 		this.addChild(player2);
 
 		this.player1.setPosition(this.getWidth() * .814, this.getHeight() * .742);
-		this.player2.setPosition(this.getWidth() * .08, this.getHeight() * .742);
+		if(this.gameManager.getNumPlayers() == 2)
+			this.player2.setPosition(this.getWidth() * .08, this.getHeight() * .742);
 
 		/* Boss constructor */
 
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
-				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.LINEAR, TweenTransitions.LINEAR);
+				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.BOOMERANG, TweenTransitions.BOOMERANG);
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);

@@ -242,6 +242,21 @@ public class PlayerManager implements IEventListener {
 			return 3;
 		}
 	}
+	
+	public String calcGrade(int exp) {
+		if (isBetween(exp, 0, 2000)) {
+			return "F";
+		} else if (isBetween(exp, 2001, 3500)) {
+			return "D";
+		} else if (isBetween(exp, 3501, 4500)) {
+			return "C";
+		} else if (isBetween(exp, 4501, 5500)) {
+			return "B";
+		} else if (isBetween(exp, 5501, 6000)) {
+			return "A";
+		}
+		return "W";
+	}
 	public static boolean isBetween(int x, int lower, int upper) {
 		  return lower <= x && x <= upper;
 		}

@@ -32,7 +32,7 @@ import edu.virginia.game.managers.StudentManager;
 
 //This class represents a game screen object to be used for levels and hallway scenes.
 //This way you can instantiate a GameScreen and add game elements as children.
-public class Classroom2 extends DisplayObjectContainer {
+public class Classroom4 extends DisplayObjectContainer {
 	public static final String[] CARDINAL_DIRS = new String[] { "up", "down", "left", "right" };
 	public static final String[] FLORYAN_DIR = new String[] { "tossdown", "tossdownleft", "tossdownright", "tossleft",
 			"tossright", "tossup", "tossupleft", "tossupright" };
@@ -55,7 +55,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 1000;
+	public static final double GAME_TIME = 60000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -63,7 +63,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	private DisplayObjectContainer playArea;
 	private ArrayList<String> prevPressedKeys;
 
-	public Classroom2(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+	public Classroom4(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
 
 		try {
@@ -89,12 +89,10 @@ public class Classroom2 extends DisplayObjectContainer {
 		this.addEventListener(soundManager, EventTypes.POISON_STUDENT.toString());
 		
 		/* Constructing furniture */
-		
 		spawnTable("table1", "blue", this.getWidth() * .146, this.getHeight() * .75);
 		spawnTable("table2", "blue", this.getWidth() * .746, this.getHeight() * .75);
 		spawnTable("table3", "blue", this.getWidth() * .746, this.getHeight() * .4);
 		spawnTable("table4", "blue", this.getWidth() * .146, this.getHeight() * .4);
-
 		
 		
 		/* Constructing players and their event listeners */
@@ -127,14 +125,14 @@ public class Classroom2 extends DisplayObjectContainer {
 		this.addChild(player2);
 		
 		
-		this.player1.setPosition(this.getWidth() * .5, this.getHeight() * .742);
+		this.player1.setPosition(this.getWidth() * .32, this.getHeight() * .742);
 		if(this.gameManager.getNumPlayers() == 2)
 			this.player2.setPosition(this.getWidth() * .08, this.getHeight() * .742);
 
 		/* Boss constructor */
 
 		boss = new Boss("floryan", "floryan/floryan-default.png", 
-				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.LINEAR, TweenTransitions.SPEED_UP);
+				"floryan/floryan-spritesheet.png", "resources/floryan/floryan-spritesheet.txt", TweenTransitions.SPEED_UP, TweenTransitions.SPEED_UP);
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);
@@ -142,9 +140,12 @@ public class Classroom2 extends DisplayObjectContainer {
 
 		/* Generate Students */
 		spawnStudent("Student0", "down", this.getWidth() * .8, this.getHeight() * .90);
-		spawnStudent("Student1", "left", this.getWidth() * .8, this.getHeight() * .55);
+		spawnStudent("Student1", "left", this.getWidth() * .75, this.getHeight() * .55);
 		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .90);
-		spawnStudent("Student3", "right", this.getWidth() * .2, this.getHeight() * .55);
+		spawnStudent("Student3", "right", this.getWidth() * .25, this.getHeight() * .55);
+		spawnStudent("Student4", "right", this.getWidth() * .85, this.getHeight() * .55);
+		spawnStudent("Student5", "left", this.getWidth() * .15, this.getHeight() * .55);
+
 
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
@@ -421,12 +422,12 @@ public class Classroom2 extends DisplayObjectContainer {
 		// FIXME: want to display these stats on the endLevelScreen
 		double exp = 0;
 		for (Student student : studentList) {
-			exp += student.getCurrentHealth() / student.getMaxHealth() * 100;
+			exp += student.getCurrentHealth() / student.getMaxHealth() * 500;
 			// Health should be a max of 25000
 		}
-		exp += this.levelManager.getPoisonCollected(numPlayer) * 10;
-		exp += this.levelManager.getStudentsCured(numPlayer) * 50;
-		exp += this.levelManager.getVPCollected(numPlayer) * 10;
+		exp += this.levelManager.getPoisonCollected(numPlayer) * 40;
+		exp += this.levelManager.getStudentsCured(numPlayer) * 100;
+		exp += this.levelManager.getVPCollected(numPlayer) * 80;
 		exp += this.playerManager.getHealth(numPlayer) / this.playerManager.getMaxHealth(numPlayer) * 100;
 		this.playerManager.setExperience(this.playerManager.getExperience(numPlayer) + (int) exp, numPlayer);
 		// FIXME: Attributes should be based on how much experience was earned?
@@ -494,6 +495,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
+		System.out.println(this.inPlay);
 		if (this.inPlay) {
 			this.keepTime();
 			this.spawnProjectiles();
@@ -532,6 +534,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	/* collision detection and movement for players */
 
 	public void updatePlayer(ArrayList<String> pressedKeys, Player player) {
+		System.out.println("updating player");
 		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
 				this.moveSpriteCartesianAnimate(pressedKeys, player);
