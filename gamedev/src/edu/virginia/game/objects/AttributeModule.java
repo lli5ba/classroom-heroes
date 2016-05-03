@@ -44,12 +44,12 @@ public class AttributeModule extends Sprite{
 			}
 			player.setActive(false);
 			this.addChild(player);
-			player.setPosition(this.getWidth() * 0.2766, this.getHeight() * 0.3224);
+			player.setPosition(this.getWidth() * 0.2966, this.getHeight() * 0.3124);
 			
 		}
 		attrAdditions = 0;
 		numPlayer = playerNum;
-		this.updateDisplay();
+		this.initializeDisplay();
 		this.selected = false;
 	}
 	
@@ -80,7 +80,7 @@ public class AttributeModule extends Sprite{
 				numToDisplay = "" + this.playerManager.getSwingSpeed(numPlayer);
 			}
 			g.drawString(numToDisplay, 
-					(int) (this.getxPos() + this.getWidth()*.4322), 
+					(int) (this.getxPos() + this.getWidth()*.4422), 
 					(int) (this.getyPos() + this.getHeight()*.6621));
 			g.setColor(Color.BLACK); //set back for others
 		}
@@ -96,11 +96,11 @@ public class AttributeModule extends Sprite{
 		if (this.getId().equals(HEALTH)) {
 			this.healthbar.setPlayerNum(numPlayer);
 		} else {
-			player = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
-					"resources/player/player-spritesheet-1-frameInfo.txt", 1);
 			if (numPlayer == 2){
-				player = new Player("Player2", "player/player2.png", "player/player-spritesheet-2.png",
-						"resources/player/player-spritesheet-1-frameInfo.txt", 2);
+				player.stopAnimation();
+				player.loadSprites("resources/player/player-spritesheet-1-frameInfo.txt", 
+						"player/player-spritesheet-2.png");
+				initializeDisplay();
 			}
 		}
 		this.updateDisplay();
@@ -125,16 +125,6 @@ public class AttributeModule extends Sprite{
 		
 	}
 	
-	//call when leaving end level screen
-	public void storeChanges() {
-		if(this.getId().equals(HEALTH)) {
-			//is updated already
-		} else if(this.getId().equals(MOVEMENT_SPEED)) {
-			
-		} else if(this.getId().equals(SWING_SPEED)) {
-			
-		}
-	}
 	
 	//only happens if this module is selected
 	private void navigateAttribute(ArrayList<String> pressedKeys) {
@@ -192,13 +182,24 @@ public class AttributeModule extends Sprite{
 		}
 	}
 
-	public void updateDisplay() {
+	private void updateDisplay() {
 		if(this.getId().equals(HEALTH)) {
 			//is updated automatically when added as child
 		} else if(this.getId().equals(MOVEMENT_SPEED)) {
-			player.animate("right", (this.playerManager.getSpeed(numPlayer)/4));
+			player.setAnimationSpeed(Math.abs(this.playerManager.getSpeed(numPlayer)/2));
 		} else if(this.getId().equals(SWING_SPEED)) {
-			player.animate("netright", this.playerManager.getSwingSpeed(numPlayer));
+			
+			player.setAnimationSpeed(Math.abs(this.playerManager.getSwingSpeed(numPlayer)));
+		}
+	}
+
+	public void initializeDisplay() {
+		if(this.getId().equals(HEALTH)) {
+			//is updated automatically when added as child
+		} else if(this.getId().equals(MOVEMENT_SPEED)) {
+			player.animate("right", 1);
+		} else if(this.getId().equals(SWING_SPEED)) {
+			player.animate("netright", 5);
 		}
 		
 	}

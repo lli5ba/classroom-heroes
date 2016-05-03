@@ -36,10 +36,12 @@ public class EndLevelScreen extends DisplayObjectContainer {
 		this.setExperience(0);
 		this.setDialog(WIN);
 		this.numPlayer = 1;
+		
+		/* attributes module */
 		this.attributes = new Attributes("attributes", numPlayer);
 		this.addChild(attributes);
 		this.attributes.setPosition(this.getWidth() * 0.25, this.getHeight() * 0.4);
-		
+		this.attributes.setVisible(false);
 		/* continue button */
 		this.contButton = new NavButtonIcon(NavButtonIcon.CONTINUE, 
 				true, this.playerManager.getSecondaryKey(this.numPlayer));
@@ -96,7 +98,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 			}
 		} else if(this.dialog.equals(LOSE_STUDENTS) && this.dialog.equals(LOSE_NO_HEALTH)) {
 			//lost level, press secondaryKey to replay
-			if (releasedKeys.contains(this.playerManager.getPrimaryKey(this.numPlayer))) { 
+			if (releasedKeys.contains(this.playerManager.getSecondaryKey(this.numPlayer))) { 
 				this.gameManager.setActiveGameScene("title");
 				this.gameManager.restartGame();
 			}
@@ -145,9 +147,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 						this.playerManager.getSecondaryKey(this.numPlayer).toString() +
 						" to Continue)", 340, 255); */
 			} else {
-				g.drawString("Close Game and Restart ", 140, 120);
-				//FIXME... should be able to 
-				//"Replay level" keep temporary stats in LevelManager, so we can easily reset them after a level
+				//restart level
 			}
 		}
 	}
@@ -166,6 +166,10 @@ public class EndLevelScreen extends DisplayObjectContainer {
 
 	public void setDialog(String dialog) {
 		this.dialog = dialog;
+		if(this.dialog.equals(WIN)) {
+			if(this.attributes != null)
+				this.attributes.setVisible(true);
+		}
 	}
 
 

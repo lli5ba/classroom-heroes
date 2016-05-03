@@ -254,6 +254,7 @@ public class AnimatedSprite extends Sprite {
 	}
 	
 	public void updateAnimation() {
+		
 		if (this.isPlaying) {
 			// Stop if done looping
 			if (!this.isLooping() && this.getTimesLooped() == 1) {
@@ -318,6 +319,7 @@ public class AnimatedSprite extends Sprite {
 		 */
 
 		try {
+			this.spriteMap.clear();
 			FileInputStream fstream = new FileInputStream(txt_filename);
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));

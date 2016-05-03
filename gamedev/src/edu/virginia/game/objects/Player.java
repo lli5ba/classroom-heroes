@@ -210,6 +210,7 @@ public class Player extends AnimatedSprite {
 		}
 	}
 
+
 	@Override
 	public void updateAnimation(){
 		if (this.isPlaying()) {
