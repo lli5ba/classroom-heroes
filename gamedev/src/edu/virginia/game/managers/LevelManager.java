@@ -219,6 +219,11 @@ public class LevelManager implements IEventListener {
 			Player player = (Player) event.getSource();
 			int id = player.getNumPlayer();
 			this.setVPCollected(this.getVPCollected(id) + 1, id);
+		} else if (event.getEventType().equals(EventTypes.PICKUP_CANDY.toString())) {
+			//should be dispatched by player
+			Player player = (Player) event.getSource();
+			int id = player.getNumPlayer();
+			this.setVPCollected(this.getVPCollected(id) + 1, id);
 		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
 			//should be dispatched by player
 			Player player = (Player) event.getSource();

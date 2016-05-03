@@ -53,7 +53,7 @@ public class WeimerBonus extends DisplayObjectContainer {
 	private GameClock poisonClock;
 	private GameClock vpClock;
 	private boolean inPlay;
-	public static final double VP_SPAWN_INTERVAL = 1500;
+	public static final double VP_SPAWN_INTERVAL = 300;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
 	public static final double GAME_TIME = 60000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
@@ -64,7 +64,7 @@ public class WeimerBonus extends DisplayObjectContainer {
 	private ArrayList<String> prevPressedKeys;
 
 	public WeimerBonus(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-		super(id, "classroom-background-4.png");
+		super(id, "classroom/classroom-background-4.png");
 
 		try {
 			this.soundManager = SoundManager.getInstance();
@@ -81,7 +81,7 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.vpClock = new GameClock();
 
 		/* Game Event Listener */
-		this.addEventListener(soundManager, EventTypes.PICKUP_VP.toString());
+		this.addEventListener(soundManager, EventTypes.PICKUP_CANDY.toString());
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
 		this.addEventListener(levelManager, EventTypes.WIN_LEVEL.toString());
 		this.addEventListener(levelManager, EventTypes.LOSE_LEVEL.toString());
@@ -97,14 +97,14 @@ public class WeimerBonus extends DisplayObjectContainer {
 				"resources/player/player-spritesheet-1-frameInfo.txt", 2);
 
 		this.player1.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
-		this.player1.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
+		this.player1.addEventListener(levelManager, EventTypes.PICKUP_CANDY.toString());
 		this.player1.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player1.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
 		this.player1.addEventListener(playerManager, EventTypes.THROW_SMOKEBOMB.toString());
 		this.player2.addEventListener(levelManager, EventTypes.THROW_SMOKEBOMB.toString());
 		
 		this.player2.addEventListener(playerManager, EventTypes.POISON_PLAYER.toString());
-		this.player2.addEventListener(levelManager, EventTypes.PICKUP_VP.toString());
+		this.player2.addEventListener(levelManager, EventTypes.PICKUP_CANDY.toString());
 		this.player2.addEventListener(playerManager, EventTypes.CURE_STUDENT.toString());
 		this.player2.addEventListener(levelManager, EventTypes.CURE_STUDENT.toString());
 		this.player2.addEventListener(playerManager, EventTypes.THROW_SMOKEBOMB.toString());
@@ -204,11 +204,11 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.studentList.add(student1);
 	}
 
-	public void spawnVP() {
-		VP vp = this.boss.spawnVP();
-		if (vp != null) {
-			this.vpList.add(vp);
-			this.addChild(vp);
+	public void spawnCandy() {
+		Candy candy = this.boss.spawnCandy();
+		if (candy != null) {
+			this.vpList.add(candy);
+			this.addChild(candy);
 		}
 	}
 
@@ -224,9 +224,9 @@ public class WeimerBonus extends DisplayObjectContainer {
 		for (PickedUpItem vp : vpList) {
 			if (player1.getNetHitboxGlobal().intersects(vp.getHitboxGlobal()) //|| player1.collidesWithGlobal(vp)) 
 					&& !vp.isPickedUp()) {
-				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
-				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
-				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player1));
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_CANDY.toString(), this));
+				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_CANDY.toString(), vp));
+				this.player1.dispatchEvent(new GameEvent(EventTypes.PICKUP_CANDY.toString(), this.player1));
 //				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
 //				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
 //				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
@@ -234,9 +234,9 @@ public class WeimerBonus extends DisplayObjectContainer {
 
 			if (player2.getNetHitboxGlobal().intersects(vp.getHitboxGlobal()) //|| player2.collidesWithGlobal(vp)) 
 					&& !vp.isPickedUp()) {
-				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this));
-				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), vp));
-				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_VP.toString(), this.player2));
+				this.dispatchEvent(new GameEvent(EventTypes.PICKUP_CANDY.toString(), this));
+				vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_CANDY.toString(), vp));
+				this.player2.dispatchEvent(new GameEvent(EventTypes.PICKUP_CANDY.toString(), this.player2));
 //				System.out.println("Player 1's Number of VP: " + this.levelManager.getVPCollected(1));
 //				System.out.println("Player 2's Number of VP: " + this.levelManager.getVPCollected(2));
 //				System.out.println("Total number of VP: " + this.playerManager.getVpCount());
@@ -378,14 +378,9 @@ public class WeimerBonus extends DisplayObjectContainer {
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
 			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
-				spawnVP();
+				System.out.println("new candyREJRWLKEJRWERJL");
+				spawnCandy();
 				this.vpClock.resetGameClock();
-			}
-		}
-		if (this.poisonClock != null) {
-			if (this.poisonClock.getElapsedTime() > (POISON_SPAWN_INTERVAL)) {
-				spawnPoison();
-				this.poisonClock.resetGameClock();
 			}
 		}
 	}
@@ -485,13 +480,10 @@ public class WeimerBonus extends DisplayObjectContainer {
 		if (this.inPlay) {
 			this.keepTime();
 			this.spawnProjectiles();
-			this.checkVPCollisions(pressedKeys);
-			this.garbagePoisonCollect();
-			this.garbageVPCollect();
-			this.checkPoisonCollisions(pressedKeys);
-			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
 			this.aimThrowSmokeBomb(pressedKeys, this.player1);
+			this.checkVPCollisions(pressedKeys);
+			this.garbageVPCollect();
 			//smokebomb
 			this.levelManager.removeCompleteBombs(pressedKeys);
 		

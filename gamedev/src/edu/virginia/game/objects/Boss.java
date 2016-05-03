@@ -31,12 +31,14 @@ public class Boss extends AnimatedSprite {
 	private String animation;
 	private TweenTransitions tweenTypeX;
 	private TweenTransitions tweenTypeY;
+	private boolean singleSprite;
 
 	public Boss(String id, String imageFileName, String thisSheetFileName, String specsFileName, TweenTransitions tx, TweenTransitions ty) {
 		super(id, imageFileName, thisSheetFileName, specsFileName);
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
 		this.tweenTypeX = tx;
 		this.tweenTypeY = ty;
+		this.singleSprite = false;
 		if (this.gameManager.getNumLevel() == 1) {
 			this.poisonSpeed = 20000;
 			this.vpSpeed = 17000;
@@ -55,6 +57,7 @@ public class Boss extends AnimatedSprite {
 	
 	public Boss(String id, String imageFileName, TweenTransitions tx, TweenTransitions ty) {
 		super(id, imageFileName);
+		this.singleSprite = true;
 		this.setPivotPoint(new Position(this.getWidth() / 2, this.getHeight() / 2));
 		this.tweenTypeX = tx;
 		this.tweenTypeY = ty;
@@ -129,8 +132,8 @@ public class Boss extends AnimatedSprite {
 		if (myTweenJuggler != null) {
 			Candy candy = new Candy("Candy");
 			candy.setCenterPos(this.getCenterPos());
-			candy.addEventListener(projectileManager, EventTypes.PICKUP_VP.toString());
-			candy.addEventListener(playerManager, EventTypes.PICKUP_VP.toString());
+			candy.addEventListener(projectileManager, EventTypes.PICKUP_CANDY.toString());
+			candy.addEventListener(playerManager, EventTypes.PICKUP_CANDY.toString());
 			Tween tween2 = new Tween(candy, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition("candy", candy.getxPos(), candy.getyPos());
@@ -171,6 +174,8 @@ public class Boss extends AnimatedSprite {
 	 * Returns null if projectile should not spawn **/
 	
 	public Position generatePosition(String vpOrPoison, double centerx, double centery) {
+		
+		
 		double radius = this.gameManager.getGameWidth();
 		double ang_min = (0);
 		double ang_max = (Math.PI);
@@ -202,10 +207,15 @@ public class Boss extends AnimatedSprite {
 		
 		//use corresponding tweenSpeed in the rotateBoss method to control 
 		//animation speed
-		if(vpOrPoison.equals("vp")) {
-			this.rotateBoss(Math.toDegrees(d), this.vpSpeed);
-		} else {
-			this.rotateBoss(Math.toDegrees(d), this.poisonSpeed);
+		
+		//divides by zero if single sprite
+		if(!this.singleSprite)
+		{
+			if(vpOrPoison.equals("vp")) {
+				this.rotateBoss(Math.toDegrees(d), this.vpSpeed);
+			} else {
+				this.rotateBoss(Math.toDegrees(d), this.poisonSpeed);
+			}
 		}
 		double x = centerx + radius * Math.cos(d);
 		double y = centery + radius * Math.sin(d);

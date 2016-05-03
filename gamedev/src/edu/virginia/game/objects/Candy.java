@@ -31,8 +31,8 @@ public class Candy extends PickedUpItem {
 	}
 
 	public Candy(String id) {
-		super(id, "candy/candy0.png", "projectiles/candy-spritesheet.png",
-				"resources/projectiles/candy-spritesheet.txt");
+		super(id, "candy/candy0.png", "candy/candy-spritesheet.png",
+				"resources/candy/candy-spritesheet.txt");
 		Random rand1 = new Random();
 		int colorVar = (int) (rand1.nextDouble() * 3);
 		String color = null;

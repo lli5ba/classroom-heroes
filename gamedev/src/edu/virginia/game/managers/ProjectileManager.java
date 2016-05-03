@@ -3,6 +3,7 @@ package edu.virginia.game.managers;
 import edu.virginia.engine.display.Sprite;
 import edu.virginia.engine.events.GameEvent;
 import edu.virginia.engine.events.IEventListener;
+import edu.virginia.game.objects.Candy;
 import edu.virginia.game.objects.EventTypes;
 import edu.virginia.game.objects.PickedUpItem;
 import edu.virginia.game.objects.Player;
@@ -40,6 +41,13 @@ public class ProjectileManager implements IEventListener {
 		else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			// should be dispatched by the vp
 			VP vp = (VP) event.getSource();
+			vp.setPickedUp(true);
+			if (vp.isVisible()) { // has faded out already
+				vp.setVisible(false);
+			}
+		} else if (event.getEventType().equals(EventTypes.PICKUP_CANDY.toString())) {
+			// should be dispatched by the vp
+			Candy vp = (Candy) event.getSource();
 			vp.setPickedUp(true);
 			if (vp.isVisible()) { // has faded out already
 				vp.setVisible(false);

@@ -12,7 +12,8 @@ public enum EventTypes {
 	CURE_STUDENT("cure student"),
 	THROW_SMOKEBOMB("throw smokebomb"), 
 	SWING_NET("swing net"),
-	WALK("walk");
+	WALK("walk"),
+	PICKUP_CANDY("pickup candy");
 	;
 	
 	private final String text;

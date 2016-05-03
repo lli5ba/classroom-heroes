@@ -484,6 +484,8 @@ public class PlayerManager implements IEventListener {
 			}
 		} else if (event.getEventType().equals(EventTypes.PICKUP_VP.toString())) {
 			this.setVpCount(this.vpCount + 1);
+		} else if (event.getEventType().equals(EventTypes.PICKUP_CANDY.toString())) {
+			this.setVpCount(this.vpCount + 1);
 		} else if (event.getEventType().equals(EventTypes.CURE_STUDENT.toString())) {
 			this.setNumGingerAle(this.getNumGingerAle() - 1);
 		} else if (event.getEventType().equals(EventTypes.THROW_SMOKEBOMB.toString())) {

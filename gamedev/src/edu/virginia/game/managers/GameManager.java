@@ -11,6 +11,7 @@ import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Classroom2;
 import edu.virginia.game.objects.Classroom3;
 import edu.virginia.game.objects.Classroom4;
+import edu.virginia.game.objects.Controls;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.TitleScreen;
@@ -47,7 +48,7 @@ public class GameManager {
 		gameWidth = 1365;
 		numPlayers = 1;
 		numLevel = 1;
-		setActiveGameScene("title");
+		setActiveGameScene("weimer");
 		gameScenes = new HashMap<String, DisplayObjectContainer>();
 		toRemoveQueue = new ArrayList<String>();
 
@@ -124,6 +125,11 @@ public class GameManager {
 				if (instruction != null) {
 					instruction.update(pressedKeys);
 				}
+			} else if (this.activeGameScene.contains("controls")) {
+				Controls controls = (Controls) this.gameScenes.get(this.activeGameScene);
+				if (controls != null) {
+					controls.update(pressedKeys);
+				}
 			} else if(this.activeGameScene.contains("hallway")) {
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);
 				if (hallway != null) {
@@ -193,6 +199,11 @@ public class GameManager {
 				Instructions instruction = (Instructions) this.gameScenes.get(this.activeGameScene);
 				if (instruction != null) {
 					instruction.draw(g);
+				}
+			} else if (this.activeGameScene.contains("controls")) {
+				Controls controls = (Controls) this.gameScenes.get(this.activeGameScene);
+				if (controls != null) {
+					controls.draw(g);
 				}
 			} else if (this.activeGameScene.contains("hallway")) {
 				Hallway hallway = (Hallway) this.gameScenes.get(this.activeGameScene);

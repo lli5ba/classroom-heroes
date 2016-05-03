@@ -902,7 +902,7 @@ public class Classroom extends DisplayObjectContainer {
 		return false;
 	}
 
-	private void cureAllStudents() {
+	public void cureAllStudents() {
 		for(Student student: this.studentList) {
 			if (student.isPoisoned() && !student.isDead()) {
 			student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));

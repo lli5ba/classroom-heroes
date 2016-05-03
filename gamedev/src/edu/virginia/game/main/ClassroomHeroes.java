@@ -192,7 +192,7 @@ public class ClassroomHeroes extends Game {
 					this.gameManager.setNumLevel(5);
 				}
 			}
-			else if (sceneName.equals("WeimerBonus")) {
+			else if (sceneName.equals("weimer")) {
 				
 				WeimerBonus weimer = null;
 				try {
