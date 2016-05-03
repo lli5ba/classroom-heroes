@@ -22,9 +22,7 @@ public class Timer extends DisplayObjectContainer {
 	public void draw(Graphics g) {
 		super.draw(g);
 		Font f = new Font("Dialog", Font.PLAIN, 8);
-		g.setFont(f);
-
-
+		g.setFont(f); 
 	}
 
 	@Override

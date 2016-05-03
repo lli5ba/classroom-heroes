@@ -44,6 +44,7 @@ import edu.virginia.game.managers.SoundManager;
 import edu.virginia.game.objects.Classroom;
 import edu.virginia.game.objects.Classroom2;
 import edu.virginia.game.objects.Classroom3;
+import edu.virginia.game.objects.Controls;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.ItemDetail;
@@ -120,6 +121,15 @@ public class ClassroomHeroes extends Game {
 				Instructions instruction = new Instructions(sceneName);
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, instruction);
+				sceneMusic("instruction", "instructions.wav");
+			} else if (sceneName.contains("controls")) {
+				// create a hallway
+				// get last character in styleCode
+				String styleCode = sceneName.substring(sceneName.length() - 1);
+				Controls controls = null;
+				controls = new Controls(sceneName);
+				// add scene to gameManager
+				this.gameManager.addGameScene(sceneName, controls);
 				sceneMusic("instruction", "instructions.wav");
 			} else if (sceneName.contains("hallway")) {
 				// create a hallway
