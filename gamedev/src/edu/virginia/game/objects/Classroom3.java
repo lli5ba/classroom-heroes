@@ -58,7 +58,10 @@ public class Classroom3 extends DisplayObjectContainer {
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
 	public static final double GAME_TIME = 45000;
+<<<<<<< HEAD
 	public static final double TA_SPAWN_INTERVAL = 5000;
+=======
+>>>>>>> 5fd6b6507314acb8fde536403342b18979cb9e58
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
