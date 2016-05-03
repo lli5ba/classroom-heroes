@@ -229,4 +229,8 @@ public class GameManager {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public DisplayObjectContainer getCurrentScene() {
+		return this.gameScenes.get(this.activeGameScene);
+	}
 }

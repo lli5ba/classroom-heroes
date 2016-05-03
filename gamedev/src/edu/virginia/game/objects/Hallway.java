@@ -161,14 +161,16 @@ public class Hallway extends DisplayObjectContainer {
 				break;
 			case 2: // check two players
 				// FIXME: randomize which player gets first check?
-				if (releasedKeys.contains(this.playerManager.getPrimaryKey(1))
-						&& this.player1.inRangeGlobal(this.vendingMachine, range)) {
-					// player near vending machine
-					this.openStore(1);
-				} else if (releasedKeys.contains(this.playerManager.getPrimaryKey(2))
-						&& this.player2.inRangeGlobal(this.vendingMachine, range)) {
-					// player near vending machine
-					this.openStore(2);
+				if (this.player1.isActive() && this.player2.isActive()) {
+					if (releasedKeys.contains(this.playerManager.getPrimaryKey(1))
+							&& this.player1.inRangeGlobal(this.vendingMachine, range)) {
+						// player near vending machine
+						this.openStore(1);
+					} else if (releasedKeys.contains(this.playerManager.getPrimaryKey(2))
+							&& this.player2.inRangeGlobal(this.vendingMachine, range)) {
+						// player near vending machine
+						this.openStore(2);
+					}
 				}
 			}
 		} else { // store is visible, check for close (secondary key)
@@ -180,9 +182,9 @@ public class Hallway extends DisplayObjectContainer {
 				break;
 			case 2: // check two players
 				// FIXME: randomize which player gets first check?
-				if (releasedKeys.contains(this.playerManager.getSecondaryKey(1))) {
+				if (!this.player1.isActive() && releasedKeys.contains(this.playerManager.getSecondaryKey(1))) {
 					this.closeStore(1);
-				} else if (releasedKeys.contains(this.playerManager.getSecondaryKey(2))) {
+				} else if (!this.player2.isActive() && releasedKeys.contains(this.playerManager.getSecondaryKey(2))) {
 					this.closeStore(2);
 				}
 			}

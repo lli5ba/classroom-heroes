@@ -491,5 +491,47 @@ public class PlayerManager implements IEventListener {
 		} 
 
 	}
+	
+	public String getKey(String keyType, int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			switch (keyType) {
+			case "up":
+				return this.upKey1;
+			case "down":
+				return this.downKey1;
+			case "right":
+				return this.rightKey1;
+			case "left":
+				return this.leftKey1;
+			case "primary":
+				return this.primaryKey1;
+			case "secondary":
+				return this.secondaryKey1;
+			default:
+				break;
+			}
+		case 2:
+			switch (keyType) {
+			case "up":
+				return this.upKey2;
+			case "down":
+				return this.downKey2;
+			case "right":
+				return this.rightKey2;
+			case "left":
+				return this.leftKey2;
+			case "primary":
+				return this.primaryKey2;
+			case "secondary":
+				return this.secondaryKey2;
+			default:
+				break;
+			}
+		default:
+			
+		}
+		return "";
+	}
 
 }

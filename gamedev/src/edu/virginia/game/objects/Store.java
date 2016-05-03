@@ -134,6 +134,7 @@ public class Store extends DisplayObjectContainer {
 
 	public void setNumPlayer(int numPlayer) {
 		this.numPlayer = numPlayer;
+		this.contButton.setButtonId(this.playerManager.getSecondaryKey(numPlayer));
 	}
 
 	@Override
@@ -374,4 +375,5 @@ public class Store extends DisplayObjectContainer {
 			navigateStore(pressedKeys);
 		}
 	}
+	
 }
