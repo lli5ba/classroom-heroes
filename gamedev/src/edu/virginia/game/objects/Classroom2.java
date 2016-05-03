@@ -45,6 +45,8 @@ public class Classroom2 extends DisplayObjectContainer {
 	private TweenJuggler myTweenJuggler = TweenJuggler.getInstance();
 	private Player player1;
 	private Player player2;
+	private TA ta;
+	private GameClock taClock;
 	private Boss boss;
 	private PlayerStatBox stat;
 	private PlayerStat pstat;
@@ -55,14 +57,19 @@ public class Classroom2 extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 1000;
+	public static final double GAME_TIME = 45000;
+	public static final double TA_SPAWN_INTERVAL = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
 	ArrayList<Sprite> furnitureList = new ArrayList<Sprite>();
 	private DisplayObjectContainer playArea;
 	private ArrayList<String> prevPressedKeys;
-
+	/* stalling ability */
+	private GameClock stallClock;
+	private double stallSeconds;
+	private boolean stall;
+	
 	public Classroom2(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
 
@@ -79,7 +86,13 @@ public class Classroom2 extends DisplayObjectContainer {
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
 		this.vpClock = new GameClock();
+		this.taClock = new GameClock();
 
+		/* stall ability */
+		this.stallClock = new GameClock();
+		this.stallSeconds = 0;
+		this.stall =false;
+		
 		/* Game Event Listener */
 		this.addEventListener(soundManager, EventTypes.PICKUP_VP.toString());
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
@@ -95,7 +108,12 @@ public class Classroom2 extends DisplayObjectContainer {
 		spawnTable("table3", "blue", this.getWidth() * .746, this.getHeight() * .4);
 		spawnTable("table4", "blue", this.getWidth() * .146, this.getHeight() * .4);
 
-		
+		/* TA constructor */
+		this.ta = new TA("ta");
+		this.ta.setScaleX(.7);
+		this.ta.setScaleY(.7);
+		this.addChild(ta);
+		this.ta.setPosition(513, 45);
 		
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
@@ -188,6 +206,21 @@ public class Classroom2 extends DisplayObjectContainer {
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 	}
+	
+	/* stall on displaying game screen*/
+	public void stallEndLevel(double seconds) {
+		//start timer
+		this.stallClock.resetGameClock();
+		this.stallSeconds = seconds;
+	}
+	public void checkNotVisibleEndLevel(){
+		if(!this.endLevelScreen.isVisible()) {
+			if (this.stallClock.getElapsedTime() > (this.stallSeconds*1000)) {
+				this.endLevelScreen.setVisible(true);
+			}
+		}
+	}
+	
 
 	public void spawnTable(String id, String style, double xPos, double yPos) {
 		if (style.equals("blue")) {
@@ -233,6 +266,22 @@ public class Classroom2 extends DisplayObjectContainer {
 		}
 	}
 
+	private void checkTACollisions(ArrayList<String> pressedKeys) {
+		
+		if(player1.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
+			this.ta.doAction(1);
+			this.ta.setVisible(false);
+		}		
+		if(player2.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
+			this.ta.doAction(2);
+			this.ta.setVisible(false);
+		}
+	}
+	
+	public void getHighlightBox() {
+		this.stat.highlightbox();
+	}
+	
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
 			if (player1.getNetHitboxGlobal().intersects(vp.getHitboxGlobal()) //|| player1.collidesWithGlobal(vp)) 
@@ -401,6 +450,20 @@ public class Classroom2 extends DisplayObjectContainer {
 				this.poisonClock.resetGameClock();
 			}
 		}
+		
+		if (this.taClock != null) {
+			if (this.taClock.getElapsedTime() > (TA_SPAWN_INTERVAL)) {
+				Random r = new Random();
+				int chance = r.nextInt(3) + 1;
+				if(chance > 0 && chance <= 1) {
+					if (!this.ta.isVisible()) {
+						this.ta.appear((this.GAME_TIME*.083)/1000);
+					}
+				}
+				this.taClock.resetGameClock();
+			}
+		}
+		
 	}
 
 	public void openDoor() {
@@ -500,6 +563,7 @@ public class Classroom2 extends DisplayObjectContainer {
 			this.checkVPCollisions(pressedKeys);
 			this.garbagePoisonCollect();
 			this.garbageVPCollect();
+			this.checkTACollisions(pressedKeys);
 			this.checkPoisonCollisions(pressedKeys);
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
@@ -514,9 +578,14 @@ public class Classroom2 extends DisplayObjectContainer {
 			}
 			
 		} else {
-			if(!this.player1.isPlaying() && !this.player2.isPlaying()
-					&& !this.endLevelScreen.isVisible()) {
-				this.endLevelScreen.setVisible(true);
+			//stall for x seconds, then display end level screen
+			if(!this.stall) {
+				this.stallEndLevel(3);
+				this.stall = true;
+			}
+			if(!this.endLevelScreen.isVisible()) {
+				this.checkNotVisibleEndLevel();
+
 			}
 		}
 		if (myTweenJuggler != null) {
@@ -759,6 +828,15 @@ public class Classroom2 extends DisplayObjectContainer {
 
 	// Rectangle r is the players global hitbox
 	private boolean playerCollision(Rectangle r, int numPlayer) {
+		/* check TA collision */
+		if (this.ta.isVisible()) {
+			Rectangle smallTa = new Rectangle(this.ta.getHitboxGlobal());
+			smallTa.grow(0, (int) (-this.ta.getHeight()*.3)); //shrink hitbox
+			if(r.intersects(smallTa)) {
+				return true;
+			}
+		}
+		
 		/* Check collisions with students */
 		for (Student student : studentList) {
 			if (r.intersects(student.getHitboxGlobal())) {
@@ -797,6 +875,19 @@ public class Classroom2 extends DisplayObjectContainer {
 			return true;
 		}
 		return false;
+	}
+	public void cureAllStudents() {
+		for(Student student: this.studentList) {
+			if (student.isPoisoned() && !student.isDead()) {
+			student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
+			}
+		}
+	}
+
+	public void displayHearts(int numPlayer) {
+		if(numPlayer == 1) {
+			this.player1.showHealthBar(1.5);
+		}
 	}
 	
 }

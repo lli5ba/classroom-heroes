@@ -31,25 +31,25 @@ public class Controls extends DisplayObjectContainer {
 		this.up.setScaleX(1.0);
 		this.up.setScaleY(1.0);
 		this.addChild(up);
-		this.up.setPosition(300, 100);
+		this.up.setPosition(400, 125);
 		
 		down = new KeyboardKey("down", numPlayer);
 		this.down.setScaleX(1.0);
 		this.down.setScaleY(1.0);
 		this.addChild(down);
-		this.down.setPosition(300, 150);
+		this.down.setPosition(400, 175);
 		
 		left = new KeyboardKey("left", numPlayer);
 		this.left.setScaleX(1.0);
 		this.left.setScaleY(1.0);
 		this.addChild(left);
-		this.left.setPosition(250, 150);
+		this.left.setPosition(350, 175);
 		
 		right = new KeyboardKey("right", numPlayer);
 		this.right.setScaleX(1.0);
 		this.right.setScaleY(1.0);
 		this.addChild(right);
-		this.right.setPosition(350, 150);
+		this.right.setPosition(450, 175);
 	
 		/**
 		primary = new KeyboardKey("primary", numPlayer);
