@@ -57,7 +57,7 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 60000;
+	public static final double GAME_TIME = 45000;
 	public static final double TA_SPAWN_INTERVAL = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
@@ -126,18 +126,19 @@ public class Classroom extends DisplayObjectContainer {
 			player2.setVisible(false);
 		}
 
-		this.addChild(player1);
-		this.addChild(player2);
-
-		this.player1.setPosition(this.getWidth() * .814, this.getHeight() * .742);
-		this.player2.setPosition(this.getWidth() * .08, this.getHeight() * .742);
-
 		/* TA constructor */
 		this.ta = new TA("ta");
 		this.ta.setScaleX(.7);
 		this.ta.setScaleY(.7);
 		this.addChild(ta);
 		this.ta.setPosition(513, 45);
+		
+		this.addChild(player1);
+		this.addChild(player2);
+
+		this.player1.setPosition(this.getWidth() * .814, this.getHeight() * .742);
+		this.player2.setPosition(this.getWidth() * .08, this.getHeight() * .742);
+
 		/* Boss constructor */
 
 		boss = new Boss("floryan", "floryan/floryan-default.png", "floryan/floryan-spritesheet.png",
@@ -237,15 +238,20 @@ public class Classroom extends DisplayObjectContainer {
 	}
 	
 	private void checkTACollisions(ArrayList<String> pressedKeys) {
-		if(player1.getNetHitboxGlobal().intersects(ta.getHitbox())) {
-			this.ta.doAction();
-		}
 		
-		if(player2.getNetHitboxGlobal().intersects(ta.getHitbox())) {
-			this.ta.doAction();
+		if(player1.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
+			this.ta.doAction(1);
+			this.ta.setVisible(false);
+		}		
+		if(player2.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
+			this.ta.doAction(2);
+			this.ta.setVisible(false);
 		}
 	}
 	
+	public void getHighlightBox() {
+		this.stat.highlightbox();
+	}
 
 	private void checkVPCollisions(ArrayList<String> pressedKeys) {
 		for (PickedUpItem vp : vpList) {
@@ -438,10 +444,7 @@ public class Classroom extends DisplayObjectContainer {
 			if (this.taClock.getElapsedTime() > (TA_SPAWN_INTERVAL)) {
 				Random r = new Random();
 				int chance = r.nextInt(3) + 1;
-				System.out.println("in TA clock");
-				System.out.println(chance);
 				if(chance > 0 && chance <= 1) {
-					System.out.println("chance!");
 					if (!this.ta.isVisible()) {
 						this.ta.appear((this.GAME_TIME*.083)/1000);
 					}
@@ -544,6 +547,7 @@ public class Classroom extends DisplayObjectContainer {
 			this.keepTime();
 			this.spawnProjectiles();
 			this.checkVPCollisions(pressedKeys);
+			this.checkTACollisions(pressedKeys);
 			this.garbagePoisonCollect();
 			this.garbageVPCollect();
 			this.checkPoisonCollisions(pressedKeys);
@@ -813,7 +817,9 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean playerCollision(Rectangle r, int numPlayer) {
 		/* check TA collision */
 		if (this.ta.isVisible()) {
-			if(r.intersects(ta.getHitboxGlobal())) {
+			Rectangle smallTa = new Rectangle(this.ta.getHitboxGlobal());
+			smallTa.grow(0, (int) (-this.ta.getHeight()*.3)); //shrink hitbox
+			if(r.intersects(smallTa)) {
 				return true;
 			}
 		}
@@ -857,4 +863,9 @@ public class Classroom extends DisplayObjectContainer {
 		return false;
 	}
 
+	public void displayHearts(int numPlayer) {
+		if(numPlayer == 1) {
+			this.player1.showHealthBar(1.5);
+		}
+	}
 }

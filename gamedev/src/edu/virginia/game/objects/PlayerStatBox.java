@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Sprite;
+import edu.virginia.engine.display.ToastSprite;
 import edu.virginia.game.managers.GameManager;
 import edu.virginia.game.managers.LevelManager;
 import edu.virginia.game.managers.PlayerManager;
@@ -20,6 +21,8 @@ public class PlayerStatBox extends DisplayObjectContainer {
 	private DisplayObjectContainer cheese;
 	private Sprite VPicon1;
 	private Sprite VPicon2;
+	private ToastSprite antidoteIconHighlight;
+	private ToastSprite cheeseIconHighlight;
 
 	public PlayerStatBox(String id) {
 		super(id);
@@ -51,6 +54,22 @@ public class PlayerStatBox extends DisplayObjectContainer {
 		}
 	}
 
+	public void highlightbox() {
+		this.antidoteIconHighlight = new ToastSprite("antidoteHighlight", "statbox/highlight-icon.png");
+		this.antidoteIconHighlight.setScaleX(.8);
+		this.antidoteIconHighlight.setScaleY(.8);
+		this.antidoteIconHighlight.setAlpha((float) .5);
+		this.addChild(antidoteIconHighlight);
+		this.antidoteIconHighlight.setPosition(300+ this.antidote.getWidth(), 48);
+		
+		this.cheeseIconHighlight = new ToastSprite("cheeseHighlight", "statbox/highlight-icon.png");
+		this.cheeseIconHighlight.setScaleX(.8);
+		this.cheeseIconHighlight.setScaleY(.8);
+		this.cheeseIconHighlight.setAlpha((float) .5);
+		this.addChild(cheeseIconHighlight);
+		this.cheeseIconHighlight.setPosition(270+ this.cheese.getWidth(), 48);
+	}
+	
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
