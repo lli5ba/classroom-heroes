@@ -3,6 +3,7 @@ package edu.virginia.game.objects;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,13 +56,19 @@ public class WeimerBonus extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 300;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 1000;
+	public static final double GAME_TIME = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
 	ArrayList<Sprite> furnitureList = new ArrayList<Sprite>();
 	private DisplayObjectContainer playArea;
 	private ArrayList<String> prevPressedKeys;
+	/* stalling ability */
+	private GameClock stallClock;
+	private double stallSeconds;
+	private boolean stall;
+	/* pause menu */
+	private PauseMenu pauseMenu;
 
 	public WeimerBonus(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-4.png");
@@ -80,6 +87,11 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.poisonClock = new GameClock();
 		this.vpClock = new GameClock();
 
+		/* stall ability */
+		this.stallClock = new GameClock();
+		this.stallSeconds = 0;
+		this.stall =false;
+		
 		/* Game Event Listener */
 		this.addEventListener(soundManager, EventTypes.PICKUP_CANDY.toString());
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
@@ -156,9 +168,12 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.endLevelScreen.setVisible(false);
 		this.addChild(endLevelScreen);
 		this.endLevelScreen.setPosition(this.getWidth() * 0, this.getHeight() * .05);
-		// FIXME: Only works for one player right now,
-		// not built well at the moment because just needed to finish!
-
+		
+		/* pause menu */
+		pauseMenu = new PauseMenu("pauseMenu");
+		this.pauseMenu.setVisible(false);
+		this.addChild(pauseMenu);
+		
 		/* the game is in session (not on end screen) */
 		this.inPlay = true;
 
@@ -176,6 +191,28 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 	}
 
+	/*pause if ESC was pressed and not already paused*/
+	public void pauseGameCheck(ArrayList<String> pressedKeys) {
+		if (!this.pauseMenu.isVisible() && pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE))) {
+			this.pauseMenu.setVisible(true);
+			this.inPlay = false;
+		}
+	}
+	
+	/* stall on displaying game screen*/
+	public void stallEndLevel(double seconds) {
+		//start timer
+		this.stallClock.resetGameClock();
+		this.stallSeconds = seconds;
+	}
+	public void checkNotVisibleEndLevel(){
+		if(!this.endLevelScreen.isVisible()) {
+			if (this.stallClock.getElapsedTime() > (this.stallSeconds*1000)) {
+				this.endLevelScreen.setVisible(true);
+			}
+		}
+	}
+	
 	public void spawnTable(String id, String style, double xPos, double yPos) {
 		if (style.equals("blue")) {
 			Sprite table1 = new Sprite(id, "table/Table.png");
@@ -346,19 +383,20 @@ public class WeimerBonus extends DisplayObjectContainer {
 	}
 	
 	private void winLevel(String dialog) {
+		int victorySpeed = 4;
 		this.stopLevel();
 		Random rand1 = new Random();
-		 // between 1 and 2 inclusive
+		// between 1 and 2 inclusive
 		int victoryVar = (int) (rand1.nextDouble() * 2) + 1;
 		if (victoryVar == 1) {
-			this.player1.animateOnce("victoryspin", 1);
+			this.player1.animateOnceLock("victoryspin", victorySpeed);
 			if (this.gameManager.getNumPlayers() == 2) {
-				this.player2.animateOnce("victoryspin", 1);
+				this.player2.animateOnceLock("victoryspin", victorySpeed);
 			}
 		} else {
-			this.player1.animateOnce("victoryjump", 1);
+			this.player1.animateOnceLock("victoryjump", victorySpeed);
 			if (this.gameManager.getNumPlayers() == 2) {
-				this.player2.animateOnce("victoryjump", 1);
+				this.player2.animateOnceLock("victoryjump", victorySpeed);
 			}
 		}
 		this.endLevelScreen.setDialog(dialog);
@@ -367,9 +405,9 @@ public class WeimerBonus extends DisplayObjectContainer {
 		} else {
 			this.endLevelScreen.setExperience((int) this.calcExp(1), (int) this.calcExp(2));
 		}
-		
+
 		this.endLevelScreen.setNumPlayer(1);
-		//this.endLevelScreen.setVisible(true);
+		// this.endLevelScreen.setVisible(true);
 		/* Reset stats */
 		this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
 		this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
@@ -479,7 +517,8 @@ public class WeimerBonus extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
-		if (this.inPlay) {
+		if (this.inPlay && !this.pauseMenu.isVisible()) {
+			
 			this.keepTime();
 			this.spawnProjectiles();
 			this.updatePlayer(pressedKeys, this.player1);
@@ -494,11 +533,19 @@ public class WeimerBonus extends DisplayObjectContainer {
 				this.updatePlayer(pressedKeys, this.player2);
 				this.aimThrowSmokeBomb(pressedKeys, this.player2);
 			}
+			this.pauseGameCheck(pressedKeys);
 			
 		} else {
-			if(!this.player1.isPlaying() && !this.player2.isPlaying()
-					&& !this.endLevelScreen.isVisible()) {
-				this.endLevelScreen.setVisible(true);
+			if(!this.pauseMenu.isVisible()){
+				//stall for x seconds, then display end level screen
+				if(!this.stall) {
+					this.stallEndLevel(1.5);
+					this.stall = true;
+				}
+				if(!this.endLevelScreen.isVisible()) {
+					this.checkNotVisibleEndLevel();
+	
+				}
 			}
 		}
 		if (myTweenJuggler != null) {

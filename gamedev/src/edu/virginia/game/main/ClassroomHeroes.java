@@ -85,14 +85,15 @@ public class ClassroomHeroes extends Game {
 	}
 
 	public void sceneMusic(String id, String filename) {
-		
-		soundManager.stopAll();
-		if (!soundManager.isPlayingMusic()) {
-			soundManager.LoadMusic(id, filename);
-			try {
-				soundManager.PlayMusic(id);
-			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-				e.printStackTrace();
+		if (soundManager != null) {
+			soundManager.stopAll();
+			if (!soundManager.isPlayingMusic()) {
+				soundManager.LoadMusic(id, filename);
+				try {
+					soundManager.PlayMusic(id);
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package edu.virginia.game.objects;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +58,7 @@ public class Classroom3 extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 1000;
+	public static final double GAME_TIME = 5000;
 	public static final double TA_SPAWN_INTERVAL = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
@@ -69,6 +70,8 @@ public class Classroom3 extends DisplayObjectContainer {
 	private GameClock stallClock;
 	private double stallSeconds;
 	private boolean stall;
+	/* pause menu */
+	private PauseMenu pauseMenu;
 
 	public Classroom3(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
@@ -186,9 +189,12 @@ public class Classroom3 extends DisplayObjectContainer {
 		this.endLevelScreen.setVisible(false);
 		this.addChild(endLevelScreen);
 		this.endLevelScreen.setPosition(this.getWidth() * 0, this.getHeight() * .05);
-		// FIXME: Only works for one player right now,
-		// not built well at the moment because just needed to finish!
-
+		
+		/* pause menu */
+		pauseMenu = new PauseMenu("pauseMenu");
+		this.pauseMenu.setVisible(false);
+		this.addChild(pauseMenu);
+		
 		/* the game is in session (not on end screen) */
 		this.inPlay = true;
 
@@ -204,6 +210,14 @@ public class Classroom3 extends DisplayObjectContainer {
 		 */
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
+	}
+	
+	/*pause if ESC was pressed and not already paused*/
+	public void pauseGameCheck(ArrayList<String> pressedKeys) {
+		if (!this.pauseMenu.isVisible() && pressedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE))) {
+			this.pauseMenu.setVisible(true);
+			this.inPlay = false;
+		}
 	}
 	
 	/* stall on displaying game screen*/
@@ -559,35 +573,38 @@ public class Classroom3 extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
-		if (this.inPlay) {
+		if (this.inPlay && !this.pauseMenu.isVisible()) {
 			this.keepTime();
 			this.spawnProjectiles();
 			this.checkVPCollisions(pressedKeys);
+			this.checkTACollisions(pressedKeys);
 			this.garbagePoisonCollect();
 			this.garbageVPCollect();
-			this.checkTACollisions(pressedKeys);
 			this.checkPoisonCollisions(pressedKeys);
 			this.checkStudentCollisions(pressedKeys);
 			this.updatePlayer(pressedKeys, this.player1);
 			this.aimThrowSmokeBomb(pressedKeys, this.player1);
-			//smokebomb
+			// smokebomb
 			this.levelManager.removeCompleteBombs(pressedKeys);
-		
-		//	this.floryan(boss.getAnimation());
+
+			// this.floryan(boss.getAnimation());
 			if (this.gameManager.getNumPlayers() == 2) {
 				this.updatePlayer(pressedKeys, this.player2);
 				this.aimThrowSmokeBomb(pressedKeys, this.player2);
 			}
-			
-		} else {
-			//stall for x seconds, then display end level screen
-			if(!this.stall) {
-				this.stallEndLevel(1.5);
-				this.stall = true;
-			}
-			if(!this.endLevelScreen.isVisible()) {
-				this.checkNotVisibleEndLevel();
+			this.pauseGameCheck(pressedKeys);
 
+		} else {
+			if(!this.pauseMenu.isVisible()){
+				//stall for x seconds, then display end level screen
+				if(!this.stall) {
+					this.stallEndLevel(1.5);
+					this.stall = true;
+				}
+				if(!this.endLevelScreen.isVisible()) {
+					this.checkNotVisibleEndLevel();
+	
+				}
 			}
 		}
 		if (myTweenJuggler != null) {

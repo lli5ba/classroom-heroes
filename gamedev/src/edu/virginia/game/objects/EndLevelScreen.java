@@ -107,6 +107,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 						(this.numPlayer == 1 && this.gameManager.getNumPlayers() == 1) ) {
 					this.gameManager.setActiveGameScene("title");
 					this.gameManager.restartGame();
+					this.playerManager.resetPlayerStats();
 				}
 				
 			}
