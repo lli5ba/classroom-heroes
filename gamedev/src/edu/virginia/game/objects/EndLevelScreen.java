@@ -94,7 +94,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 			} else if (releasedKeys.contains(this.playerManager.getLeftKey(this.numPlayer))) {
 				
 			}
-		} else {
+		} else if(this.dialog.equals(LOSE_STUDENTS) && this.dialog.equals(LOSE_NO_HEALTH)) {
 			//lost level, press secondaryKey to replay
 			if (releasedKeys.contains(this.playerManager.getPrimaryKey(this.numPlayer))) { 
 				this.gameManager.setActiveGameScene("title");
