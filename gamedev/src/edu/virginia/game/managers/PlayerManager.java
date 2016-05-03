@@ -71,7 +71,7 @@ public class PlayerManager implements IEventListener {
 		swingSpeed1 = 5;
 		/* P1 Default Key Mappings */
 		primaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_SPACE);
-		secondaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_B);
+		secondaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_M);
 		upKey1 = KeyEvent.getKeyText(KeyEvent.VK_UP);
 		downKey1 = KeyEvent.getKeyText(KeyEvent.VK_DOWN);
 		rightKey1 = KeyEvent.getKeyText(KeyEvent.VK_RIGHT);
@@ -87,10 +87,10 @@ public class PlayerManager implements IEventListener {
 		/* P2 Default Key Mappings */
 		primaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_1);
 		secondaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_2);
-		upKey2 = KeyEvent.getKeyText(KeyEvent.VK_W);
-		downKey2 = KeyEvent.getKeyText(KeyEvent.VK_S);
-		rightKey2 = KeyEvent.getKeyText(KeyEvent.VK_D);
-		leftKey2 = KeyEvent.getKeyText(KeyEvent.VK_A);
+		upKey2 = KeyEvent.getKeyText(KeyEvent.VK_E);
+		downKey2 = KeyEvent.getKeyText(KeyEvent.VK_D);
+		rightKey2 = KeyEvent.getKeyText(KeyEvent.VK_F);
+		leftKey2 = KeyEvent.getKeyText(KeyEvent.VK_S);
 		
 		/* Shared Items */
 		vpCount = 0;

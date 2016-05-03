@@ -422,6 +422,8 @@ public class Classroom3 extends DisplayObjectContainer {
 	
 	private void winLevel(String dialog) {
 		this.stopLevel();
+		//cure all students!
+		this.cureAllStudents();
 		Random rand1 = new Random();
 		 // between 1 and 2 inclusive
 		int victoryVar = (int) (rand1.nextDouble() * 2) + 1;
