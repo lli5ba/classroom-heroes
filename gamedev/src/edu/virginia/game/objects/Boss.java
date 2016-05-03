@@ -125,6 +125,24 @@ public class Boss extends AnimatedSprite {
 		}
 		return null;
 	}
+	public Candy spawnCandy() {
+		if (myTweenJuggler != null) {
+			Candy candy = new Candy("Candy");
+			candy.setCenterPos(this.getCenterPos());
+			candy.addEventListener(projectileManager, EventTypes.PICKUP_VP.toString());
+			candy.addEventListener(playerManager, EventTypes.PICKUP_VP.toString());
+			Tween tween2 = new Tween(candy, TweenTransitions.LINEAR);
+			myTweenJuggler.add(tween2);
+			Position pos = generatePosition("candy", candy.getxPos(), candy.getyPos());
+			if (pos == null) {
+				return null;
+			}
+			tween2.animate(TweenableParam.POS_X, candy.getxPos(), pos.getX(), this.vpSpeed);
+			tween2.animate(TweenableParam.POS_Y, candy.getyPos(), pos.getY(), this.vpSpeed);
+			return candy;
+		}
+		return null;
+	}
 
 
 	public Poison spawnPoison() {

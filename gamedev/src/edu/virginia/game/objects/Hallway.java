@@ -234,9 +234,17 @@ public class Hallway extends DisplayObjectContainer {
 	public void switchScenes() {
 		if (this.player1 != null && this.player1.collidesWithGlobal(this.door)) {
 			this.gameManager.setActiveGameScene("classroom" + gameManager.getNumLevel());
+			if(gameManager.getNumLevel() >= 5)
+			{
+				this.gameManager.setActiveGameScene("weimer");
+			}
 		}
-		else if (this.player2 != null && this.player1.collidesWithGlobal(this.door)) {
+		else if (this.player2 != null && this.player2.collidesWithGlobal(this.door)) {
 			this.gameManager.setActiveGameScene("classroom" + gameManager.getNumLevel());
+			if(gameManager.getNumLevel() >= 5)
+			{
+				this.gameManager.setActiveGameScene("weimer");
+			}
 		}
 	}
 

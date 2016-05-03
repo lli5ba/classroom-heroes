@@ -189,6 +189,7 @@ public class ClassroomHeroes extends Game {
 					// add scene to gameManager
 
 					this.gameManager.addGameScene(sceneName, classroom4);
+					this.gameManager.setNumLevel(5);
 				}
 			}
 			else if (sceneName.equals("WeimerBonus")) {

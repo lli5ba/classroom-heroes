@@ -14,6 +14,7 @@ import edu.virginia.game.objects.Classroom4;
 import edu.virginia.game.objects.Hallway;
 import edu.virginia.game.objects.Instructions;
 import edu.virginia.game.objects.TitleScreen;
+import edu.virginia.game.objects.WeimerBonus;
 
 /*
  * Singleton class that handles all game details
@@ -156,6 +157,12 @@ public class GameManager {
 					}
 				}
 			}
+			else if (this.activeGameScene.contains("weimer")) {
+				WeimerBonus weimer = (WeimerBonus) this.gameScenes.get(this.activeGameScene);
+				if (weimer != null) {
+					weimer.update(pressedKeys);
+				}
+			}
 
 		}
 
@@ -220,6 +227,12 @@ public class GameManager {
 					if(classroom != null) {
 						classroom.draw(g);
 					}
+				}
+			}
+			else if (this.activeGameScene.contains("weimer")) {
+				WeimerBonus weimer = (WeimerBonus) this.gameScenes.get(this.activeGameScene);
+				if (weimer != null) {
+					weimer.draw(g);
 				}
 			}
 		}
