@@ -77,8 +77,7 @@ public class TA extends ToastSprite {
 			
 		} else if(action > 6 && action <= 12) {
 			//cure all students
-			//ask Leandra how to do this later!
-			
+			currentScene.cureAllStudents();
 			System.out.println("Cure all students");
 		} else if(action > 12 && action <= 18) {
 			//inventory all increases by two
