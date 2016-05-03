@@ -38,6 +38,8 @@ public class AttributeModule extends Sprite{
 						"resources/player/player-spritesheet-1-frameInfo.txt", 2);
 			}
 			player.setActive(false);
+			this.addChild(player);
+			player.setPosition(this.getWidth() * 0.2666, this.getHeight() * 0.3724);
 			
 		}
 		attrAdditions = 0;
