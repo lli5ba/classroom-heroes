@@ -135,13 +135,12 @@ public class Controls extends DisplayObjectContainer {
 		this.addChild(secondaryCure);
 		this.secondaryCure.setPosition(230, 153);
 		
-		/**
 		primaryCure = new KeyboardKey("primary", numPlayer);
 		this.primaryCure.setScaleX(1.0);
 		this.primaryCure.setScaleY(1.0);
 		this.addChild(primaryCure);
 		this.primaryCure.setPosition(250, 153);
-		**/
+		
 		secondaryBomb = new KeyboardKey("secondary", numPlayer);
 		this.secondaryBomb.setScaleX(1.0);
 		this.secondaryBomb.setScaleY(1.0);
@@ -200,12 +199,6 @@ public class Controls extends DisplayObjectContainer {
 			f = new Font("Dialog", Font.PLAIN, 50);
 			g.setFont(f);
 			g.drawString("Player " + this.numPlayer, 445, 195);
-<<<<<<< HEAD
-			f = new Font("Dialog", Font.PLAIN, 25);
-			g.setFont(f);
-			g.drawString("Cure students near them", 445, 430);
-			g.drawString("Aim and Throw smoke bombs", 445, 600);
-=======
 			
 			Font h = new Font("Dialog", Font.BOLD, 18);
 			g.setFont(h);
@@ -214,7 +207,6 @@ public class Controls extends DisplayObjectContainer {
 			g.drawString("+", 560, 540);
 			g.drawString("Aim", 490, 590);
 			g.drawString("Throw Smoke Bomb", 580, 590);
->>>>>>> 33ff5fba0bb5a8dbf73be56e1ba89df612e1b8c7
 		}
 	}
 
