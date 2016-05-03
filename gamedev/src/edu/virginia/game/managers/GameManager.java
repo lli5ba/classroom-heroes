@@ -48,7 +48,7 @@ public class GameManager {
 		gameWidth = 1365;
 		numPlayers = 1;
 		numLevel = 1;
-		setActiveGameScene("weimer");
+		setActiveGameScene("title");
 		gameScenes = new HashMap<String, DisplayObjectContainer>();
 		toRemoveQueue = new ArrayList<String>();
 

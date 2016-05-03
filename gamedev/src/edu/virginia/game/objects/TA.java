@@ -47,8 +47,7 @@ public class TA extends ToastSprite {
 		} else if (r > 2 && r <= 3) {
 			tafile = "tas/rock.png";
 		} else if (r > 3 && r <= 4) {
-			tafile = "tas/weimer.png";
-			// FIXME: qian here
+			tafile = "tas/qian.png";
 		}
 		this.setImage(tafile);
 		this.play(seconds); // becomes visible for x seconds

@@ -32,7 +32,6 @@ public class AttributeModule extends Sprite{
 		downArrow = new ToastSprite("up-arrow", "end-level/down.png");
 		this.addChild(downArrow);
 		if(id.equals(HEALTH)) {
-			System.out.println("health module");
 			healthbar = new PlayerHealthBar("health", playerNum, true);
 			this.addChild(healthbar);
 			healthbar.setPosition(this.getWidth() * 0.1, this.getHeight() * 0.4552);
@@ -154,7 +153,7 @@ public class AttributeModule extends Sprite{
 	}
 
 	private void incrementAttr() {
-		this.upArrow.play(1);
+		this.upArrow.play(.5);
 		if(this.playerManager.getAttrPoints(numPlayer) > 0) {
 			if(this.getId().equals(HEALTH)) {
 				//increase health
@@ -174,7 +173,7 @@ public class AttributeModule extends Sprite{
 	}
 
 	private void decrementAttr() {
-		this.downArrow.play(1);
+		this.downArrow.play(.5);
 		if(this.attrAdditions > 0) { //they have added attribute points, so they can decrement
 			if(this.getId().equals(HEALTH)) {
 				//decrease health
