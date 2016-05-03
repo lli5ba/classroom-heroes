@@ -132,7 +132,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 							this.experience1 + "    " + "Total: " + this.playerManager.getExperience(1), 140, 125);
 				} else {
 					g.drawString("Player 2", 140, 110);
-					g.drawString("Experience Points Earned: " + "    "
+					g.drawString("Experience Points Earned: " + this.experience2 +  "    " 
 							+ "Total: " + this.playerManager.getExperience(2), 140, 125);
 				}
 				g.drawString("Attribute Points Remaining: " +
