@@ -23,6 +23,7 @@ public class PlayerHealthBar extends Sprite {
 	private GameManager gameManager = GameManager.getInstance();
 	private PlayerManager playerManager = PlayerManager.getInstance();
 	private double seconds;
+	private boolean alwaysVisible;
 	
 	public PlayerHealthBar(String id, int playerNum) {
 		super(id);
@@ -31,6 +32,7 @@ public class PlayerHealthBar extends Sprite {
 		this.gameClockPlay = new GameClock();
 		this.seconds = 0;
 		this.setVisible(false);
+		this.alwaysVisible = false;
 	}
 	
 	public PlayerHealthBar(String id, int playerNum, boolean visible) {
@@ -40,6 +42,7 @@ public class PlayerHealthBar extends Sprite {
 		this.gameClockPlay = new GameClock();
 		this.seconds = Float.POSITIVE_INFINITY;
 		this.setVisible(visible);
+		this.alwaysVisible = true;
 	}
 
 	public void setHearts(int player) {
@@ -104,21 +107,34 @@ public class PlayerHealthBar extends Sprite {
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
 		
-		if (this.isVisible()) {
+		if(!alwaysVisible) {
+			if (this.isVisible()) {
+				this.removeAll();
+				setHearts(this.playerNum);
+			}
+			if (this.playerManager.getHealth(this.playerNum) == 1)  {
+				this.setVisible(true);
+			} else {
+				//show health for a certain number of seconds
+				checkNotVisible();
+			}
+		} else {
 			this.removeAll();
 			setHearts(this.playerNum);
-		}
-		if (this.playerManager.getHealth(this.playerNum) == 1)  {
-			this.setVisible(true);
-		} else {
-			//show health for a certain number of seconds
-			checkNotVisible();
 		}
 		
 		
 		// System.out.println("tot: " + numHeartsTot);
 		// System.out.println("hearts: " + numHearts);
 		// System.out.println("half: " + halfHearts);
+	}
+
+	public int getPlayerNum() {
+		return playerNum;
+	}
+
+	public void setPlayerNum(int playerNum) {
+		this.playerNum = playerNum;
 	}
 
 	public double getNumHearts() {
