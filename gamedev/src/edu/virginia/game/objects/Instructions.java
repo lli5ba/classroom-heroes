@@ -243,7 +243,8 @@ public class Instructions extends AnimatedSprite {
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
 		if (this.isVisible()) {
-			navigate(pressedKeys);
+			if (!this.turnPage)
+				navigate(pressedKeys);
 			this.checkSwitch(pressedKeys);
 		}
 	}

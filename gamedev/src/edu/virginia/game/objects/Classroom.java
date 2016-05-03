@@ -57,7 +57,7 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 1000;
+	public static final double GAME_TIME = 5000;
 	public static final double TA_SPAWN_INTERVAL = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
@@ -555,7 +555,11 @@ public class Classroom extends DisplayObjectContainer {
 			if (timeLeft < 0) {
 				timeLeft = 0;
 			}
-			g.drawString("Time Left: " + timeLeft, 0, 20);
+			
+			g.drawString("Time Left: ", 0, 20);
+			f = new Font("Dialog", Font.BOLD, 75);
+			g.setFont(f);
+			g.drawString(timeLeft + "", 10, 100);
 		}
 	}
 

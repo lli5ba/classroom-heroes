@@ -539,7 +539,11 @@ public class Classroom4 extends DisplayObjectContainer {
 			if (timeLeft < 0) {
 				timeLeft = 0;
 			}
-			g.drawString("Time Left: " + timeLeft, 0, 20);
+			
+			g.drawString("Time Left: ", 0, 20);
+			f = new Font("Dialog", Font.BOLD, 75);
+			g.setFont(f);
+			g.drawString(timeLeft + "", 10, 100);
 		}
 	}
 
@@ -558,7 +562,6 @@ public class Classroom4 extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
-		System.out.println(this.inPlay);
 		if (this.inPlay) {
 			this.keepTime();
 			this.spawnProjectiles();
@@ -603,7 +606,6 @@ public class Classroom4 extends DisplayObjectContainer {
 	/* collision detection and movement for players */
 
 	public void updatePlayer(ArrayList<String> pressedKeys, Player player) {
-		System.out.println("updating player");
 		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
 				this.moveSpriteCartesianAnimate(pressedKeys, player);

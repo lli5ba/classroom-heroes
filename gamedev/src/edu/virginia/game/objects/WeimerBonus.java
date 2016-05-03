@@ -456,7 +456,11 @@ public class WeimerBonus extends DisplayObjectContainer {
 			if (timeLeft < 0) {
 				timeLeft = 0;
 			}
-			g.drawString("Time Left: " + timeLeft, 0, 20);
+			
+			g.drawString("Time Left: ", 0, 20);
+			f = new Font("Dialog", Font.BOLD, 75);
+			g.setFont(f);
+			g.drawString(timeLeft + "", 10, 100);
 		}
 	}
 
