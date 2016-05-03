@@ -269,11 +269,11 @@ public class Classroom2 extends DisplayObjectContainer {
 	private void checkTACollisions(ArrayList<String> pressedKeys) {
 		
 		if(player1.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
-			this.ta.doAction(1);
+			this.ta.doAction(1, this);
 			this.ta.setVisible(false);
 		}		
 		if(player2.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
-			this.ta.doAction(2);
+			this.ta.doAction(2, this);
 			this.ta.setVisible(false);
 		}
 	}
@@ -580,7 +580,7 @@ public class Classroom2 extends DisplayObjectContainer {
 		} else {
 			//stall for x seconds, then display end level screen
 			if(!this.stall) {
-				this.stallEndLevel(3);
+				this.stallEndLevel(1.5);
 				this.stall = true;
 			}
 			if(!this.endLevelScreen.isVisible()) {

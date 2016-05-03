@@ -268,11 +268,11 @@ public class Classroom extends DisplayObjectContainer {
 	private void checkTACollisions(ArrayList<String> pressedKeys) {
 		
 		if(player1.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
-			this.ta.doAction(1);
+			this.ta.doAction(1, this);
 			this.ta.setVisible(false);
 		}		
 		if(player2.getNetHitboxGlobal().intersects(this.ta.getHitboxGlobal()) && this.ta.isVisible()) {
-			this.ta.doAction(2);
+			this.ta.doAction(2, this);
 			this.ta.setVisible(false);
 		}
 	}

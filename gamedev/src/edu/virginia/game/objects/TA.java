@@ -1,8 +1,12 @@
 package edu.virginia.game.objects;
 
 import java.awt.Graphics;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import edu.virginia.engine.display.DisplayObjectContainer;
 import edu.virginia.engine.display.Sprite;
@@ -53,9 +57,122 @@ public class TA extends ToastSprite {
 		this.play(seconds); // becomes visible for x seconds
 	}
 
-	public void doAction(int player) {
+	public void doAction(int player, Classroom currentScene) {
 		// randomize effect on game
-		Classroom currentScene = (Classroom) this.gameManager.getCurrentScene();
+		Random r = new Random();
+		int action = r.nextInt(24) + 1;
+		if(action > 0 && action <= 3) {
+			//decrease health by 1
+			System.out.println("decreasing health");
+			currentScene.displayHearts(player);
+			if(player == 1) {
+				this.playerManager.setHealth(this.playerManager.getHealth(1)-1, 1);
+			} else if(player == 2) {
+				this.playerManager.setHealth(this.playerManager.getHealth(2)-1, 2);
+			}
+		} else if(action > 3 && action <= 6) {
+			//decrease inventory by 1
+			System.out.println("Decreasing inventory");
+			currentScene.getHighlightBox();
+			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs()-1);
+			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle()-1);
+			
+		} else if(action > 6 && action <= 12) {
+			//cure all students
+			currentScene.cureAllStudents();
+			System.out.println("Cure all students");
+		} else if(action > 12 && action <= 18) {
+			//inventory all increases by two
+			currentScene.getHighlightBox();
+			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs()+2);
+			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle()+2);
+		
+		} else if(action > 18 && action <= 24) {
+			//Player health is full
+			currentScene.displayHearts(player);
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(2), 2);
+		}
+	}
+	
+	public void doAction(int player, Classroom2 currentScene) {
+		// randomize effect on game
+		Random r = new Random();
+		int action = r.nextInt(24) + 1;
+		if(action > 0 && action <= 3) {
+			//decrease health by 1
+			System.out.println("decreasing health");
+			currentScene.displayHearts(player);
+			if(player == 1) {
+				this.playerManager.setHealth(this.playerManager.getHealth(1)-1, 1);
+			} else if(player == 2) {
+				this.playerManager.setHealth(this.playerManager.getHealth(2)-1, 2);
+			}
+		} else if(action > 3 && action <= 6) {
+			//decrease inventory by 1
+			System.out.println("Decreasing inventory");
+			currentScene.getHighlightBox();
+			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs()-1);
+			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle()-1);
+			
+		} else if(action > 6 && action <= 12) {
+			//cure all students
+			currentScene.cureAllStudents();
+			System.out.println("Cure all students");
+		} else if(action > 12 && action <= 18) {
+			//inventory all increases by two
+			currentScene.getHighlightBox();
+			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs()+2);
+			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle()+2);
+		
+		} else if(action > 18 && action <= 24) {
+			//Player health is full
+			currentScene.displayHearts(player);
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(2), 2);
+		}
+	}
+	
+	public void doAction(int player, Classroom3 currentScene) {
+		// randomize effect on game
+		Random r = new Random();
+		int action = r.nextInt(24) + 1;
+		if(action > 0 && action <= 3) {
+			//decrease health by 1
+			System.out.println("decreasing health");
+			currentScene.displayHearts(player);
+			if(player == 1) {
+				this.playerManager.setHealth(this.playerManager.getHealth(1)-1, 1);
+			} else if(player == 2) {
+				this.playerManager.setHealth(this.playerManager.getHealth(2)-1, 2);
+			}
+		} else if(action > 3 && action <= 6) {
+			//decrease inventory by 1
+			System.out.println("Decreasing inventory");
+			currentScene.getHighlightBox();
+			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs()-1);
+			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle()-1);
+			
+		} else if(action > 6 && action <= 12) {
+			//cure all students
+			currentScene.cureAllStudents();
+			System.out.println("Cure all students");
+		} else if(action > 12 && action <= 18) {
+			//inventory all increases by two
+			currentScene.getHighlightBox();
+			this.playerManager.setNumCheesePuffs(this.playerManager.getNumCheesePuffs()+2);
+			this.playerManager.setNumGingerAle(this.playerManager.getNumGingerAle()+2);
+		
+		} else if(action > 18 && action <= 24) {
+			//Player health is full
+			currentScene.displayHearts(player);
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(2), 2);
+		}
+	}
+	
+	public void doAction(int player, Classroom4 currentScene) {
+		// randomize effect on game
 		Random r = new Random();
 		int action = r.nextInt(24) + 1;
 		if(action > 0 && action <= 3) {
