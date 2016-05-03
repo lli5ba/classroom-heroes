@@ -51,6 +51,10 @@ public class Boss extends AnimatedSprite {
 		} else if (this.gameManager.getNumLevel() == 4) {
 			this.poisonSpeed = 14000;
 			this.vpSpeed = 12000;
+		} else
+		{
+			this.poisonSpeed = 14000;
+			this.vpSpeed = 12000;
 		}
 		
 	}
@@ -74,7 +78,11 @@ public class Boss extends AnimatedSprite {
 			this.poisonSpeed = 14000;
 			this.vpSpeed = 12000;
 		}
-		
+		else
+		{
+			this.poisonSpeed = 14000;
+			this.vpSpeed = 12000;
+		}
 	}
 
 	@Override
@@ -136,7 +144,7 @@ public class Boss extends AnimatedSprite {
 			candy.addEventListener(playerManager, EventTypes.PICKUP_CANDY.toString());
 			Tween tween2 = new Tween(candy, TweenTransitions.LINEAR);
 			myTweenJuggler.add(tween2);
-			Position pos = generatePosition("candy", candy.getxPos(), candy.getyPos());
+			Position pos = generatePosition("vp", candy.getxPos(), candy.getyPos());
 			if (pos == null) {
 				return null;
 			}
