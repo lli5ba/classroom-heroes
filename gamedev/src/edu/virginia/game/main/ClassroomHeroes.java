@@ -132,7 +132,7 @@ public class ClassroomHeroes extends Game {
 				controls = new Controls(sceneName);
 				// add scene to gameManager
 				this.gameManager.addGameScene(sceneName, controls);
-				sceneMusic("instruction", "instructions.wav");
+				sceneMusic("controls", "controls.wav");
 			} else if (sceneName.contains("hallway")) {
 				// create a hallway
 				// get last character in styleCode
