@@ -29,14 +29,25 @@ public class Controls extends DisplayObjectContainer {
 	private AnimatedSprite Rightplayer;
 	private GameManager gameManager = GameManager.getInstance();
 	private ArrayList<String> prevPressedKeys = new ArrayList<String>();
-	private Sprite notebook;
 	private NavButtonIcon contButton;
+	private AnimatedSprite notebook;
+	private Sprite notebook2;
+	private boolean turnPage;
+
 
 	public Controls(String id) {
 		super(id, "instructions/wood-grain-background.png"); // background
 		
-		this.notebook = new Sprite("notebook", "instructions/instructions-background.png");
-		this.addChild(notebook);
+		this.notebook2 = new Sprite("notebook", "notebook/default.png");
+		this.addChild(notebook2);
+		
+		this.notebook = new AnimatedSprite("notebook", "notebook/default.png",
+				"notebook/notebook-spritesheet.png", "resources/notebook/notebook-spritesheet.txt");
+		this.notebook.setHeight(gameManager.getGameHeight());
+		this.notebook.setWidth(gameManager.getGameWidth());
+		
+		this.turnPage = false;
+		
 		// get last character in styleCode
 		this.numPlayer = Integer.parseInt(id.substring(id.length() - 1)); //id is either 1 or 2
 		//this.numPlayer = 1;
@@ -148,6 +159,7 @@ public class Controls extends DisplayObjectContainer {
 		this.addChild(contButton);
 		this.contButton.setPosition(this.getWidth() * .78, this.getHeight() * .88);
 		
+		this.setDrawChildren(true);
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 	}
@@ -158,7 +170,10 @@ public class Controls extends DisplayObjectContainer {
 		if (releasedKeys.contains(this.playerManager.getSecondaryKey(this.numPlayer))
 				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) ) {
 			if (this.numPlayer == 1 && this.gameManager.getNumPlayers() == 2) {
-				this.gameManager.setActiveGameScene("controls2");
+				//this.gameManager.setActiveGameScene("controls2");
+				this.turnPage = true;
+				this.notebook.animateOnce("turn", 4);
+				this.setDrawChildren(false);
 			}
 			else if (this.numPlayer == 2 || 
 					(this.numPlayer == 1 && this.gameManager.getNumPlayers() == 1) ) {
@@ -171,12 +186,35 @@ public class Controls extends DisplayObjectContainer {
 
 	public void draw(Graphics g) {
 		super.draw(g);
+		if (this.notebook != null && this.turnPage) {
+			this.notebook.draw(g);
+			Font f = new Font("Dialog", Font.BOLD, 100);
+			g.setFont(f);
+			g.drawString("Controls", 30, 85);
+		}
+		if (!this.notebook.isPlaying() && !this.turnPage) {
+			Font f = new Font("Dialog", Font.BOLD, 100);
+			g.setFont(f);
+			g.drawString("Controls", 30, 85);
+			f = new Font("Dialog", Font.PLAIN, 50);
+			g.setFont(f);
+			g.drawString("Player " + this.numPlayer, 445, 195);
+		}
+	}
+
+	public void checkSwitch(ArrayList<String> pressedKeys) {
+		if (this.turnPage && !this.notebook.isPlaying()){
+			this.gameManager.setActiveGameScene("controls2");
+		} else {
+			this.notebook.update(pressedKeys);
+		}
 	}
 
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
 		if (this.isVisible()) {
 			navigate(pressedKeys);
+			this.checkSwitch(pressedKeys);
 		}
 	}
 }

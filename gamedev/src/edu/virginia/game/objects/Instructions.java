@@ -41,13 +41,23 @@ public class Instructions extends AnimatedSprite {
 	private AnimatedSprite bomb;
 	private AnimatedSprite bombExplode;
 	private NavButtonIcon contButton;
-	private Sprite notebook;
+	private AnimatedSprite notebook;
+	private Sprite notebook2;
+	private boolean turnPage;
 
 	public Instructions(String id) {
 		super(id, "instructions/wood-grain-background.png"); // background
 		
-		this.notebook = new Sprite("notebook", "instructions/instructions-background.png");
-		this.addChild(notebook);
+		this.notebook2 = new Sprite("notebook", "notebook/default.png");
+		this.addChild(notebook2);
+		
+		this.notebook = new AnimatedSprite("notebook", "notebook/default.png",
+				"notebook/notebook-spritesheet.png", "resources/notebook/notebook-spritesheet.txt");
+		//this.addChild(notebook);
+		this.notebook.setHeight(gameManager.getGameHeight());
+		this.notebook.setWidth(gameManager.getGameWidth());
+		
+		this.turnPage = false;
 		
 		this.vp0 = new AnimatedSprite("vp0", "projectiles/vp0.png", "projectiles/vpsheet.png",
 				"resources/projectiles/vpsheetspecs.txt");
@@ -177,6 +187,7 @@ public class Instructions extends AnimatedSprite {
 		this.addChild(contButton);
 		this.contButton.setPosition(this.getWidth() * .78, this.getHeight() * .88);
 		
+		this.setDrawChildren(true);
 		this.setHeight(gameManager.getGameHeight());
 		this.setWidth(gameManager.getGameWidth());
 	}
@@ -187,7 +198,10 @@ public class Instructions extends AnimatedSprite {
 		if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_SPACE))
 				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_ENTER))
 				|| releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_B))) {
-			this.gameManager.setActiveGameScene("controls1");
+			//this.gameManager.setActiveGameScene("controls1");
+			this.turnPage = true;
+			this.notebook.animateOnce("turn", 4);
+			this.setDrawChildren(false);
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);
@@ -195,26 +209,42 @@ public class Instructions extends AnimatedSprite {
 
 	public void draw(Graphics g) {
 		super.draw(g);
-
-		Font f = new Font("Dialog", Font.BOLD, 100);
-		Font h = new Font("Dialog", Font.BOLD, 22);
-		Font i = new Font("Monospaced", Font.BOLD, 15);
-		g.setFont(f);
-		g.drawString("Welcome to the classroom!", 30, 85);
-		g.setFont(h);
-		g.drawString("Collect VP", 440, 155);
-		g.drawString("Use VP to buy from store at end of level", 440, 255);
-		g.drawString("Collect poison before it hits you or your classmates", 440, 380);
-		g.drawString("If hit, cure classmates with ginger ale", 440, 495);
-		g.drawString("Aim and throw cheese puff smoke bombs to protect an area", 440, 610);
-		g.setFont(i);
-		g.drawString("VP", 575, 230);
+		if (this.notebook != null && this.turnPage) {
+			this.notebook.draw(g);
+			Font f = new Font("Dialog", Font.BOLD, 100);
+			g.setFont(f);
+			g.drawString("Welcome to the classroom!", 30, 85);
+		}
+		if (!this.notebook.isPlaying() && !this.turnPage) {
+			Font f = new Font("Dialog", Font.BOLD, 100);
+			Font h = new Font("Dialog", Font.BOLD, 22);
+			Font i = new Font("Monospaced", Font.BOLD, 15);
+			g.setFont(f);
+			g.drawString("Welcome to the classroom!", 30, 85);
+			g.setFont(h);
+			g.drawString("Collect VP", 440, 155);
+			g.drawString("Use VP to buy from store at end of level", 440, 255);
+			g.drawString("Collect poison before it hits you or your classmates", 440, 380);
+			g.drawString("If hit, cure classmates with ginger ale", 440, 495);
+			g.drawString("Aim and throw cheese puff smoke bombs to protect an area", 440, 610);
+			g.setFont(i);
+			g.drawString("VP", 575, 230);
+		}
+	}
+	
+	public void checkSwitch(ArrayList<String> pressedKeys) {
+		if (this.turnPage && !this.notebook.isPlaying()){
+			this.gameManager.setActiveGameScene("controls1");
+		} else {
+			this.notebook.update(pressedKeys);
+		}
 	}
 
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys);
 		if (this.isVisible()) {
 			navigate(pressedKeys);
+			this.checkSwitch(pressedKeys);
 		}
 	}
 }
