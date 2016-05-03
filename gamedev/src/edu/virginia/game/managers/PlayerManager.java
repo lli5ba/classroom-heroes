@@ -232,6 +232,18 @@ public class PlayerManager implements IEventListener {
 		
 	}
 	
+	public String getGrade(int numPlayer) {
+		switch (numPlayer) {
+		case 1:
+			return calcGrade(experience1);
+		case 2:
+			return calcGrade(experience2);
+		default:
+			return "W"; // error
+		}
+		
+	}
+	
 	public static int calcLevel(int exp) {
 		//FIXME: different level corresponds to different experience range
 		if (isBetween(exp, 0, 200)) {
@@ -536,4 +548,41 @@ public class PlayerManager implements IEventListener {
 		return "";
 	}
 
+	public void resetPlayerStats(){
+		/* P1 Default Stats */
+		speed1 = 2;
+		maxHealth1 = 6;
+		health1 = maxHealth1;
+		experience1 = 0;
+		attrPoints1 = 0;
+		swingSpeed1 = 5;
+		/* P1 Default Key Mappings */
+		primaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_SPACE);
+		secondaryKey1 = KeyEvent.getKeyText(KeyEvent.VK_B);
+		upKey1 = KeyEvent.getKeyText(KeyEvent.VK_UP);
+		downKey1 = KeyEvent.getKeyText(KeyEvent.VK_DOWN);
+		rightKey1 = KeyEvent.getKeyText(KeyEvent.VK_RIGHT);
+		leftKey1 = KeyEvent.getKeyText(KeyEvent.VK_LEFT);
+
+		/* P2 Default Stats */
+		speed2 = 2;
+		maxHealth2 = 6;
+		health2 = maxHealth2;
+		experience2 = 0;
+		attrPoints2 = 0;
+		swingSpeed2 = 5;
+		/* P2 Default Key Mappings */
+		primaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_1);
+		secondaryKey2 = KeyEvent.getKeyText(KeyEvent.VK_2);
+		upKey2 = KeyEvent.getKeyText(KeyEvent.VK_W);
+		downKey2 = KeyEvent.getKeyText(KeyEvent.VK_S);
+		rightKey2 = KeyEvent.getKeyText(KeyEvent.VK_D);
+		leftKey2 = KeyEvent.getKeyText(KeyEvent.VK_A);
+		
+		/* Shared Items */
+		vpCount = 0;
+		poisonCount = 0;
+		numGingerAle = 3;
+		numCheesePuffs = 3;
+	}
 }

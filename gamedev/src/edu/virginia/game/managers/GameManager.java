@@ -251,7 +251,8 @@ public class GameManager {
 
 	public void restartGame() {
 		// TODO Auto-generated method stub
-		
+		numPlayers = 1;
+		numLevel = 1;
 	}
 	
 	public DisplayObjectContainer getCurrentScene() {

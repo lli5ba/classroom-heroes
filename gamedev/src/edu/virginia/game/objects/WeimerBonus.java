@@ -55,7 +55,7 @@ public class WeimerBonus extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 300;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 45000;
+	public static final double GAME_TIME = 1000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
@@ -378,7 +378,6 @@ public class WeimerBonus extends DisplayObjectContainer {
 	private void spawnProjectiles() {
 		if (this.vpClock != null) {
 			if (this.vpClock.getElapsedTime() > (VP_SPAWN_INTERVAL)) {
-				System.out.println("new candyREJRWLKEJRWERJL");
 				spawnCandy();
 				this.vpClock.resetGameClock();
 			}
@@ -393,7 +392,7 @@ public class WeimerBonus extends DisplayObjectContainer {
 		if (this.gameClock != null) {
 			if (this.gameClock.getElapsedTime() > GAME_TIME) {
 				/* WIN LEVEL logic */
-				this.winLevel(endLevelScreen.WIN);
+				this.winLevel(endLevelScreen.WIN_GAME);
 				
 			}
 		}
@@ -476,7 +475,6 @@ public class WeimerBonus extends DisplayObjectContainer {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
-		System.out.println(this.inPlay);
 		if (this.inPlay) {
 			this.keepTime();
 			this.spawnProjectiles();
@@ -512,7 +510,7 @@ public class WeimerBonus extends DisplayObjectContainer {
 	/* collision detection and movement for players */
 
 	public void updatePlayer(ArrayList<String> pressedKeys, Player player) {
-		System.out.println("updating player");
+
 		if (player != null && player.getNetHitbox() != null) {
 			if (player.isActive()) {
 				this.moveSpriteCartesianAnimate(pressedKeys, player);

@@ -20,7 +20,6 @@ public class LevelManager implements IEventListener {
 	private static volatile LevelManager instance;
 	public int gameHeight = 500;
 	public int gameWidth = 800;
-	int numLevel;
 	// Some way to keep track of time?
 
 	/* Temporary Level Stats to Award Bonuses? */
@@ -69,7 +68,6 @@ public class LevelManager implements IEventListener {
 
 	public LevelManager() {
 		instance = this;
-		numLevel = 1; // start on level 1
 		vpCollected1 = 0;
 		poisonCollected1 = 0;
 		vpCollected2 = 0;
@@ -211,6 +209,7 @@ public class LevelManager implements IEventListener {
 		this.setCheesepuffsUsed(0);
 		this.setGingeraleUsed(0);
 		this.smokebombList.clear();
+
 	}
 	@Override
 	public void handleEvent(GameEvent event) {
