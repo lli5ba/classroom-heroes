@@ -32,6 +32,15 @@ public class PlayerHealthBar extends Sprite {
 		this.seconds = 0;
 		this.setVisible(false);
 	}
+	
+	public PlayerHealthBar(String id, int playerNum, boolean visible) {
+		super(id);
+		this.playerNum = playerNum;
+		setHearts(playerNum);
+		this.gameClockPlay = new GameClock();
+		this.seconds = Float.POSITIVE_INFINITY;
+		this.setVisible(visible);
+	}
 
 	public void setHearts(int player) {
 		numHeartsTot = this.playerManager.getMaxHealth(player) / 2;

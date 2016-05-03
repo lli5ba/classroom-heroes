@@ -55,13 +55,17 @@ public class Classroom extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 60000;
+	public static final double GAME_TIME = 1000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
 	ArrayList<Student> studentList = new ArrayList<Student>();
 	ArrayList<Sprite> furnitureList = new ArrayList<Sprite>();
 	private DisplayObjectContainer playArea;
 	private ArrayList<String> prevPressedKeys;
+	/* stalling ability */
+	private GameClock stallClock;
+	private double stallSeconds;
+	private boolean stall;
 
 	public Classroom(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		super(id, "classroom/classroom-background-" + gameManager.getNumLevel() + ".png");
@@ -79,6 +83,11 @@ public class Classroom extends DisplayObjectContainer {
 		this.gameClock = new GameClock();
 		this.poisonClock = new GameClock();
 		this.vpClock = new GameClock();
+		
+		/* stall ability */
+		this.stallClock = new GameClock();
+		this.stallSeconds = 0;
+		this.stall =false;
 
 		/* Game Event Listener */
 		this.addEventListener(soundManager, EventTypes.PICKUP_VP.toString());
@@ -185,6 +194,21 @@ public class Classroom extends DisplayObjectContainer {
 		this.setWidth(gameManager.getGameWidth());
 	}
 
+	
+	/* stall on displaying game screen*/
+	public void stallEndLevel(double seconds) {
+		//start timer
+		this.stallClock.resetGameClock();
+		this.stallSeconds = seconds;
+	}
+	public void checkNotVisibleEndLevel(){
+		if(!this.endLevelScreen.isVisible()) {
+			if (this.stallClock.getElapsedTime() > (this.stallSeconds*1000)) {
+				this.endLevelScreen.setVisible(true);
+			}
+		}
+	}
+	
 	public void spawnTable(String id, String style, double xPos, double yPos) {
 		if (style.equals("blue")) {
 			Sprite table1 = new Sprite(id, "table/Table.png");
@@ -355,19 +379,22 @@ public class Classroom extends DisplayObjectContainer {
 	}
 	
 	private void winLevel(String dialog) {
+		int victorySpeed = 4;
 		this.stopLevel();
+		//cure all students!
+		this.cureAllStudents();
 		Random rand1 = new Random();
 		 // between 1 and 2 inclusive
 		int victoryVar = (int) (rand1.nextDouble() * 2) + 1;
 		if (victoryVar == 1) {
-			this.player1.animateOnce("victoryspin", 1);
+			this.player1.animateOnceLock("victoryspin", victorySpeed);
 			if (this.gameManager.getNumPlayers() == 2) {
-				this.player2.animateOnce("victoryspin", 1);
+				this.player2.animateOnceLock("victoryspin", victorySpeed);
 			}
 		} else {
-			this.player1.animateOnce("victoryjump", 1);
+			this.player1.animateOnceLock("victoryjump", victorySpeed);
 			if (this.gameManager.getNumPlayers() == 2) {
-				this.player2.animateOnce("victoryjump", 1);
+				this.player2.animateOnceLock("victoryjump", victorySpeed);
 			}
 		}
 		this.endLevelScreen.setDialog(dialog);
@@ -510,11 +537,17 @@ public class Classroom extends DisplayObjectContainer {
 			}
 			
 		} else {
-			if(!this.player1.isPlaying() && !this.player2.isPlaying()
-					&& !this.endLevelScreen.isVisible()) {
-				this.endLevelScreen.setVisible(true);
+			//stall for x seconds, then display end level screen
+			if(!this.stall) {
+				this.stallEndLevel(3);
+				this.stall = true;
+			}
+			if(!this.endLevelScreen.isVisible()) {
+				this.checkNotVisibleEndLevel();
 			}
 		}
+		
+		
 		if (myTweenJuggler != null) {
 			myTweenJuggler.nextFrame();
 		}
@@ -795,4 +828,11 @@ public class Classroom extends DisplayObjectContainer {
 		return false;
 	}
 	
+	private void cureAllStudents() {
+		for(Student student: this.studentList) {
+			if (student.isPoisoned() && !student.isDead()) {
+			student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
+			}
+		}
+	}
 }
