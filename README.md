@@ -2,15 +2,15 @@
 
 Play the game by running ClassroomHeroes.java in edu.virginia.game.main
 
-Controls:
+Controls:<br />
 -- Player One -- <br />
-Arrow Keys for movement
-Space bar to swing net
-M for curing student near them
-M + Space bar to Aim + Throw Smoke Bomb
+Arrow Keys for movement<br />
+Space bar to swing net<br />
+M for curing student near them<br />
+M + Space bar to Aim + Throw Smoke Bomb<br />
 
--- Player Two --
-WASD for movement
-1 to swing net
-2 for curing student near them
-2 + 1 to Aim + Throw Smoke Bomb
+-- Player Two --<br />
+WASD for movement<br />
+1 to swing net<br />
+2 for curing student near them<br />
+2 + 1 to Aim + Throw Smoke Bomb<br />
