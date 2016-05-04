@@ -451,6 +451,9 @@ public class Classroom2 extends DisplayObjectContainer {
 		/* Reset stats */
 		this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
 		this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+		if(this.gameManager.getNumPlayers() == 2) {
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(2), 2);
+		}
 	}
 
 	private void spawnProjectiles() {

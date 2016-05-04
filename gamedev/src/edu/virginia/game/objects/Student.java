@@ -24,7 +24,7 @@ public class Student extends AnimatedSprite {
 	private static PlayerManager playerManager = PlayerManager.getInstance();
 	private static LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
-	public static final double DRAIN_INTERVAL = 1500; // FIXME: should depend on
+	private double drainInterval = 1500; // FIXME: should depend on
 														// what level we are on
 	private GameClock healthDrainClock;
 	private double maxHealth;
@@ -112,7 +112,7 @@ public class Student extends AnimatedSprite {
 		double percentToDrain = 0.05; // FIXME: should depend on what level we
 										// are on?
 		if (this.healthDrainClock != null) {
-			if (this.healthDrainClock.getElapsedTime() > (DRAIN_INTERVAL) && this.isPoisoned() && !this.isDead()) {
+			if (this.healthDrainClock.getElapsedTime() > (drainInterval) && this.isPoisoned() && !this.isDead()) {
 				double newHealth = this.currentHealth - percentToDrain * this.maxHealth;
 				this.animateBubbles();
 				if (newHealth < 0) {
@@ -126,7 +126,24 @@ public class Student extends AnimatedSprite {
 			}
 		}
 	}
+	
+	private void reviveIfPoisoned(ArrayList<String> pressedKeys) {
+		if (this.healthDrainClock != null) {
+			if (this.healthDrainClock.getElapsedTime() > (2000) && this.isPoisoned() && !this.isDead()) {
+				//cure student
+				this.animateOnce("float" + this.getAnimDir(), 3);
+				this.setDead(false);
+				this.setPoisoned(false);
+				this.setCurrentHealth(this.getMaxHealth());
+				this.updateHealthBar();
+			}
+		}
+	}
 
+	public void hideHealthBar() {
+		this.healthBar.setVisible(false);
+		this.healthBar.setDrawChildren(false);
+	}
 	public void updateHealthBar() {
 		this.healthBar.setHealthBar(this.currentHealth, this.maxHealth);
 	}
@@ -138,7 +155,19 @@ public class Student extends AnimatedSprite {
 	@Override
 	public void update(ArrayList<String> pressedKeys) {
 		super.update(pressedKeys); // updates children
-		this.drainHealthIfPoisoned(pressedKeys);
+		if (drainInterval > 0) {
+			this.drainHealthIfPoisoned(pressedKeys);
+		} else {
+			this.reviveIfPoisoned(pressedKeys);
+		}
+	}
+	
+	public double getDrainInterval() {
+		return drainInterval;
+	}
+
+	public void setDrainInterval(double interval) {
+		drainInterval = interval;
 	}
 
 	

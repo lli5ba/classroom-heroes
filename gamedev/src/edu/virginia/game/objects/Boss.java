@@ -142,7 +142,26 @@ public class Boss extends AnimatedSprite {
 			candy.setCenterPos(this.getCenterPos());
 			candy.addEventListener(projectileManager, EventTypes.PICKUP_CANDY.toString());
 			candy.addEventListener(playerManager, EventTypes.PICKUP_CANDY.toString());
-			Tween tween2 = new Tween(candy, TweenTransitions.LINEAR);
+			Random rand1 = new Random();
+			int tweenVar = (int) (rand1.nextDouble() * 3);
+			TweenTransitions tween_type = null;
+			switch (tweenVar) {
+			case 0:
+				tween_type = TweenTransitions.LINEAR;
+				break;
+			case 1:
+				tween_type = TweenTransitions.LINEAR;
+				break;
+			case 2:
+				tween_type = TweenTransitions.SPEED_UP;
+				break;
+			case 3:
+				tween_type = TweenTransitions.LINEAR;
+				break;
+			default:
+				tween_type = TweenTransitions.LINEAR;
+			}
+			Tween tween2 = new Tween(candy, tween_type);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition("vp", candy.getxPos(), candy.getyPos());
 			if (pos == null) {

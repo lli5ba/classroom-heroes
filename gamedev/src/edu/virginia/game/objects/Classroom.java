@@ -109,9 +109,9 @@ public class Classroom extends DisplayObjectContainer {
 
 		/* Constructing furniture */
 
-		spawnTable("table1", "blue", this.getWidth() * .446, this.getHeight() * .592);
-		spawnTable("table2", "blue", this.getWidth() * .746, this.getHeight() * .5);
-		spawnTable("table3", "blue", this.getWidth() * .146, this.getHeight() * .5);
+		spawnTable("table1", "wood", this.getWidth() * .446, this.getHeight() * .692);
+		spawnTable("table2", "wood", this.getWidth() * .746, this.getHeight() * .6);
+		spawnTable("table3", "wood", this.getWidth() * .146, this.getHeight() * .6);
 
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
@@ -149,9 +149,9 @@ public class Classroom extends DisplayObjectContainer {
 		this.addChild(player1);
 		this.addChild(player2);
 
-		this.player1.setPosition(this.getWidth() * .814, this.getHeight() * .742);
+		this.player1.setPosition(this.getWidth() * .64, this.getHeight() * .742);
 		if(this.gameManager.getNumPlayers() == 2)
-			this.player2.setPosition(this.getWidth() * .08, this.getHeight() * .742);
+			this.player2.setPosition(this.getWidth() * .30, this.getHeight() * .742);
 
 		/* Boss constructor */
 
@@ -164,9 +164,9 @@ public class Classroom extends DisplayObjectContainer {
 		this.boss.setScaleY(.7);
 
 		/* Generate Students */
-		spawnStudent("Student0", "down", this.getWidth() * .5, this.getHeight() * .742);
-		spawnStudent("Student1", "left", this.getWidth() * .8, this.getHeight() * .65);
-		spawnStudent("Student2", "right", this.getWidth() * .2, this.getHeight() * .65);
+		spawnStudent("Student0", "down", this.getWidth() * .49, this.getHeight() * .812);
+		spawnStudent("Student1", "left", this.getWidth() * .79, this.getHeight() * .72);
+		spawnStudent("Student2", "right", this.getWidth() * .19, this.getHeight() * .72);
 
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
@@ -248,7 +248,18 @@ public class Classroom extends DisplayObjectContainer {
 			table1.setPosition(xPos, yPos);
 			this.furnitureList.add(table1);
 		} else if (style.equals("wood")) {
-
+			Random rand1 = new Random();
+			int tableVar = (int) (rand1.nextDouble() * 7) + 1;
+			Sprite table1 = new Sprite(id, "table/table-" + tableVar + ".png");
+			table1.setScaleX(.8);
+			table1.setScaleY(.8);
+			this.addChild(table1);
+			table1.setOriginalHitbox(new Rectangle((int) table1.getOriginalHitbox().getX(),
+					(int) table1.getOriginalHitbox().getY() - 2,
+					(int) table1.getOriginalHitbox().getWidth(),
+					(int) (table1.getOriginalHitbox().getHeight()*.5)));
+			table1.setPosition(xPos, yPos);
+			this.furnitureList.add(table1);
 		}
 	}
 
@@ -434,6 +445,9 @@ public class Classroom extends DisplayObjectContainer {
 		/* reset stats */
 		this.dispatchEvent(new GameEvent(EventTypes.LOSE_LEVEL.toString(), this));
 		this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+		if(this.gameManager.getNumPlayers() == 2) {
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(2), 2);
+		}
 	}
 
 	private void winLevel(String dialog) {

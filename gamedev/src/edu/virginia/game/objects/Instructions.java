@@ -202,6 +202,9 @@ public class Instructions extends AnimatedSprite {
 			this.turnPage = true;
 			this.notebook.animateOnce("turn", 4);
 			this.setDrawChildren(false);
+		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_BACK_SPACE))) {
+			//go back to title
+			this.gameManager.setActiveGameScene("title");
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);

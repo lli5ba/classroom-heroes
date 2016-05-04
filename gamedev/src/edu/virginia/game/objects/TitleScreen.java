@@ -76,6 +76,17 @@ public class TitleScreen extends DisplayObjectContainer {
 			
 		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_LEFT))) {
 		
+		} else if (releasedKeys.contains(KeyEvent.getKeyText(KeyEvent.VK_W))) {
+			this.playerManager.setSpeed(3, 1);
+			this.playerManager.setSwingSpeed(8, 1);
+			if(this.player1bar.isVisible()) {
+				this.gameManager.setNumPlayers(1);
+			} else {
+				this.gameManager.setNumPlayers(2);
+				this.playerManager.setSpeed(3, 2);
+				this.playerManager.setSwingSpeed(8, 2);
+			}
+			this.gameManager.setActiveGameScene("weimer");
 		}
 		this.prevPressedKeys.clear();
 		this.prevPressedKeys.addAll(pressedKeys);

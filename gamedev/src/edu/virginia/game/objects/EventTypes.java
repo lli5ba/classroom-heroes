@@ -13,7 +13,7 @@ public enum EventTypes {
 	THROW_SMOKEBOMB("throw smokebomb"), 
 	SWING_NET("swing net"),
 	WALK("walk"),
-	PICKUP_CANDY("pickup candy");
+	PICKUP_CANDY("pickup candy"), HIT_BY_CANDY("hit by candy");
 	;
 	
 	private final String text;

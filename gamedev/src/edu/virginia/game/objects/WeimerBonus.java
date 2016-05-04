@@ -94,13 +94,18 @@ public class WeimerBonus extends DisplayObjectContainer {
 		
 		/* Game Event Listener */
 		this.addEventListener(soundManager, EventTypes.PICKUP_CANDY.toString());
+		this.addEventListener(soundManager, EventTypes.HIT_BY_CANDY.toString());
 		this.addEventListener(soundManager, EventTypes.PICKUP_POISON.toString());
 		this.addEventListener(levelManager, EventTypes.WIN_LEVEL.toString());
 		this.addEventListener(levelManager, EventTypes.LOSE_LEVEL.toString());
 		this.addEventListener(soundManager, EventTypes.CURE_STUDENT.toString());
 		this.addEventListener(soundManager, EventTypes.POISON_STUDENT.toString());
 		
-		
+		/* Constructing furniture */
+
+		spawnTable("table1", "wood", this.getWidth() * .426, this.getHeight() * .75);
+		spawnTable("table2", "wood", this.getWidth() * .726, this.getHeight() * .75);
+		spawnTable("table3", "wood", this.getWidth() * .126, this.getHeight() * .75);
 		
 		/* Constructing players and their event listeners */
 		player1 = new Player("Player1", "player/player1.png", "player/player-spritesheet-1.png",
@@ -132,9 +137,9 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.addChild(player2);
 		
 		
-		this.player1.setPosition(this.getWidth() * .32, this.getHeight() * .742);
+		this.player1.setPosition(this.getWidth() * .6, this.getHeight() * .742);
 		if(this.gameManager.getNumPlayers() == 2)
-			this.player2.setPosition(this.getWidth() * .68, this.getHeight() * .742);
+			this.player2.setPosition(this.getWidth() * .34, this.getHeight() * .742);
 
 		/* Boss constructor */
 
@@ -144,7 +149,14 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.boss.setScaleX(.7);
 		this.boss.setScaleY(.7);
 
-
+		/* Generate Students */
+		spawnStudent("Student0", "down", this.getWidth() * .45, this.getHeight() * .82);
+		spawnStudent("Student1", "down", this.getWidth() * .515, this.getHeight() * .82);
+		spawnStudent("Student2", "left", this.getWidth() * .15, this.getHeight() * .82);
+		spawnStudent("Student3", "right", this.getWidth() * .215, this.getHeight() * .82);
+		spawnStudent("Student4", "left", this.getWidth() * .75, this.getHeight() * .82);
+		spawnStudent("Student5", "right", this.getWidth() * .815, this.getHeight() * .82);
+		
 		/* set play area bounds */
 		this.playArea = new DisplayObjectContainer("playArea", "Mario.png"); // random
 																				// png
@@ -180,7 +192,7 @@ public class WeimerBonus extends DisplayObjectContainer {
 		/* music */
 		soundManager.stopAll();
 		if (!soundManager.isPlayingMusic()) {
-			soundManager.LoadMusic("bg", "theme.wav");
+			soundManager.LoadMusic("bg", "controls.wav");
 			soundManager.PlayMusic("bg");
 		}
 
@@ -226,11 +238,21 @@ public class WeimerBonus extends DisplayObjectContainer {
 			table1.setPosition(xPos, yPos);
 			this.furnitureList.add(table1);
 		} else if (style.equals("wood")) {
-			
+			Random rand1 = new Random();
+			int tableVar = (int) (rand1.nextDouble() * 7) + 1;
+			Sprite table1 = new Sprite(id, "table/table-" + tableVar + ".png");
+			table1.setScaleX(1);
+			table1.setScaleY(.7);
+			this.addChild(table1);
+			table1.setOriginalHitbox(new Rectangle((int) table1.getOriginalHitbox().getX(),
+					(int) table1.getOriginalHitbox().getY() - 2,
+					(int) table1.getOriginalHitbox().getWidth(),
+					(int) (table1.getOriginalHitbox().getHeight()*.5)));
+			table1.setPosition(xPos, yPos);
+			this.furnitureList.add(table1);
 		}
 	}
 
-	/* Note: floryan logic moved to boss class!*/
 	
 	public void spawnStudent(String id, String animDir, double xPos, double yPos) {
 		Student student1 = new Student(id, "0", animDir);
@@ -238,6 +260,8 @@ public class WeimerBonus extends DisplayObjectContainer {
 		student1.addEventListener(studentManager, EventTypes.CURE_STUDENT.toString());
 		this.addChild(student1);
 		student1.setPosition(xPos, yPos);
+		student1.setDrainInterval(-1); //don't drain health
+		student1.hideHealthBar();
 		this.studentList.add(student1);
 	}
 
@@ -338,6 +362,24 @@ public class WeimerBonus extends DisplayObjectContainer {
 
 		}
 	}
+	
+	private void checkCandyCollisions(ArrayList<String> pressedKeys) {
+		for (PickedUpItem vp : vpList) {
+			// Check all poison collisions with each student
+			for (Student student : studentList) {
+				if (student.collidesWithGlobal(vp) && !vp.isPickedUp()) {
+					// Note: right now poison does not stack
+					if (!student.isPoisoned() && !student.isDead()) {
+						student.dispatchEvent(new GameEvent(EventTypes.POISON_STUDENT.toString(), student));
+
+						this.dispatchEvent(new GameEvent(EventTypes.HIT_BY_CANDY.toString(), this));
+						vp.dispatchEvent(new GameEvent(EventTypes.PICKUP_CANDY.toString(), vp));
+//						System.out.println("Student's Health: " + student.getCurrentHealth());
+					}
+				}
+			}
+		}
+	}
 
 	private void checkStudentCollisions(ArrayList<String> pressedKeys) {
 		int distToCure = 30; // how close you need to be to the student
@@ -359,16 +401,17 @@ public class WeimerBonus extends DisplayObjectContainer {
 				student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
 				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this));
 				this.player2.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
+				this.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), this.player2));
 			}
 			if (!student.isDead()) {
 				atLeastOneStudentAlive = true;
 			}
 		}
-		if (!atLeastOneStudentAlive) {
-			/* ALL STUDENTS DIED logic */
+		/* if (!atLeastOneStudentAlive) {
+			// ALL STUDENTS DIED logic 
 			this.loseLevel(endLevelScreen.LOSE_STUDENTS);
 			
-		}
+		} */
 
 	}
 
@@ -385,6 +428,8 @@ public class WeimerBonus extends DisplayObjectContainer {
 	private void winLevel(String dialog) {
 		int victorySpeed = 4;
 		this.stopLevel();
+		//cure all students!
+		this.cureAllStudents();
 		Random rand1 = new Random();
 		// between 1 and 2 inclusive
 		int victoryVar = (int) (rand1.nextDouble() * 2) + 1;
@@ -411,6 +456,9 @@ public class WeimerBonus extends DisplayObjectContainer {
 		/* Reset stats */
 		this.dispatchEvent(new GameEvent(EventTypes.WIN_LEVEL.toString(), this));
 		this.playerManager.setHealth(this.playerManager.getMaxHealth(1), 1);
+		if(this.gameManager.getNumPlayers() == 2) {
+			this.playerManager.setHealth(this.playerManager.getMaxHealth(2), 2);
+		}
 	}
 
 	private void spawnProjectiles() {
@@ -525,6 +573,8 @@ public class WeimerBonus extends DisplayObjectContainer {
 			this.aimThrowSmokeBomb(pressedKeys, this.player1);
 			this.checkVPCollisions(pressedKeys);
 			this.garbageVPCollect();
+			this.checkStudentCollisions(pressedKeys);
+			this.checkCandyCollisions(pressedKeys);
 			//smokebomb
 			this.levelManager.removeCompleteBombs(pressedKeys);
 		
@@ -822,11 +872,19 @@ public class WeimerBonus extends DisplayObjectContainer {
 		}
 		/* Check whether player is too close to the boss */
 		Rectangle bossHitboxRange = this.boss.getHitboxGlobal();
-		bossHitboxRange.grow(45, 45);
+		bossHitboxRange.grow(60, 60);
 		if (r.intersects(bossHitboxRange)) {
 			return true;
 		}
 		return false;
+	}
+	
+	public void cureAllStudents() {
+		for(Student student: this.studentList) {
+			if (student.isPoisoned() && !student.isDead()) {
+			student.dispatchEvent(new GameEvent(EventTypes.CURE_STUDENT.toString(), student));
+			}
+		}
 	}
 	
 }

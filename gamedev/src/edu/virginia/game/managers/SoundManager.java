@@ -2,6 +2,7 @@ package edu.virginia.game.managers;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -118,6 +119,11 @@ public class SoundManager implements IEventListener {
 				this.LoadSoundEffect("vp", "vp.wav");
 				this.PlaySoundEffect("vp");
 			}
+		} else if (event.getEventType().equals(EventTypes.HIT_BY_CANDY.toString())) {
+			Random rand1 = new Random();
+			int hurtVar = (int) (rand1.nextDouble() * 2);
+			this.LoadSoundEffect("hurt" + hurtVar, "hurt" + hurtVar + ".wav");
+			this.PlaySoundEffect("hurt" + hurtVar);
 		} else if (event.getEventType().equals(EventTypes.PICKUP_POISON.toString())) {
 			if (!this.isPlayingSoundEffect1()) {
 				// FIXME: catching poison in net should not load this sound

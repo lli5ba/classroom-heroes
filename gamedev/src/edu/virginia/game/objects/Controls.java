@@ -133,7 +133,7 @@ public class Controls extends DisplayObjectContainer {
 		this.secondaryCure.setScaleX(1.0);
 		this.secondaryCure.setScaleY(1.0);
 		this.addChild(secondaryCure);
-		this.secondaryCure.setPosition(230, 153);
+		this.secondaryCure.setPosition(200, 153);
 		
 		primaryCure = new KeyboardKey("primary", numPlayer);
 		this.primaryCure.setScaleX(1.0);
