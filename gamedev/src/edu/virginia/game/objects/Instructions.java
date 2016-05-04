@@ -227,9 +227,9 @@ public class Instructions extends AnimatedSprite {
 			g.setFont(h);
 			g.drawString("Collect VP", 440, 155);
 			g.drawString("Use VP to buy from store at end of level", 440, 255);
-			g.drawString("Collect poison before it hits you or your classmates", 440, 380);
+			g.drawString("Remove poison with your net before it hits you or your classmates", 440, 380);
 			g.drawString("If hit, cure classmates with ginger ale", 440, 495);
-			g.drawString("Aim and throw cheese puff smoke bombs to protect an area", 440, 610);
+			g.drawString("Aim and throw cheese puff smoke bombs to protect an area from projectiles", 440, 610);
 			g.setFont(i);
 			g.drawString("VP", 575, 230);
 		}

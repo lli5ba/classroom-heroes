@@ -202,13 +202,21 @@ public class Controls extends DisplayObjectContainer {
 			
 			Font h = new Font("Dialog", Font.BOLD, 18);
 			g.setFont(h);
-			g.drawString("Cure Student", 440, 420);
+			drawString(g, "Cure Student\n(when nearby)", 440, 420);
 			g.drawString("Swing net", 590, 420);
 			g.drawString("+", 560, 540);
 			g.drawString("Aim", 490, 590);
 			g.drawString("Throw Smoke Bomb", 580, 590);
 		}
 	}
+	
+	private void drawString(Graphics g, String text, int x, int y) {
+		double inc = 0;
+        for (String line : text.split("\n")) {
+            g.drawString(line, x, y += inc);
+            inc += g.getFontMetrics().getHeight();
+        }
+    }
 
 	public void checkSwitch(ArrayList<String> pressedKeys) {
 		if (this.turnPage && !this.notebook.isPlaying()){
