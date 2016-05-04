@@ -1,5 +1,11 @@
 # classroom-heroes
 
+This game was created by: <br />
+Leandra Irvine (lli5ba)<br />
+Christine Kim (cjk4wr) <br />
+Nakkul Sreenivas (ns3kb)
+<br />
+
 Play the game by running ClassroomHeroes.java in edu.virginia.game.main
 
 Controls:<br />
