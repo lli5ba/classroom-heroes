@@ -3,7 +3,7 @@
 Play the game by running ClassroomHeroes.java in edu.virginia.game.main
 
 Controls:
--- Player One --
+-- Player One -- <br />
 Arrow Keys for movement
 Space bar to swing net
 M for curing student near them
