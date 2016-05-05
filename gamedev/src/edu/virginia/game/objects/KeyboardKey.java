@@ -49,7 +49,7 @@ public class KeyboardKey extends Sprite{
 				key = "v";
 			} 
 			
-			if (key.equals("Space")) {
+			if (key.equals("Space") || key.equals("Enter")) {
 				f = new Font("Dialog", Font.BOLD, 6);
 				g.setFont(f);
 				g.drawString(key, 

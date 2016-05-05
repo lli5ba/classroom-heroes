@@ -8,12 +8,15 @@ Nakkul Sreenivas (ns3kb)
 
 Play the game by running ClassroomHeroes.java in edu.virginia.game.main
 
+Note: We have found a bug where first player arrow keys do not work in game 
+for those on a Mac computer.
+
 Controls:<br />
 -- Player One -- <br />
 Arrow Keys for movement<br />
 Space bar to swing net<br />
-M for curing student near them<br />
-M + Space bar to Aim + Throw Smoke Bomb<br />
+B for curing student near them<br />
+B + Space bar to Aim + Throw Smoke Bomb<br />
 
 -- Player Two --<br />
 WASD for movement<br />

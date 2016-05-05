@@ -137,13 +137,15 @@ public class WeimerBonus extends DisplayObjectContainer {
 		this.addChild(player2);
 		
 		
-		this.player1.setPosition(this.getWidth() * .6, this.getHeight() * .742);
+		this.player1.setPosition(this.getWidth() * .6, this.getHeight() * .542);
 		if(this.gameManager.getNumPlayers() == 2)
-			this.player2.setPosition(this.getWidth() * .34, this.getHeight() * .742);
+			this.player2.setPosition(this.getWidth() * .34, this.getHeight() * .542);
 
 		/* Boss constructor */
 
-		boss = new Boss("weimer", "tas/weimer.png", TweenTransitions.SPEED_UP, TweenTransitions.SPEED_UP);
+		boss = new Boss("weimer", "weimer/weimer.png", "weimer/weimer-spritesheet.png",
+				"resources/weimer/weimer-spritesheet.txt", 
+				TweenTransitions.SPEED_UP, TweenTransitions.SPEED_UP);
 		this.addChild(boss);
 		this.boss.setPosition(this.getWidth() * .46, this.getHeight() * .18);
 		this.boss.setScaleX(.7);

@@ -162,7 +162,7 @@ public class EndLevelScreen extends DisplayObjectContainer {
 							this.experience1 + "    " + "Total: " + this.playerManager.getExperience(1), 140, 125);
 				} else {
 					g.drawString("Player 2", 140, 110);
-					g.drawString("Experience Points Earned: " + "    "
+					g.drawString("Experience Points Earned: " + this.experience2 + "    " 
 							+ "Total: " + this.playerManager.getExperience(2), 140, 125);
 				}
 				g.drawString("Your Final Grade: " +
@@ -170,12 +170,12 @@ public class EndLevelScreen extends DisplayObjectContainer {
 			} else { //lose
 				if (this.numPlayer == 1) {
 					g.drawString("Player 1", 140, 110);
-					g.drawString("Total Experience Points Earned: " +
-							this.experience1, 140, 125);
+					g.drawString("Experience Points Earned: " +
+							this.experience1 + "    " + "Total: " + this.playerManager.getExperience(1), 140, 125);
 				} else {
 					g.drawString("Player 2", 140, 110);
-					g.drawString("Total Experience Points Earned: " +
-							this.experience2, 140, 125);
+					g.drawString("Experience Points Earned: " + this.experience2 + "    " 
+							+ "Total: " + this.playerManager.getExperience(2), 140, 125);
 				}
 				g.drawString("Your Final Grade: " +
 						this.playerManager.getGrade(numPlayer), 140, 139);
