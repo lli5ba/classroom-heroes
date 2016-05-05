@@ -3,6 +3,7 @@ package edu.virginia.game.objects;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import edu.virginia.engine.display.Sprite;
@@ -48,8 +49,7 @@ public class KeyboardKey extends Sprite{
 			} else if (key.equals("Down")) {
 				key = "v";
 			} 
-			
-			if (key.equals("Space") || key.equals("Enter")) {
+			if (key.equals("Space") || key.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER))) {
 				f = new Font("Dialog", Font.BOLD, 6);
 				g.setFont(f);
 				g.drawString(key, 

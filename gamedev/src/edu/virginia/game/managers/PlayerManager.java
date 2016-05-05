@@ -30,6 +30,7 @@ public class PlayerManager implements IEventListener {
 	private String downKey1;
 	private String rightKey1;
 	private String leftKey1;
+	private String thirdKey1;
 
 	/* Player Two Stats */
 	private double speed2;
@@ -45,6 +46,7 @@ public class PlayerManager implements IEventListener {
 	private String downKey2;
 	private String rightKey2;
 	private String leftKey2;
+	private String thirdKey2;
 
 	/* Combined Inventory */
 	private int vpCount;
@@ -77,6 +79,8 @@ public class PlayerManager implements IEventListener {
 		rightKey1 = KeyEvent.getKeyText(KeyEvent.VK_RIGHT);
 		leftKey1 = KeyEvent.getKeyText(KeyEvent.VK_LEFT);
 
+		thirdKey1 = KeyEvent.getKeyText(KeyEvent.VK_ENTER);
+		
 		/* P2 Default Stats */
 		speed2 = 2;
 		maxHealth2 = 6;
@@ -91,6 +95,8 @@ public class PlayerManager implements IEventListener {
 		downKey2 = KeyEvent.getKeyText(KeyEvent.VK_S);
 		rightKey2 = KeyEvent.getKeyText(KeyEvent.VK_D);
 		leftKey2 = KeyEvent.getKeyText(KeyEvent.VK_A);
+		
+		thirdKey2 = KeyEvent.getKeyText(KeyEvent.VK_3);
 		
 		/* Shared Items */
 		vpCount = 0;
@@ -522,6 +528,8 @@ public class PlayerManager implements IEventListener {
 				return this.primaryKey1;
 			case "secondary":
 				return this.secondaryKey1;
+			case "third":
+				return this.thirdKey1;
 			default:
 				break;
 			}
@@ -539,6 +547,8 @@ public class PlayerManager implements IEventListener {
 				return this.primaryKey2;
 			case "secondary":
 				return this.secondaryKey2;
+			case "third":
+				return this.thirdKey2;
 			default:
 				break;
 			}

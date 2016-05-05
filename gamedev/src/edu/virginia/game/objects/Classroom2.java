@@ -58,7 +58,7 @@ public class Classroom2 extends DisplayObjectContainer {
 	private boolean inPlay;
 	public static final double VP_SPAWN_INTERVAL = 1500;
 	public static final double POISON_SPAWN_INTERVAL = 1750;
-	public static final double GAME_TIME = 30000;
+	public static final double GAME_TIME = 45000;
 	public static final double TA_SPAWN_INTERVAL = 5000;
 	public ArrayList<PickedUpItem> vpList = new ArrayList<PickedUpItem>();
 	ArrayList<PickedUpItem> poisonList = new ArrayList<PickedUpItem>();
@@ -916,6 +916,8 @@ public class Classroom2 extends DisplayObjectContainer {
 	public void displayHearts(int numPlayer) {
 		if(numPlayer == 1) {
 			this.player1.showHealthBar(1.5);
+		}else {
+			this.player2.showHealthBar(1.5);
 		}
 	}
 	

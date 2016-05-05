@@ -3,6 +3,7 @@ package edu.virginia.game.objects;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import edu.virginia.engine.display.Sprite;
@@ -58,9 +59,17 @@ public class NavButtonIcon extends Sprite{
 			}
 			g.setFont(f);
 			g.setColor(Color.BLACK);
-			g.drawString(this.buttonId, 
-					(int) (this.getxPos() + this.calcScaledXKeyLoc() + this.getHeight()*.348), 
-					(int) (this.getyPos() + this.getHeight()*.75));
+			if (this.buttonId.equals("Space") || this.buttonId.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER))) {
+				f = new Font("Dialog", Font.BOLD, 6);
+				g.setFont(f);
+				g.drawString(this.buttonId, 
+						(int) (this.getxPos() + this.calcScaledXKeyLoc() + this.getHeight()*.228), 
+						(int) (this.getyPos() + this.getHeight()*.65));
+			} else {
+				g.drawString(this.buttonId, 
+						(int) (this.getxPos() + this.calcScaledXKeyLoc() + this.getHeight()*.348), 
+						(int) (this.getyPos() + this.getHeight()*.75));
+			}
 		}
 
 	}

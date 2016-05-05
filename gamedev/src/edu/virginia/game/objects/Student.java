@@ -35,6 +35,7 @@ public class Student extends AnimatedSprite {
 	private AnimatedSprite poisonBubbles;
 	private String animDir; // for falling and floating animations, "back",
 								// "left" or "right"
+	private double percentToDrain;
 
 	public Student(String id, String styleCode, String fallDir) {
 		
@@ -51,7 +52,7 @@ public class Student extends AnimatedSprite {
 		this.dead = false;
 		this.poisoned = false;
 		healthDrainClock = new GameClock();
-		
+		this.percentToDrain = 0.15;
 		poisonBubbles = new AnimatedSprite("bubbles", "bubbles/bubble-default.png", 
 				"bubbles/bubble-spritesheet.png", "resources/bubbles/bubble-spritesheet.txt");
 		this.addChild(poisonBubbles);
@@ -109,8 +110,6 @@ public class Student extends AnimatedSprite {
 
 
 	private void drainHealthIfPoisoned(ArrayList<String> pressedKeys) {
-		double percentToDrain = 0.15; // FIXME: should depend on what level we
-										// are on?
 		if (this.healthDrainClock != null) {
 			if (this.healthDrainClock.getElapsedTime() > (drainInterval) && this.isPoisoned() && !this.isDead()) {
 				double newHealth = this.currentHealth - percentToDrain * this.maxHealth;
@@ -150,6 +149,7 @@ public class Student extends AnimatedSprite {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g); // draws children
+		
 	}
 
 	@Override
@@ -168,6 +168,14 @@ public class Student extends AnimatedSprite {
 
 	public void setDrainInterval(double interval) {
 		drainInterval = interval;
+	}
+
+	public double getPercentToDrain() {
+		return percentToDrain;
+	}
+
+	public void setPercentToDrain(double percentToDrain) {
+		this.percentToDrain = percentToDrain;
 	}
 
 	
