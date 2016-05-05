@@ -30,6 +30,7 @@ public class Hallway extends DisplayObjectContainer {
 	private DisplayObjectContainer playArea;
 	private AnimatedSprite door;
 	private boolean doorOpen;
+	private AnimatedSprite arrow;
 
 	public Hallway(String id, String styleCode) {
 		super(id, "hallway/hallway-background-" + styleCode + ".png");
@@ -74,10 +75,22 @@ public class Hallway extends DisplayObjectContainer {
 		drinkMachine = new Sprite(id + "-drink-machine", "hallway/drink-machine-" + drinkCode + ".png");
 		
 		/* add door */
+		arrow = new AnimatedSprite(id + "-arrow", "arrow/default.png",
+				"arrow/arrow-spritesheet.png", 
+				"resources/arrow/arrow-spritesheet.txt");
+		doorOpen = false;
+		
+		/* add arrow */
 		door = new AnimatedSprite(id + "-door", "classroom/door/door-default.png",
 				"classroom/door/door-spritesheet.png", 
 				"resources/classroom/door/door-spritesheet.txt");
-		doorOpen = false;
+		//only display arrow on first time entering the hallway
+		if (!this.gameManager.getActiveGameScene().equals("hallway0")) {
+			arrow.setVisible(false);
+		} else {
+			arrow.animate("arrow", 1.5);
+		}
+		 
 		/* add door background */
 		Sprite doorBack = new Sprite(id + "-doorbkg", "hallway/doorbkg" + styleCode +".png");
 		
@@ -101,7 +114,7 @@ public class Hallway extends DisplayObjectContainer {
 		this.addChild(drinkMachine);
 		this.addChild(doorBack);
 		this.addChild(door);
-		
+		this.addChild(arrow);
 		this.addChild(player1);
 		this.addChild(player2);
 		this.addChild(store);
@@ -111,6 +124,8 @@ public class Hallway extends DisplayObjectContainer {
 				this.getHeight() * .2267);
 		this.door.setPosition(this.getWidth() * .8, this.getHeight() * .21);
 		doorBack.setPosition(this.getWidth() * .8, this.getHeight() * .21);
+		this.arrow.setPosition(this.getWidth() * .4331, 
+				this.getHeight() * .2267 + this.vendingMachine.getHeight());
 		
 		this.player1.setPosition(this.getWidth() * .04, this.getHeight() * .48);
 		this.player2.setPosition(this.getWidth() * .04, this.getHeight() * .6);
@@ -119,6 +134,11 @@ public class Hallway extends DisplayObjectContainer {
 	}
 
 	public void openStore(int numPlayer) {
+		//stop arrow
+		if (this.arrow.isVisible()) {
+			this.arrow.setVisible(false);
+			this.arrow.stopAnimation();
+		}
 		store.setVisible(true);
 		store.setNumPlayer(numPlayer);
 		switch (numPlayer) {

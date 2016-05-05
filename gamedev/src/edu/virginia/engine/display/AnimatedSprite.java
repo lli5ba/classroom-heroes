@@ -188,6 +188,10 @@ public class AnimatedSprite extends Sprite {
 	public void animateOnceLock(String animationName, int speed) {
 		if (spriteMap.containsKey(animationName)) {
 			if(loop == true) {
+				//FIXME!!!
+				if (animationName.contains("victory")) {
+					prevAnimation = animationName;
+				}
 				currentAnimation = animationName;
 				isPlaying = true;
 				currentFrame = 0;

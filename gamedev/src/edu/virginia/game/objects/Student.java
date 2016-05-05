@@ -24,7 +24,7 @@ public class Student extends AnimatedSprite {
 	private static PlayerManager playerManager = PlayerManager.getInstance();
 	private static LevelManager levelManager = LevelManager.getInstance();
 	private static GameManager gameManager = GameManager.getInstance();
-	private double drainInterval = 1500; // FIXME: should depend on
+	private double drainInterval = 1000; // FIXME: should depend on
 														// what level we are on
 	private GameClock healthDrainClock;
 	private double maxHealth;
@@ -109,7 +109,7 @@ public class Student extends AnimatedSprite {
 
 
 	private void drainHealthIfPoisoned(ArrayList<String> pressedKeys) {
-		double percentToDrain = 0.05; // FIXME: should depend on what level we
+		double percentToDrain = 0.15; // FIXME: should depend on what level we
 										// are on?
 		if (this.healthDrainClock != null) {
 			if (this.healthDrainClock.getElapsedTime() > (drainInterval) && this.isPoisoned() && !this.isDead()) {

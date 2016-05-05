@@ -144,30 +144,47 @@ public class Boss extends AnimatedSprite {
 			candy.addEventListener(playerManager, EventTypes.PICKUP_CANDY.toString());
 			Random rand1 = new Random();
 			int tweenVar = (int) (rand1.nextDouble() * 3);
-			TweenTransitions tween_type = null;
+			TweenTransitions tween_typex = null;
 			switch (tweenVar) {
 			case 0:
-				tween_type = TweenTransitions.LINEAR;
+				tween_typex = TweenTransitions.LINEAR;
 				break;
 			case 1:
-				tween_type = TweenTransitions.LINEAR;
+				tween_typex = TweenTransitions.LINEAR;
 				break;
 			case 2:
-				tween_type = TweenTransitions.SPEED_UP;
+				tween_typex = TweenTransitions.SPEED_UP;
 				break;
 			case 3:
-				tween_type = TweenTransitions.LINEAR;
+				tween_typex = TweenTransitions.LINEAR;
 				break;
 			default:
-				tween_type = TweenTransitions.LINEAR;
+				tween_typex = TweenTransitions.LINEAR;
 			}
-			Tween tween2 = new Tween(candy, tween_type);
+			int tweenVar2 = (int) (rand1.nextDouble() * 3);
+			TweenTransitions tween_typey = null;
+			switch (tweenVar2) {
+			case 0:
+				tween_typey = TweenTransitions.LINEAR;
+				break;
+			case 1:
+				tween_typey = TweenTransitions.LINEAR;
+				break;
+			case 2:
+				tween_typey = TweenTransitions.SPEED_UP;
+				break;
+			default:
+				tween_typey = TweenTransitions.LINEAR;
+			}
+			Tween tween1 = new Tween(candy, tween_typex);
+			Tween tween2 = new Tween(candy, tween_typey);
+			myTweenJuggler.add(tween1);
 			myTweenJuggler.add(tween2);
 			Position pos = generatePosition("vp", candy.getxPos(), candy.getyPos());
 			if (pos == null) {
 				return null;
 			}
-			tween2.animate(TweenableParam.POS_X, candy.getxPos(), pos.getX(), this.vpSpeed);
+			tween1.animate(TweenableParam.POS_X, candy.getxPos(), pos.getX(), this.vpSpeed);
 			tween2.animate(TweenableParam.POS_Y, candy.getyPos(), pos.getY(), this.vpSpeed);
 			return candy;
 		}
